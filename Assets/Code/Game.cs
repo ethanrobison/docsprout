@@ -8,7 +8,7 @@ namespace Code
         public static GameSession Sesh;
 
         private void Start () {
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // Please keep me kthxbai.
 
             Sesh = new GameSession();
             Sesh.Initialize();

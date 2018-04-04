@@ -5,6 +5,8 @@ namespace Code.UI.Menus
 {
     public class MainMenu : Menu
     {
+        private static int _sceneTarget = 4; // Magic constant for the demo scene. TODO bit of a hack.
+
         public override void CreateGameObject () {
             GO = UIUtils.MakeUIPrefab(UIPrefab.MainMenu);
             InitializeButtons();
@@ -19,10 +21,19 @@ namespace Code.UI.Menus
             UIUtils.FindUICompOfType<Button>(buttons, "Quit").onClick.AddListener(QuitGame);
             UIUtils.FindUICompOfType<Button>(GO.transform, "Acknowledgements").onClick
                 .AddListener(LoadAcknowledgements);
+#if UNITY_EDITOR
+            // if we are in the editor, add in the secret button to load one of the dev scenes
+            var secret = GO.transform.Find("Development");
+            secret.gameObject.SetActive(true);
+#endif
         }
 
         private void StartNewGame () {
-            Debug.Log("Implement me!"); // todo :3
+#if UNITY_EDITOR
+            var drop = UIUtils.FindUICompOfType<Dropdown>(GO.transform, "Development/Dropdown");
+            _sceneTarget = drop.value + 1;
+#endif
+            Game.Sesh.StartGame(_sceneTarget);
         }
 
         private void LoadGame () {

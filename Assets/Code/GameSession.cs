@@ -12,11 +12,13 @@ namespace Code
             _mainMenu.CreateGameObject();
         }
 
-        private void StartGame () {
+
+        // todo this isn't very sophisticated in fact I dislike it
+        public void StartGame (int scene) {
             var ctx = new GameContext();
             Game.SetContext(this, ctx);
 
-            ctx.StartGame();
+            ctx.StartGame(scene);
         }
     }
 }

@@ -1,15 +1,13 @@
-﻿namespace Code
+﻿using UnityEngine.SceneManagement;
+
+namespace Code
 {
     public class GameContext
     {
-        
-
-        public void StartGame () {
-
+        public void StartGame (int scene) {
+            SceneManager.LoadScene(scene);
         }
 
-        private void Initialize () {
-
-        }
+        private void Initialize () { }
     }
 }
