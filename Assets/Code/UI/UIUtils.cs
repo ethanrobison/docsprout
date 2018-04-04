@@ -32,5 +32,19 @@ namespace Code.UI
             var resource = Resources.Load(path);
             return (GameObject) Object.Instantiate(resource, holder);
         }
+
+        /// <summary>
+        /// Given a transform and the name of a child, get its component of type T.
+        /// Complains if child/component nonexistent.
+        /// </summary>
+        public static T FindUICompOfType<T> (Transform parent, string name) where T : MonoBehaviour {
+            var child = parent.Find(name);
+            Debug.Assert(child != null, "Missing child: " + name);
+
+            var comp = child.gameObject.GetComponent<T>();
+            Debug.Assert(comp != null, "Child missing component of type: " + typeof(T));
+
+            return comp;
+        }
     }
 }

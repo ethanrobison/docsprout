@@ -11,6 +11,10 @@ namespace Code.UI.Menus
         protected GameObject GO;
 
         public abstract void CreateGameObject ();
-        public abstract void RemoveGameObject ();
+
+        public virtual void RemoveGameObject () {
+            Object.Destroy(GO);
+            GO = null;
+        }
     }
 }
