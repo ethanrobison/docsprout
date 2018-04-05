@@ -484,11 +484,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 346bfa93b7ec84d2d902d8ab5acfd599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings:
-    maxSpeed: 5
-    speedUpAcceleration: 30
-    slowDownAcceleration: 40
-    switchDirectionsAcceleration: 50
+  maxSpeed: 5
+  speedUpAcceleration: 30
+  slowDownAcceleration: 40
+  switchDirectionsAcceleration: 50
   walkingDir: {x: 0, y: 0, z: 0}
 --- !u!114 &470546693
 MonoBehaviour:
@@ -502,14 +501,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 282840813}
-  cameraSettings:
-    xSensitivity: 0.001
-    ySensitivity: 0.001
-    followDistance: 16
-    minYAngle: -20
-    maxYAngle: 50
-    invertY: 0
-    stiffness: 0.5
+  target: {fileID: 470546689}
+  obscuresCamera:
+    serializedVersion: 2
+    m_Bits: 17
+  xSensitivity: 0.0005
+  ySensitivity: 0.0005
+  followDistance: 16
+  minYAngle: -20
+  maxYAngle: 50
+  invertY: 0
+  stiffness: 0.5
 --- !u!1 &1151627240
 GameObject:
   m_ObjectHideFlags: 0

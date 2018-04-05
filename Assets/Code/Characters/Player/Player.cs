@@ -45,7 +45,7 @@ public class Player : MonoBehaviour {
 
         camController.moveCamera(Input.GetAxis(buttons.camX), Input.GetAxisRaw(buttons.camY));
 
-
+       
 	}
 
 	

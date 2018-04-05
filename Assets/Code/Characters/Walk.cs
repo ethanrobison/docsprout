@@ -7,15 +7,10 @@ public class Walk : MonoBehaviour {
 
     Character character;
 
-    [System.Serializable]
-    public struct WalkSettings {
-        public float maxSpeed;
-        public float speedUpAcceleration;
-        public float slowDownAcceleration;
-        public float switchDirectionsAcceleration;
-
-    }
-    public WalkSettings settings;
+    public float maxSpeed = 5f;
+    public float speedUpAcceleration = 30f;
+    public float slowDownAcceleration = 40f;
+    public float switchDirectionsAcceleration = 50f;
 
     bool isSwitchingDirs;
 
@@ -33,7 +28,7 @@ public class Walk : MonoBehaviour {
         if(character.isOnGround) {
             // Calculate how fast the character should aim to be moving
             float walkMagnitude = Mathf.Min(walkingDir.magnitude, 1);
-            float goalSpeed = walkMagnitude*settings.maxSpeed;
+            float goalSpeed = walkMagnitude*maxSpeed;
 
             // Find the goal velocity, ensuring it is perpendicular to the ground's normal
             Vector3 goalWalkingDir = walkingDir;
@@ -53,10 +48,10 @@ public class Walk : MonoBehaviour {
             float perpendicularSpeed = perpendicularDir.magnitude;
             perpendicularDir.Normalize();
 
-            float slowingDV = settings.slowDownAcceleration*Time.fixedDeltaTime;
+            float slowingDV = slowDownAcceleration*Time.fixedDeltaTime;
 
             if(isSwitchingDirs) { // Switching directions
-                float dV = settings.switchDirectionsAcceleration*Time.fixedDeltaTime;
+                float dV = switchDirectionsAcceleration*Time.fixedDeltaTime;
                 if(dV > goalSpeed - parallelSpeed) {
                     parallelSpeed = goalSpeed;
                     isSwitchingDirs = false;
@@ -66,7 +61,7 @@ public class Walk : MonoBehaviour {
                 }
             }
             else if(parallelSpeed < goalSpeed) { // Speeding up
-                parallelSpeed += settings.speedUpAcceleration*Time.fixedDeltaTime;
+                parallelSpeed += speedUpAcceleration*Time.fixedDeltaTime;
                 parallelSpeed = Mathf.Min(parallelSpeed, goalSpeed);
             }
             else { // Slowing down

@@ -5,22 +5,20 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     public Camera camera;
+    public Transform target;
     float camRotY;
     float camRotX;
 
-    [System.Serializable]
-    public struct CameraSettings {
-        public float xSensitivity;
-        public float ySensitivity;
-        public float followDistance;
-        public float minYAngle;
-        public float maxYAngle;
-        public bool invertY;
-        public float stiffness;
+    public LayerMask obscuresCamera;
 
-    }
+    public float xSensitivity = 0.0005f;
+    public float ySensitivity = 0.0005f;
+    public float followDistance = 16f;
+    public float minYAngle = -20f;
+    public float maxYAngle = 50f;
+    public bool invertY = false;
+    public float stiffness = 0.5f;
 
-    public CameraSettings cameraSettings;
 
 	// Use this for initialization
 	void Start () {
@@ -30,15 +28,15 @@ public class CameraController : MonoBehaviour {
 	// Update is called once per frame
 	public void moveCamera (float x, float y) {
 
-        camRotX += x*cameraSettings.xSensitivity;
+        camRotX += x*xSensitivity;
         camRotX = camRotX % 360;
 
         float dYCam = y;
-        if(!cameraSettings.invertY) dYCam *= -1;
+        if(!invertY) dYCam *= -1;
 
-        camRotY += dYCam*cameraSettings.ySensitivity;
+        camRotY += dYCam*ySensitivity;
 
-        camRotY = Mathf.Clamp(camRotY, cameraSettings.minYAngle, cameraSettings.maxYAngle);
+        camRotY = Mathf.Clamp(camRotY, minYAngle, maxYAngle);
 		
 	}
 
@@ -47,10 +45,17 @@ public class CameraController : MonoBehaviour {
         Quaternion goalCamRot = Quaternion.AngleAxis(camRotX, Vector3.up);
         goalCamRot *= Quaternion.AngleAxis(camRotY, Vector3.right);
 
-        Vector3 goalCamPos = transform.position - goalCamRot*Vector3.forward*cameraSettings.followDistance;
+        RaycastHit hit;
+        float camDist = followDistance;
+        if(Physics.SphereCast(target.position, .5f, -(goalCamRot*Vector3.forward), out hit, followDistance - .5f, obscuresCamera)) {
+            camDist = hit.distance;
+        }
 
-        camera.transform.position = Vector3.Lerp(camera.transform.position, goalCamPos, cameraSettings.stiffness);
-        camera.transform.rotation = Quaternion.Slerp(camera.transform.rotation, goalCamRot, cameraSettings.stiffness);
+        Vector3 goalCamPos = target.position - goalCamRot*Vector3.forward*camDist;
+
+
+        camera.transform.position = Vector3.Lerp(camera.transform.position, goalCamPos, stiffness);
+        camera.transform.rotation = Quaternion.Slerp(camera.transform.rotation, goalCamRot, stiffness);
 
     }
 }
