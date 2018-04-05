@@ -244,7 +244,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 282840810}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -351,6 +351,9 @@ GameObject:
   - component: {fileID: 470546686}
   - component: {fileID: 470546685}
   - component: {fileID: 470546690}
+  - component: {fileID: 470546692}
+  - component: {fileID: 470546691}
+  - component: {fileID: 470546693}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -457,6 +460,56 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   isOnGround: 0
   collisionFlags: 0
+  groundNormal: {x: 0, y: 1, z: 0}
+--- !u!114 &470546691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 470546684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 121298be55d7c4f03a6abbfaf7e07a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+--- !u!114 &470546692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 470546684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 346bfa93b7ec84d2d902d8ab5acfd599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+    maxSpeed: 5
+    speedUpAcceleration: 30
+    slowDownAcceleration: 40
+    switchDirectionsAcceleration: 50
+  walkingDir: {x: 0, y: 0, z: 0}
+--- !u!114 &470546693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 470546684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbbb8237802ad4394b2326ce1da88353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 282840813}
+  cameraSettings:
+    xSensitivity: 0.001
+    ySensitivity: 0.001
+    followDistance: 16
+    minYAngle: -20
+    maxYAngle: 50
+    invertY: 0
+    stiffness: 0.5
 --- !u!1 &1151627240
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,10 +538,10 @@ MonoBehaviour:
   m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
+  m_HorizontalAxis: leftHorizontal
+  m_VerticalAxis: leftVertical
+  m_SubmitButton: A
+  m_CancelButton: B
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
