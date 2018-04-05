@@ -11,8 +11,8 @@ public class CameraController : MonoBehaviour {
 
     public LayerMask obscuresCamera;
 
-    public float xSensitivity = 0.0005f;
-    public float ySensitivity = 0.0005f;
+    public float xSensitivity = 100f;
+    public float ySensitivity = 50f;
     public float followDistance = 16f;
     public float minYAngle = -20f;
     public float maxYAngle = 50f;
@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        if(target == null) target = transform;
 	}
 	
 	// Update is called once per frame

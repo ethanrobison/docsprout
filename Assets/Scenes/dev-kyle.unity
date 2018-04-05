@@ -331,13 +331,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 375670533}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.57827127, y: -0, z: -0, w: 0.8158446}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 30, y: 30, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 70.658005, y: 0, z: 0}
 --- !u!1 &470546684
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,7 +374,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.2
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -501,12 +501,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 282840813}
-  target: {fileID: 470546689}
+  target: {fileID: 0}
   obscuresCamera:
     serializedVersion: 2
     m_Bits: 17
-  xSensitivity: 0.0005
-  ySensitivity: 0.0005
+  xSensitivity: 10
+  ySensitivity: 5
   followDistance: 16
   minYAngle: -20
   maxYAngle: 50
@@ -542,8 +542,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalAxis: leftHorizontal
   m_VerticalAxis: leftVertical
-  m_SubmitButton: A
-  m_CancelButton: B
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
