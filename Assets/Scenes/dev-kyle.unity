@@ -505,8 +505,8 @@ MonoBehaviour:
   obscuresCamera:
     serializedVersion: 2
     m_Bits: 17
-  xSensitivity: 10
-  ySensitivity: 5
+  xSensitivity: 100
+  ySensitivity: 50
   followDistance: 16
   minYAngle: -20
   maxYAngle: 50
