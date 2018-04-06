@@ -1,13 +1,21 @@
-﻿using Code.UI.Menus;
+﻿using Code.Session;
+using Code.UI.Menus;
 
 namespace Code
 {
     // Stub class for now. Will hold preferences, etc. later.
     public class GameSession
     {
+        public PreferencesManager Prefs { get; private set; }
+
         private MainMenu _mainMenu;
 
+
         public void Initialize () {
+            Prefs = new PreferencesManager();
+
+            Prefs.Initialize();
+
             _mainMenu = new MainMenu();
             _mainMenu.CreateGameObject();
         }
@@ -22,5 +30,11 @@ namespace Code
 
             ctx.StartGame(scene);
         }
+    }
+
+    public interface ISessionManager
+    {
+        void Initialize ();
+        void ShutDown ();
     }
 }

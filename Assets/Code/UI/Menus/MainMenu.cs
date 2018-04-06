@@ -5,7 +5,7 @@ namespace Code.UI.Menus
 {
     public class MainMenu : Menu
     {
-        private static int _sceneTarget = 4; // Magic constant for the demo scene. TODO bit of a hack.
+        private static int _sceneTarget = 4; // Magic constant for the demo scene. TODO BIT OF A HACK
 
         public override void CreateGameObject () {
             GO = UIUtils.MakeUIPrefab(UIPrefab.MainMenu);
