@@ -3,6 +3,9 @@ using Code.Utils;
 
 namespace Code.Session
 {
+    /// <summary>
+    /// Manages menus. Used for non-context dialogs (ie, things in the main menu only).
+    /// </summary>
     public class MenuManager : ISessionManager
     {
         private readonly SmartStack<Menu> _menus = new SmartStack<Menu>();
