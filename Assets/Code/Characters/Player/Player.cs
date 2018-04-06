@@ -68,7 +68,7 @@ public class Player : MonoBehaviour {
                 break;
         }
 
-        float camX = Input.GetAxis(buttons.camX);
+        float camX = Input.GetAxisRaw(buttons.camX);
         float camY = Input.GetAxisRaw(buttons.camY);
         if(camX*camX + camY*camY < 0.01) {
             camX = 0f;
