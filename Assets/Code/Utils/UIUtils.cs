@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Code.UI
+namespace Code.Utils
 {
     public enum UIPrefab
     {

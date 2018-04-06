@@ -1,4 +1,4 @@
-﻿using Code.UI;
+﻿using Code.Utils;
 using UnityEngine;
 
 namespace Code

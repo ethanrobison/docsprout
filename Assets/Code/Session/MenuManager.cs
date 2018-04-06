@@ -1,4 +1,4 @@
-﻿using Code.UI.Menus;
+﻿using Code.Session.UI;
 using Code.Utils;
 
 namespace Code.Session
@@ -24,7 +24,7 @@ namespace Code.Session
 
         public void CloseToMe (Menu menu) {
             var element = _menus.Pop();
-            while (element != menu) { element = _menus.Pop(true); }
+            while (element != menu) { element = _menus.Pop(); }
         }
     }
 }

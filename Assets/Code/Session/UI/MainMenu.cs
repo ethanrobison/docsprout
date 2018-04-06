@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Code.Utils;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Code.UI.Menus
+namespace Code.Session.UI
 {
     public class MainMenu : Menu
     {
