@@ -6,15 +6,17 @@ namespace Code.UI
     public enum UIPrefab
     {
         MainMenu,
+        OptionsMenu,
     }
 
     public static class UIUtils
     {
         private static readonly Dictionary<UIPrefab, string> PrefabsPaths = new Dictionary<UIPrefab, string> {
-            {UIPrefab.MainMenu, "UI/Main Menu"}
+            {UIPrefab.MainMenu, "UI/Main Menu"},
+            {UIPrefab.OptionsMenu, "UI/Options Menu"}
         };
 
-        private static Transform GetCanvas () {
+        public static Transform GetCanvas () {
             return GameObject.Find("Canvas").transform; // hope there's only ever one canvas
         }
 

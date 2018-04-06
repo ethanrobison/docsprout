@@ -40,8 +40,18 @@ namespace Code.UI.Menus
             Debug.Log("Implement me!!"); // todo :3
         }
 
+
+        private OptionsMenu _options;
+
         private void OpenOptions () {
-            Debug.Log("Implement me!"); // todo :3
+            _options = new OptionsMenu(this);
+            _options.CreateGameObject();
+        }
+
+        // todo this is not grace... dialogs manager here? smart stack?
+        public void CloseOptions () {
+            _options.RemoveGameObject();
+            _options = null;
         }
 
         private void QuitGame () {
