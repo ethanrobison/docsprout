@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Code.UI;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Code.Session
@@ -11,14 +10,26 @@ namespace Code.Session
 
         public void Initialize () {
             UI = new UISettings();
+
+            UI.Initialize();
         }
 
-        public void ShutDown () { }
+        public void ShutDown () {
+            UI.ShutDown();
+
+            UI = null;
+        }
     }
 
-    public class UISettings
+    public class UISettings : ISessionManager
     {
         public readonly List<float> UIScalingList = new List<float> {0.5f, 0.75f, 1f, 1.5f, 2f};
+
+
+        public void Initialize () { }
+
+        public void ShutDown () { }
+
 
         public void SetUIScale (int option) {
             var scale = UIScalingList[option];

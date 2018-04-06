@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.Utils;
+using UnityEngine;
 
 namespace Code.UI.Menus
 {
@@ -6,15 +7,28 @@ namespace Code.UI.Menus
     /// Stub class, specifically for menus outside of the game context.
     /// Not to be used when a game is actually running.
     /// </summary>
-    public abstract class Menu
+    public abstract class Menu : ISmartStackElement
     {
         protected GameObject GO;
 
-        public abstract void CreateGameObject ();
+        protected abstract void CreateGameObject ();
 
-        public virtual void RemoveGameObject () {
+        protected virtual void RemoveGameObject () {
             Object.Destroy(GO);
             GO = null;
         }
+
+
+        public virtual void OnPush () { }
+
+        public virtual void Activate () {
+            CreateGameObject();
+        }
+
+        public virtual void Deactivate () {
+            RemoveGameObject();
+        }
+
+        public virtual void OnPop () { }
     }
 }

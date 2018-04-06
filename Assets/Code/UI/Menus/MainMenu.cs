@@ -7,7 +7,7 @@ namespace Code.UI.Menus
     {
         private static int _sceneTarget = 4; // Magic constant for the demo scene. TODO BIT OF A HACK
 
-        public override void CreateGameObject () {
+        protected override void CreateGameObject () {
             GO = UIUtils.MakeUIPrefab(UIPrefab.MainMenu);
             InitializeButtons();
         }
@@ -40,18 +40,8 @@ namespace Code.UI.Menus
             Debug.Log("Implement me!!"); // todo :3
         }
 
-
-        private OptionsMenu _options;
-
         private void OpenOptions () {
-            _options = new OptionsMenu(this);
-            _options.CreateGameObject();
-        }
-
-        // todo this is not grace... dialogs manager here? smart stack?
-        public void CloseOptions () {
-            _options.RemoveGameObject();
-            _options = null;
+            Game.Sesh.Menus.PushMenu(new OptionsMenu());
         }
 
         private void QuitGame () {

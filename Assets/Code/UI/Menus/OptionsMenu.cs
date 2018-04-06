@@ -9,13 +9,7 @@ namespace Code.UI.Menus
 {
     public class OptionsMenu : Menu
     {
-        private readonly MainMenu _menu;
-
-        public OptionsMenu (MainMenu menu) {
-            _menu = menu;
-        }
-
-        public override void CreateGameObject () {
+        protected override void CreateGameObject () {
             GO = UIUtils.MakeUIPrefab(UIPrefab.OptionsMenu);
 
             UIUtils.FindUICompOfType<Button>(GO.transform, "Back").onClick.AddListener(Close);
@@ -24,7 +18,7 @@ namespace Code.UI.Menus
         }
 
         private void Close () {
-            _menu.CloseOptions();
+            Game.Sesh.Menus.CloseToMe(this);
         }
 
         private void InitializeUIOptions () {
@@ -35,7 +29,7 @@ namespace Code.UI.Menus
             dropdown.value = 2; // todo hard-fucking coding
         }
 
-        private void OnScalingChanged (int option) {
+        private static void OnScalingChanged (int option) {
             Game.Sesh.Prefs.UI.SetUIScale(option);
         }
 
