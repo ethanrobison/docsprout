@@ -18,6 +18,8 @@ namespace Code
             var ctx = new GameContext();
             Game.SetContext(this, ctx);
 
+            _mainMenu.RemoveGameObject();
+
             ctx.StartGame(scene);
         }
     }

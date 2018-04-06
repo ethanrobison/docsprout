@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.UI;
+using UnityEngine;
 
 namespace Code
 {
@@ -9,6 +10,8 @@ namespace Code
 
         private void Start () {
             DontDestroyOnLoad(gameObject); // Please keep me kthxbai.
+            DontDestroyOnLoad(UIUtils.GetCanvas().gameObject);
+            DontDestroyOnLoad(GameObject.Find("EventSystem")); // hard-coding is best coding
 
             Sesh = new GameSession();
             Sesh.Initialize();
