@@ -30,11 +30,11 @@ public class doodColor : MonoBehaviour {
         }
     }
 
-	void Start () {
+	void Awake() {
         propertyBlock = new MaterialPropertyBlock();
         propertyBlock.SetColor("_Color", color);
         propertyBlock.SetFloat("_Happiness", happiness);
-        renderer = GetComponent<MeshRenderer>();
+        renderer = GetComponent<Renderer>();
         renderer.SetPropertyBlock(propertyBlock);
     }
 

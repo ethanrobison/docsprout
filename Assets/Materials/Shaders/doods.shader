@@ -3,8 +3,7 @@
 		_Color ("Happy Color", Color) = (1,1,1,1)
         _SickColor ("Sick Color", Color) = (1,1,1,1)
         _Happiness ("Happiness", Range(0, 1)) = 1
-        _ShadingRamp ("Shading Ramp", 2D) = "white" {}
-        _RampMultiplier ("Ramp Multiplier", Float) = 1
+        _LightMultiplier ("Ramp Multiplier", Float) = 1
         
 	}
 	SubShader {
@@ -23,9 +22,8 @@
 		struct Input {
 			float2 uv_MainTex;
 		};
-
-        sampler2D _ShadingRamp;
-        float _RampMultiplier;
+        
+        float _LightMultiplier;
         fixed4 _SickColor;
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
@@ -38,7 +36,7 @@
 
         half4 LightingCel (SurfaceOutput s, half3 lightDir, half atten) {
             half NdotL = dot (s.Normal, lightDir);
-            NdotL = tex2D(_ShadingRamp, half2(NdotL, 0))*_RampMultiplier;
+            NdotL = min(1, max(0, NdotL)*20)*_LightMultiplier;
             half4 c;
             c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten);
             c.a = s.Alpha;
