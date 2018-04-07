@@ -51,7 +51,7 @@ public class Walk : MonoBehaviour {
     /// update this is used to calculate the character's velocity, with magnitudes of
     /// 1 or greater resulting in the character accelerating towards max speed.
     /// </summary>
-    [HideInInspector] public Vector3 walkingDir;
+    [HideInInspector] public Vector2 walkingDir;
 
 
 	void Start () {
@@ -66,7 +66,7 @@ public class Walk : MonoBehaviour {
             float goalSpeed = walkMagnitude*maxSpeed;
 
             // Find the goal velocity, ensuring it is parallel to the ground
-            Vector3 goalWalkingDir = walkingDir;
+            Vector3 goalWalkingDir = new Vector3(walkingDir.x, 0f, walkingDir.y);
             goalWalkingDir -= Vector3.Dot(goalWalkingDir, character.groundNormal)*character.groundNormal;
             goalWalkingDir = goalWalkingDir.normalized;
 
@@ -81,9 +81,9 @@ public class Walk : MonoBehaviour {
             // Find the direction and speed perpendicular to the goal direction
             Vector3 perpendicularDir = slopedVelocity - goalWalkingDir*parallelSpeed;
             float perpendicularSpeed = perpendicularDir.magnitude;
-            perpendicularDir.Normalize();
+            perpendicularDir /= perpendicularSpeed + 0.000001f;
 
-            // Find the change in velocity to use when slowing down now, so it doesn't
+            // Find the change in velocity to use when slowing down now so it doesn't
             // need to be calculated twice if the character is slowing down, since it
             // is also used to cancel out the perpendicular velocity
             float slowingDV = slowDownAcceleration*Time.fixedDeltaTime;
