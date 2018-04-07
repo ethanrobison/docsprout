@@ -1,32 +1,36 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Code.UI.Menus
 {
     public class MainMenu : Menu
     {
-        private static int _sceneTarget = 4; // Magic constant for the demo scene. TODO bit of a hack.
+        private static int _sceneTarget = 4; // Magic constant for the demo scene. TODO BIT OF A HACK
 
-        public override void CreateGameObject () {
+        protected override void CreateGameObject () {
             GO = UIUtils.MakeUIPrefab(UIPrefab.MainMenu);
             InitializeButtons();
         }
 
         private void InitializeButtons () {
-            var buttons = GO.transform.Find("Buttons");
+            InitializeButton("Buttons/Start", StartNewGame);
+            InitializeButton("Buttons/Load", LoadGame);
+            InitializeButton("Buttons/Options", OpenOptions);
+            InitializeButton("Buttons/Quit", QuitGame);
+            InitializeButton("Acknowledgements", LoadAcknowledgements);
 
-            UIUtils.FindUICompOfType<Button>(buttons, "Start").onClick.AddListener(StartNewGame);
-            UIUtils.FindUICompOfType<Button>(buttons, "Load").onClick.AddListener(LoadGame);
-            UIUtils.FindUICompOfType<Button>(buttons, "Options").onClick.AddListener(OpenOptions);
-            UIUtils.FindUICompOfType<Button>(buttons, "Quit").onClick.AddListener(QuitGame);
-            UIUtils.FindUICompOfType<Button>(GO.transform, "Acknowledgements").onClick
-                .AddListener(LoadAcknowledgements);
 #if UNITY_EDITOR
             // if we are in the editor, add in the secret button to load one of the dev scenes
             var secret = GO.transform.Find("Development");
             secret.gameObject.SetActive(true);
 #endif
         }
+
+        private void InitializeButton (string name, UnityAction listener) {
+            UIUtils.FindUICompOfType<Button>(GO.transform, name).onClick.AddListener(listener);
+        }
+
 
         private void StartNewGame () {
 #if UNITY_EDITOR
@@ -40,11 +44,11 @@ namespace Code.UI.Menus
             Debug.Log("Implement me!!"); // todo :3
         }
 
-        private void OpenOptions () {
-            Debug.Log("Implement me!"); // todo :3
+        private static void OpenOptions () {
+            Game.Sesh.Menus.PushMenu(new OptionsMenu());
         }
 
-        private void QuitGame () {
+        private static void QuitGame () {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

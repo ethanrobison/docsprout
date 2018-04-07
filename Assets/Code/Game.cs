@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.UI;
+using UnityEngine;
 
 namespace Code
 {
@@ -8,7 +9,11 @@ namespace Code
         public static GameSession Sesh;
 
         private void Start () {
+            // todo I am a singleton; if I already exist, kill the Buddha
+
             DontDestroyOnLoad(gameObject); // Please keep me kthxbai.
+            DontDestroyOnLoad(UIUtils.GetCanvas().gameObject);
+            DontDestroyOnLoad(GameObject.Find("EventSystem")); // hard-coding is best coding
 
             Sesh = new GameSession();
             Sesh.Initialize();
