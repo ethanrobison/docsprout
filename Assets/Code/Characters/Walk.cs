@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 /// <summary>
 /// Component used for handling walking. To use, set walkingDir in the direction you want
 /// the character to walk in with the magnitude being the portion of the component's
