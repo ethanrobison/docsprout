@@ -10,7 +10,10 @@ namespace Code.Doods {
 
 		public void Initialize ()
 		{
-			_behavior = new Root (new Idle ());
+			var seq = new Sequence ();
+			seq.AddChild (new LogMessage ("Hello"));
+			seq.AddChild (new Idle ());
+			_behavior = new Root (seq);
 		}
 
 		void Start ()
@@ -18,7 +21,7 @@ namespace Code.Doods {
 			_walk = GetComponent<Walk> ();
 		}
 
-		void Update()
+		void Update ()
 		{
 			var status = _behavior.Tick ();
 		}
