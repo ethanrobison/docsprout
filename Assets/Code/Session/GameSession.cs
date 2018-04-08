@@ -5,7 +5,7 @@ namespace Code.Session
     // Stub class for now. Will hold preferences, etc. later.
     public class GameSession
     {
-        public PlatformManager Platform { get; private set; }
+//        public PlatformManager Platform { get; private set; }
         public PreferencesManager Prefs { get; private set; }
         public MenuManager Menus { get; private set; }
 
@@ -13,11 +13,11 @@ namespace Code.Session
 
 
         public void Initialize () {
-            Platform = new PlatformManager();
+//            Platform = new PlatformManager();
             Prefs = new PreferencesManager();
             Menus = new MenuManager();
 
-            Platform.Initialize();
+//            Platform.Initialize();
             Prefs.Initialize();
             Menus.Initialize();
 
