@@ -10,7 +10,6 @@
 	public abstract class BehaviorTreeNode {
 		Status _status;
 
-
 		public virtual void OnInitialize () { }
 		public virtual void OnTerminate (Status result) { }
 
@@ -25,8 +24,9 @@
 		}
 	}
 
+
 	public class Root : BehaviorTreeNode {
-		private readonly BehaviorTreeNode _child;
+		readonly BehaviorTreeNode _child;
 
 		public Root (BehaviorTreeNode child)
 		{

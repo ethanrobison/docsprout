@@ -21,6 +21,7 @@ namespace Code.Doods.AI {
 
 		protected override Status Update ()
 		{
+			// todo we need to make sure to shut things down?
 			while (true) {
 				Status status = _children [_current].Tick ();
 				if (status != Status.Failure) { return status; }

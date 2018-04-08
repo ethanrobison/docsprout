@@ -1,5 +1,12 @@
 namespace Code.Doods.AI {
-	public class Decorator : BehaviorTreeNode {
+	// todo implement me
+	public abstract class Decorator : BehaviorTreeNode {
+		BehaviorTreeNode _child;
 
+		protected override Status Update ()
+		{
+			
+			return Status.Failure;
+		}
 	}
 }
