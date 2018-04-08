@@ -1,8 +1,12 @@
-﻿using System;
-namespace AssemblyCSharp.Assets.Code.Doods.AI.Leaves {
-	public class Idle {
-		public Idle ()
+﻿namespace Code.Doods.AI {
+	public class Idle : BehaviorTreeNode {
+		public override void OnInitialize () { }
+
+		public override void OnTerminate (Status result) { }
+
+		protected override Status Update ()
 		{
+			return Status.Success;
 		}
 	}
 }
