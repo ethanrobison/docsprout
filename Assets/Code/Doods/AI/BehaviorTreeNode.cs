@@ -11,8 +11,8 @@
 		Status _status;
 
 
-		public abstract void OnInitialize ();
-		public abstract void OnTerminate (Status result);
+		public virtual void OnInitialize () { }
+		public virtual void OnTerminate (Status result) { }
 
 		protected abstract Status Update ();
 

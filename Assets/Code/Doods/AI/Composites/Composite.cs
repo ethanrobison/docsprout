@@ -19,14 +19,30 @@ namespace Code.Doods.AI {
 			_current = 0;
 		}
 
-		public override void OnTerminate (Status result) { }
-
 		protected override Status Update ()
 		{
 			while (true) {
 				Status status = _children [_current].Tick ();
 				if (status != Status.Failure) { return status; }
 				if (++_current == _children.Count) { return Status.Failure; }
+			}
+		}
+	}
+
+	public class Sequence : Composite {
+		int _current;
+
+		public override void OnInitialize ()
+		{
+			_current = 0;
+		}
+
+		protected override Status Update ()
+		{
+			while (true) {
+				Status status = _children [_current].Tick ();
+				if (status != Status.Success) { return status; }
+				if (++_current == _children.Count) { return Status.Success; }
 			}
 		}
 	}
