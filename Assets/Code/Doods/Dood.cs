@@ -5,15 +5,15 @@ namespace Code.Doods {
 	[RequireComponent (typeof (Walk))]
 	public class Dood : MonoBehaviour {
 
+		public Root Behavior { get; private set; }
 		Walk _walk;
-		Root _behavior;
 
 		public void Initialize ()
 		{
-			var seq = new Sequence ();
-			seq.AddChild (new LogMessage ("Hello"));
-			seq.AddChild (new Idle ());
-			_behavior = new Root (seq);
+			var seq = new Sequence (this);
+			seq.AddChild (new LogMessage ("Hello", this));
+			seq.AddChild (new Idle (this));
+			Behavior = new Root (seq, this);
 		}
 
 		void Start ()
@@ -23,7 +23,7 @@ namespace Code.Doods {
 
 		void Update ()
 		{
-			var status = _behavior.Tick ();
+			var status = Behavior.Tick ();
 		}
 	}
 }

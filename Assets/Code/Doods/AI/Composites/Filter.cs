@@ -11,6 +11,8 @@ namespace Code.Doods.AI {
 			() => {return true; } // todo I should learn if this is the right way to do this
 		};
 
+		public Filter (Dood dood) : base (dood) { }
+
 		public void AddPrecondition (Func<bool> precondition)
 		{
 			_preconditions.Add (precondition);

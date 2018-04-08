@@ -3,9 +3,11 @@ namespace Code.Doods.AI {
 	public abstract class Decorator : BehaviorTreeNode {
 		BehaviorTreeNode _child;
 
+		protected Decorator (Dood dood) : base (dood) { }
+
 		protected override Status Update ()
 		{
-			
+
 			return Status.Failure;
 		}
 	}
