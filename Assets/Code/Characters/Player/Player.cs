@@ -64,7 +64,8 @@ public class Player : MonoBehaviour {
                     break;
                 }
                 Vector3 forwards = Vector3.Cross(camController.camera.transform.right, Vector3.up).normalized;
-                walkComponent.walkingDir = x*camController.camera.transform.right + y*forwards;
+                walkComponent.walkingDir.x = x*camController.camera.transform.right.x + y*forwards.x;
+                walkComponent.walkingDir.y = x*camController.camera.transform.right.z + y*forwards.z;
                 break;
         }
 
@@ -78,18 +79,6 @@ public class Player : MonoBehaviour {
 
        
 	}
-
-	//void FixedUpdate()
-	//{
- //       float camX = Input.GetAxis(buttons.camX);
- //       float camY = Input.GetAxisRaw(buttons.camY);
- //       if(camX*camX + camY*camY < 0.01) {
- //           camX = 0f;
- //           camY = 0f;
- //       }
- //       camController.moveCamera(camX*Time.fixedDeltaTime, camY*Time.fixedDeltaTime);
-
-	//}
 
 
 }

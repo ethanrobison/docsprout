@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour {
     public float minYAngle = -20f;
     public float maxYAngle = 50f;
     public bool invertY = false;
-    public float stiffness = 0.5f;
+    public float stiffness = 25f;
 
 
 	// Use this for initialization
@@ -54,8 +54,8 @@ public class CameraController : MonoBehaviour {
         Vector3 goalCamPos = target.position - goalCamRot*Vector3.forward*camDist;
 
 
-        camera.transform.position = Vector3.Lerp(camera.transform.position, goalCamPos, stiffness);
-        camera.transform.rotation = Quaternion.Slerp(camera.transform.rotation, goalCamRot, stiffness);
+        camera.transform.position = Vector3.Lerp(camera.transform.position, goalCamPos, stiffness*Time.fixedDeltaTime);
+        camera.transform.rotation = Quaternion.Slerp(camera.transform.rotation, goalCamRot, stiffness*Time.fixedDeltaTime);
 
     }
 }
