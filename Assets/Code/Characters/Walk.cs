@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 /// <summary>
@@ -21,7 +19,7 @@ public class Walk : MonoBehaviour {
 	Character character;
 	bool isSwitchingDirs;
 
-	[HideInInspector] public Vector2 walkingDir;
+	[HideInInspector] public Vector2 WalkingDir { get; private set; }
 
 
 	void Start ()
@@ -32,11 +30,11 @@ public class Walk : MonoBehaviour {
 	void FixedUpdate ()
 	{
 		// Calculate how fast the character should aim to be moving
-		float walkMagnitude = Mathf.Min (walkingDir.magnitude, 1);
+		float walkMagnitude = Mathf.Min (WalkingDir.magnitude, 1);
 		float goalSpeed = walkMagnitude * maxSpeed;
 
 		// Find the goal velocity, ensuring it is parallel to the ground
-		Vector3 goalWalkingDir = new Vector3 (walkingDir.x, 0f, walkingDir.y);
+		Vector3 goalWalkingDir = new Vector3 (WalkingDir.x, 0f, WalkingDir.y);
 		goalWalkingDir -= Vector3.Dot (goalWalkingDir, character.groundNormal) * character.groundNormal;
 		goalWalkingDir = goalWalkingDir.normalized;
 
@@ -93,11 +91,16 @@ public class Walk : MonoBehaviour {
 		// Combine all components of velocity
 		character.velocity = parallelSpeed * goalWalkingDir + perpendicularSpeed * perpendicularDir + normalVelocity * character.groundNormal;
 
-
 		// Apply gravity
 		character.velocity += Physics.gravity * Time.fixedDeltaTime;
+	}
 
+
+	// 
+	// public-facing stuff
+
+	public void SetDir (Vector2 heading)
+	{
+		WalkingDir = heading;
 	}
 }
-
-

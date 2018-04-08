@@ -10,8 +10,8 @@ public class CloseCameraZone : MonoBehaviour {
 
 	private void OnTriggerEnter (Collider other)
 	{
-		CameraController cam = other.GetComponent<CameraController>();
-		if(cam) {
+		CameraController cam = other.GetComponent<CameraController> ();
+		if (cam) {
 			prevCamDist = cam.followDistance;
 			cam.followDistance = camDist;
 		}
@@ -19,8 +19,8 @@ public class CloseCameraZone : MonoBehaviour {
 
 	private void OnTriggerExit (Collider other)
 	{
-		CameraController cam = other.GetComponent<CameraController>();
-		if(cam) {
+		CameraController cam = other.GetComponent<CameraController> ();
+		if (cam) {
 			cam.followDistance = prevCamDist;
 		}
 	}

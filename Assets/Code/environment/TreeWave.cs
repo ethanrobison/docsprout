@@ -26,12 +26,13 @@ public class TreeWave : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
-		time1 += Time.deltaTime/period1;
+	void Update ()
+	{
+		time1 += Time.deltaTime / period1;
 		time1 %= 1f;
-		time2 += Time.deltaTime/period2;
+		time2 += Time.deltaTime / period2;
 		time2 %= 1f;
-		bone1.localRotation = rot1*Quaternion.AngleAxis(Mathf.Sin(time1*2f*Mathf.PI), Vector3.right);
-		bone2.localRotation = rot2*Quaternion.AngleAxis(Mathf.Sin(time2*2f*Mathf.PI), Vector3.right);
+		bone1.localRotation = rot1 * Quaternion.AngleAxis (Mathf.Sin (time1 * 2f * Mathf.PI), Vector3.right);
+		bone2.localRotation = rot2 * Quaternion.AngleAxis (Mathf.Sin (time2 * 2f * Mathf.PI), Vector3.right);
 	}
 }

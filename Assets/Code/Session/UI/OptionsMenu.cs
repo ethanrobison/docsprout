@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
-using UnityEngine;
+using Code.Utils;
 using UnityEngine.UI;
 
-namespace Code.UI.Menus
+namespace Code.Session.UI
 {
     public class OptionsMenu : Menu
     {

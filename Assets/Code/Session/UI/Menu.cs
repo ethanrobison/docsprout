@@ -1,7 +1,7 @@
 ﻿using Code.Utils;
 using UnityEngine;
 
-namespace Code.UI.Menus
+namespace Code.Session.UI
 {
     /// <summary>
     /// Stub class, specifically for menus outside of the game context.
@@ -19,16 +19,20 @@ namespace Code.UI.Menus
         }
 
 
-        public virtual void OnPush () { }
-
-        public virtual void Activate () {
+        public virtual void OnPush () {
             CreateGameObject();
         }
 
-        public virtual void Deactivate () {
-            RemoveGameObject();
+        public virtual void Activate () {
+            GO.SetActive(true);
         }
 
-        public virtual void OnPop () { }
+        public virtual void Deactivate () {
+            GO.SetActive(false);
+        }
+
+        public virtual void OnPop () {
+            RemoveGameObject();
+        }
     }
 }

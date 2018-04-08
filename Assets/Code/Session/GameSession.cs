@@ -1,11 +1,11 @@
-﻿using Code.Session;
-using Code.UI.Menus;
+﻿using Code.Session.UI;
 
-namespace Code
+namespace Code.Session
 {
     // Stub class for now. Will hold preferences, etc. later.
     public class GameSession
     {
+//        public PlatformManager Platform { get; private set; }
         public PreferencesManager Prefs { get; private set; }
         public MenuManager Menus { get; private set; }
 
@@ -13,9 +13,11 @@ namespace Code
 
 
         public void Initialize () {
+//            Platform = new PlatformManager();
             Prefs = new PreferencesManager();
             Menus = new MenuManager();
 
+//            Platform.Initialize();
             Prefs.Initialize();
             Menus.Initialize();
 
