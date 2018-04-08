@@ -1,8 +1,7 @@
-﻿namespace Code.Doods.AI {
-	public class BehaviorTree {
-		public BehaviorTree ()
-		{
+﻿using UnityEngine;
 
-		}
+namespace Code.Doods.AI {
+	public class BehaviorTree : MonoBehaviour {
+		public void Tick(){}
 	}
 }
