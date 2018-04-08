@@ -3,28 +3,24 @@ using UnityEngine;
 
 namespace Code.Doods {
 	[RequireComponent (typeof (Walk))]
-	[RequireComponent (typeof (BehaviorTree))]
 	public class Dood : MonoBehaviour {
-		DoodManager _manager;
 
 		Walk _walk;
-		BehaviorTree _behavior;
+		Root _behavior;
 
-		public void Initialize (DoodManager manager)
+		public void Initialize ()
 		{
-			_manager = manager;
-
+			_behavior = new Root (new Idle ());
 		}
 
 		void Start ()
 		{
 			_walk = GetComponent<Walk> ();
-			_behavior = GetComponent<BehaviorTree> ();
 		}
 
-		void Update ()
+		void Update()
 		{
-			_behavior.Tick ();
+			var status = _behavior.Tick ();
 		}
 	}
 }

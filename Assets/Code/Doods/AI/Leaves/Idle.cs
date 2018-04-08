@@ -1,4 +1,6 @@
-﻿namespace Code.Doods.AI {
+﻿using UnityEngine;
+
+namespace Code.Doods.AI {
 	public class Idle : BehaviorTreeNode {
 		public override void OnInitialize () { }
 
@@ -6,7 +8,8 @@
 
 		protected override Status Update ()
 		{
-			return Status.Success;
+			Debug.Log ("Idling");
+			return Status.Running; // todo should this be a "success?" probably
 		}
 	}
 }

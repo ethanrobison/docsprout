@@ -24,4 +24,22 @@
 			return _status;
 		}
 	}
+
+	public class Root : BehaviorTreeNode {
+		private readonly BehaviorTreeNode _child;
+
+		public Root (BehaviorTreeNode child)
+		{
+			_child = child;
+		}
+
+		public override void OnInitialize () { }
+
+		public override void OnTerminate (Status result) { }
+
+		protected override Status Update ()
+		{
+			return _child.Tick ();
+		}
+	}
 }

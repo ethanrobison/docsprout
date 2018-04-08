@@ -20,6 +20,7 @@ namespace Code.Doods {
 		{
 			var go = (GameObject)Object.Instantiate (Prefab);
 			var dood = go.GetComponent<Dood> ();
+			dood.Initialize ();
 
 			_doods.Add (dood);
 		}

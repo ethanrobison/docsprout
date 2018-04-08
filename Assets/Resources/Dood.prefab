@@ -26,7 +26,6 @@ GameObject:
   - component: {fileID: 114126996383821324}
   - component: {fileID: 114099741585313250}
   - component: {fileID: 114798291312877102}
-  - component: {fileID: 114359644517104714}
   m_Layer: 0
   m_Name: Dood
   m_TagString: Untagged
@@ -119,17 +118,6 @@ MonoBehaviour:
   isOnGround: 0
   collisionFlags: 0
   groundNormal: {x: 0, y: 1, z: 0}
---- !u!114 &114359644517104714
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1295375549642084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8e0e28cd393546329ab7ea0bd3c7239, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114798291312877102
 MonoBehaviour:
   m_ObjectHideFlags: 1
