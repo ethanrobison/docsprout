@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour {
 
     public Camera camera;
     public Transform target;
-    float camRotY;
+    float camRotY = 30f;
     float camRotX;
 
     public LayerMask obscuresCamera;
@@ -23,6 +23,21 @@ public class CameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         if(target == null) target = transform;
+		Quaternion goalCamRot = target.rotation * Quaternion.AngleAxis(camRotX, Vector3.up);
+		goalCamRot *= Quaternion.AngleAxis(camRotY, Vector3.right);
+
+		RaycastHit hit;
+		float camDist = followDistance;
+		if(Physics.SphereCast(target.position, .5f, -(goalCamRot*Vector3.forward), out hit, followDistance - .5f, obscuresCamera)) {
+			camDist = hit.distance;
+		}
+
+		Vector3 goalCamPos = target.position - goalCamRot*Vector3.forward*camDist;
+
+
+		camera.transform.position = goalCamPos;
+		camera.transform.rotation = goalCamRot;
+
 	}
 	
 	// Update is called once per frame
@@ -42,12 +57,12 @@ public class CameraController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        Quaternion goalCamRot = Quaternion.AngleAxis(camRotX, Vector3.up);
+        Quaternion goalCamRot = target.rotation * Quaternion.AngleAxis(camRotX, Vector3.up);
         goalCamRot *= Quaternion.AngleAxis(camRotY, Vector3.right);
 
         RaycastHit hit;
         float camDist = followDistance;
-        if(Physics.SphereCast(target.position, .5f, -(goalCamRot*Vector3.forward), out hit, followDistance - .5f, obscuresCamera)) {
+        if(Physics.SphereCast(target.position, .25f, -(goalCamRot*Vector3.forward), out hit, followDistance - .25f, obscuresCamera, QueryTriggerInteraction.Ignore)) {
             camDist = hit.distance;
         }
 
@@ -56,6 +71,8 @@ public class CameraController : MonoBehaviour {
 
         camera.transform.position = Vector3.Lerp(camera.transform.position, goalCamPos, stiffness*Time.fixedDeltaTime);
         camera.transform.rotation = Quaternion.Slerp(camera.transform.rotation, goalCamRot, stiffness*Time.fixedDeltaTime);
+
+
 
     }
 }

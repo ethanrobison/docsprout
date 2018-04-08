@@ -17,13 +17,15 @@
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
 
+        #include "celLighting.cginc"
+
 		sampler2D _MainTex;
 
 		struct Input {
 			float2 uv_MainTex;
 		};
         
-        float _LightMultiplier;
+        //float _LightMultiplier;
         fixed4 _SickColor;
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
@@ -34,6 +36,7 @@
             UNITY_DEFINE_INSTANCED_PROP(fixed, _Happiness)
 		UNITY_INSTANCING_BUFFER_END(Props)
 
+        /*
         half4 LightingCel (SurfaceOutput s, half3 lightDir, half atten) {
             half NdotL = dot (s.Normal, lightDir);
             NdotL = min(1, max(0, NdotL)*20)*_LightMultiplier;
@@ -41,7 +44,7 @@
             c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten);
             c.a = s.Alpha;
             return c;
-        }
+        }*/
 
 		void surf (Input IN, inout SurfaceOutput o) {
             fixed4 c = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
