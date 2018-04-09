@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 23715735923894460}
   - component: {fileID: 143723479397292472}
   - component: {fileID: 114993938752650898}
-  - component: {fileID: 114267707919962680}
   - component: {fileID: 114810946240294356}
+  - component: {fileID: 114503996089303892}
+  - component: {fileID: 114725309172221498}
   m_Layer: 9
   m_Name: Cone Dood
   m_TagString: Untagged
@@ -87,7 +88,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1482123146661854}
   m_Mesh: {fileID: 4300000, guid: 9da94b7bd07034eb1be10eacd3ae977f, type: 3}
---- !u!114 &114267707919962680
+--- !u!114 &114503996089303892
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -95,13 +96,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1482123146661854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c490a88d9a374dedb01db43df389316, type: 3}
+  m_Script: {fileID: 11500000, guid: 16efd7c425c2e403ca21ed3128876469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MaxSpeed: 5
   SpeedUpAcceleration: 30
   SlowDownAcceleration: 40
   TurningSpeed: 50
+--- !u!114 &114725309172221498
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1482123146661854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55938a49d9b341f89b8484f50d929ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NeighborhoodRadius: 4
+  damping: 0
+  AttractWeight: 1
+  RepelWeight: 15
+  AlignWeight: 0.4
+  AvoidWeight: 1
 --- !u!114 &114810946240294356
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,6 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8489f30ab611493e82813840070d4c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Walk: {fileID: 0}
+  Character: {fileID: 0}
+  minForce: 0.5
 --- !u!114 &114993938752650898
 MonoBehaviour:
   m_ObjectHideFlags: 1

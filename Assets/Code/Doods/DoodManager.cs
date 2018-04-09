@@ -5,7 +5,7 @@ namespace Code.Doods {
 	public class DoodManager : IContextManager {
 		static Object Prefab;
 
-		readonly List<Dood> _doods = new List<Dood> ();
+		public readonly List<Dood> DoodList = new List<Dood> ();
 
 		public void Initialize ()
 		{
@@ -29,7 +29,7 @@ namespace Code.Doods {
 			var dood = go.GetComponent<Dood> ();
 			dood.Initialize ();
 
-			_doods.Add (dood);
+			DoodList.Add (dood);
 		}
 	}
 }

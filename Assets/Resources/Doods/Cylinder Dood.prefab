@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 23943180473322796}
   - component: {fileID: 143934356069720218}
   - component: {fileID: 114587512044849016}
-  - component: {fileID: 114488323206486344}
   - component: {fileID: 114275079890597200}
+  - component: {fileID: 114936075892675864}
+  - component: {fileID: 114265712922975398}
   m_Layer: 9
   m_Name: Cylinder Dood
   m_TagString: Untagged
@@ -87,6 +88,23 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1214035403252224}
   m_Mesh: {fileID: 4300000, guid: 0de2cb6556c5642fe80463de0b0141ab, type: 3}
+--- !u!114 &114265712922975398
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1214035403252224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55938a49d9b341f89b8484f50d929ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NeighborhoodRadius: 4
+  damping: 0
+  AttractWeight: 1
+  RepelWeight: 15
+  AlignWeight: 0.4
+  AvoidWeight: 1
 --- !u!114 &114275079890597200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,21 +116,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8489f30ab611493e82813840070d4c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114488323206486344
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1214035403252224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c490a88d9a374dedb01db43df389316, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxSpeed: 5
-  SpeedUpAcceleration: 30
-  SlowDownAcceleration: 40
-  TurningSpeed: 50
+  Walk: {fileID: 0}
+  Character: {fileID: 0}
+  minForce: 0.5
 --- !u!114 &114587512044849016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -128,6 +134,21 @@ MonoBehaviour:
   isOnGround: 0
   collisionFlags: 0
   groundNormal: {x: 0, y: 1, z: 0}
+--- !u!114 &114936075892675864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1214035403252224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16efd7c425c2e403ca21ed3128876469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxSpeed: 5
+  SpeedUpAcceleration: 30
+  SlowDownAcceleration: 40
+  TurningSpeed: 50
 --- !u!143 &143934356069720218
 CharacterController:
   m_ObjectHideFlags: 1

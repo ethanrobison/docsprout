@@ -10,7 +10,6 @@ namespace Code {
 		private void Start ()
 		{
 			// todo I am a singleton; if I already exist, kill the Buddha
-
 			DontDestroyOnLoad (gameObject); // Please keep me kthxbai.
 			DontDestroyOnLoad (UIUtils.GetCanvas ().gameObject);
 			DontDestroyOnLoad (GameObject.Find ("EventSystem")); // hard-coding is best coding
