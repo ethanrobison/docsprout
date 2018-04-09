@@ -20,6 +20,11 @@
 
 		public virtual void OnInitialize () { }
 		public virtual void OnTerminate (Status result) { }
+		// force the node to wrap up (mostly makes sense for leaves)
+		public virtual void Abort ()
+		{
+			if (_status != Status.Invalid) OnTerminate (Status.Failure);
+		}
 
 		protected abstract Status Update ();
 
@@ -40,10 +45,6 @@
 		{
 			_child = child;
 		}
-
-		public override void OnInitialize () { }
-
-		public override void OnTerminate (Status result) { }
 
 		protected override Status Update ()
 		{

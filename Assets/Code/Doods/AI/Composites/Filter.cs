@@ -7,13 +7,11 @@ namespace Code.Doods.AI {
 	/// Note that these preconditions are checked every tick.
 	/// </summary>
 	public class Filter : Sequence {
-		readonly List<Func<bool>> _preconditions = new List<Func<bool>> {
-			() => {return true; } // todo I should learn if this is the right way to do this
-		};
+		readonly List<Func<Dood, bool>> _preconditions = new List<Func<Dood, bool>> ();
 
 		public Filter (Dood dood) : base (dood) { }
 
-		public void AddPrecondition (Func<bool> precondition)
+		public void AddPrecondition (Func<Dood, bool> precondition)
 		{
 			_preconditions.Add (precondition);
 		}
@@ -22,7 +20,7 @@ namespace Code.Doods.AI {
 		{
 			// todo should this just get calculated once?
 			for (int i = 0, c = _preconditions.Count; i < c; i++) {
-				if (!_preconditions [i] ()) { return Status.Failure; }
+				if (!_preconditions [i] (_dood)) { return Status.Failure; }
 			}
 
 			return base.Update ();

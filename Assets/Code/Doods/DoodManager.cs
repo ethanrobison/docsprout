@@ -10,15 +10,20 @@ namespace Code.Doods {
 		public void Initialize ()
 		{
 			Prefab = Resources.Load ("Dood");
-			MakeDood ();
+			for (int x = 0; x < 5; x++) {
+				for (int y = 0; y < 10; y++) {
+
+					MakeDood (new Vector3 (x, 0f, y));
+				}
+			}
 		}
 
 		public void ShutDown () { }
 
 
-		void MakeDood ()
+		void MakeDood (Vector3 pos)
 		{
-			var go = (GameObject)Object.Instantiate (Prefab);
+			var go = (GameObject)Object.Instantiate (Prefab, pos, Quaternion.identity);
 			var dood = go.GetComponent<Dood> ();
 			dood.Initialize ();
 
