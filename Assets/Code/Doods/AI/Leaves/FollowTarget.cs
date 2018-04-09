@@ -16,13 +16,13 @@ namespace Code.Doods.AI {
 			_thresh = thresh;
 		}
 
-		//Collider [] _results = new Collider [4];
+		static Collider [] _results = new Collider [4]; // you can safely ignore this warning
 		public override void OnInitialize ()
 		{
 			base.OnInitialize ();
 			Debug.Assert (_target == null, "Already have target!");
 
-			var _results = Physics.OverlapSphere (_dood.transform.position, _thresh, _mask);
+			_results = Physics.OverlapSphere (_dood.transform.position, _thresh, _mask);
 			if (_results.Length > 0) {
 				var go = _results [0].gameObject;
 				if (go == null || go.GetComponent<T> () == null) {
