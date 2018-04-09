@@ -53,5 +53,9 @@ namespace Code.Doods {
 			_flock.SetDir (direction);
 			return false;
 		}
+
+		public void StopMoving() {
+			_flock.SetDir (Vector2.zero);
+		}
 	}
 }

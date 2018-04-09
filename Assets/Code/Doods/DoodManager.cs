@@ -9,14 +9,14 @@ namespace Code.Doods {
 
 		public void Initialize ()
 		{
+			// fixme what is going on here
 			string [] names = { "Sphere", "Capsule", "Cone", "Cube", "Cylinder" };
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 1; i++) {
 
-				for (float y = 0; y < 12f; y += 1.2f) {
+				for (float y = 0; y < 1.2f; y += 1.2f) {
 					MakeDood (new Vector3 (i, 1f, y), names [i]);
 				}
 			}
-
 		}
 
 		public void ShutDown () { }

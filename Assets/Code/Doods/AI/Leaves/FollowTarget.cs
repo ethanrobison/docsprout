@@ -3,17 +3,21 @@ using UnityEngine;
 namespace Code.Doods.AI {
 	public class FollowTarget<T> : BehaviorTreeNode where T : MonoBehaviour {
 		int _mask;
-		float _thresh;
+
+		// we stay between far and close thresh if we can
+		float _farThresh;
+		float _closeThresh;
 
 		Transform _target;
 
 		/// <summary>
 		/// Follows targets of type T that come within thresh of the dood.
 		/// </summary>
-		public FollowTarget (Dood dood, int layermask, float thresh = 10f) : base (dood)
+		public FollowTarget (Dood dood, int layermask, float near = 5, float far = 10f) : base (dood)
 		{
 			_mask = layermask;
-			_thresh = thresh;
+			_closeThresh = near;
+			_farThresh = far;
 		}
 
 		static Collider [] _results = new Collider [4]; // you can safely ignore this warning
@@ -22,13 +26,13 @@ namespace Code.Doods.AI {
 			base.OnInitialize ();
 			Debug.Assert (_target == null, "Already have target!");
 
-			_results = Physics.OverlapSphere (_dood.transform.position, _thresh, _mask);
+			_results = Physics.OverlapSphere (_dood.transform.position, _farThresh, _mask);
 			if (_results.Length > 0) {
 				var go = _results [0].gameObject;
 				if (go == null || go.GetComponent<T> () == null) {
-					_target = null;
 					return;
 				}
+				if (Vector3.Distance (go.transform.position, _dood.transform.position) < _closeThresh) { return; }
 				_target = go.transform;
 			}
 		}
@@ -37,12 +41,13 @@ namespace Code.Doods.AI {
 		{
 			base.OnTerminate (result);
 			_target = null;
+			_dood.StopMoving ();
 		}
 
 		protected override Status Update ()
 		{
 			if (_target == null) { return Status.Failure; }
-			if (_dood.MoveTowards (_target.position)) { return Status.Success; }
+			if (_dood.MoveTowards (_target.position, _closeThresh)) { return Status.Success; }
 			return Status.Running;
 		}
 	}
