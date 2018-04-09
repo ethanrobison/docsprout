@@ -125,10 +125,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c490a88d9a374dedb01db43df389316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
-  speedUpAcceleration: 30
-  slowDownAcceleration: 40
-  switchDirectionsAcceleration: 50
+  MaxSpeed: 5
+  SpeedUpAcceleration: 30
+  SlowDownAcceleration: 40
+  TurningSpeed: 50
 --- !u!136 &136220886127572716
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -137,7 +137,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1295375549642084}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
