@@ -10,6 +10,13 @@
 	public abstract class BehaviorTreeNode {
 		Status _status;
 
+		protected Dood _dood;
+		protected Root _root { get { return _dood.Behavior; } }
+
+		protected BehaviorTreeNode (Dood dood)
+		{
+			_dood = dood;
+		}
 
 		public virtual void OnInitialize () { }
 		public virtual void OnTerminate (Status result) { }
@@ -25,10 +32,11 @@
 		}
 	}
 
-	public class Root : BehaviorTreeNode {
-		private readonly BehaviorTreeNode _child;
 
-		public Root (BehaviorTreeNode child)
+	public class Root : BehaviorTreeNode {
+		readonly BehaviorTreeNode _child;
+
+		public Root (BehaviorTreeNode child, Dood dood) : base (dood)
 		{
 			_child = child;
 		}
