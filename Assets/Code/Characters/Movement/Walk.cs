@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Characters.Movement {
 	/// <summary>
@@ -11,37 +11,36 @@ namespace Code.Characters.Movement {
 	[RequireComponent (typeof (Character))]
 	public class Walk : MonoBehaviour {
 
-		public float maxSpeed = 5f;
-		public float speedUpAcceleration = 30f;
-		public float slowDownAcceleration = 40f;
-		public float switchDirectionsAcceleration = 50f;
+		public float MaxSpeed = 5f;
+		public float SpeedUpAcceleration = 30f;
+		public float SlowDownAcceleration = 40f;
+		public float TurningSpeed = 50f;
 
-		Character character;
-		bool isSwitchingDirs;
+		Character _character;
+		bool _isSwitchingDirs;
 
 		[HideInInspector] public Vector2 WalkingDir { get; private set; }
 
 
 		void Start ()
 		{
-			character = GetComponent<Character> ();
+			_character = GetComponent<Character> ();
 		}
 
 		void FixedUpdate ()
 		{
-			// Calculate how fast the character should aim to be moving
-			float walkMagnitude = Mathf.Min (WalkingDir.magnitude, 1);
-			float goalSpeed = walkMagnitude * maxSpeed;
+			Move ();
+		}
 
-			// Find the goal velocity, ensuring it is parallel to the ground
-			Vector3 goalWalkingDir = new Vector3 (WalkingDir.x, 0f, WalkingDir.y);
-			goalWalkingDir -= Vector3.Dot (goalWalkingDir, character.groundNormal) * character.groundNormal;
-			goalWalkingDir = goalWalkingDir.normalized;
+		void Move ()
+		{
+			float goalSpeed = GetGoalSpeed ();
+			Vector3 goalWalkingDir = GetGoalDir ();
 
 			// Find the component of the character's velocity parallel and perpendicular to the ground
-			Vector3 slopedVelocity = character.velocity;
-			float normalVelocity = Vector3.Dot (character.velocity, character.groundNormal); // perpendicular to slope
-			slopedVelocity -= normalVelocity * character.groundNormal; // parallel to slope
+			Vector3 slopedVelocity = _character.velocity;
+			float normalVelocity = Vector3.Dot (_character.velocity, _character.groundNormal); // perpendicular to slope
+			slopedVelocity -= normalVelocity * _character.groundNormal; // parallel to slope
 
 			// The character's speed in the goal direction
 			float parallelSpeed = Vector3.Dot (slopedVelocity, goalWalkingDir);
@@ -54,22 +53,22 @@ namespace Code.Characters.Movement {
 			// Find the change in velocity to use when slowing down now so it doesn't
 			// need to be calculated twice if the character is slowing down, since it
 			// is also used to cancel out the perpendicular velocity
-			float slowingDV = slowDownAcceleration * Time.fixedDeltaTime;
+			float slowingDV = SlowDownAcceleration * Time.fixedDeltaTime;
 
 			// Find out whether or not we are switching directions
-			if (!isSwitchingDirs) isSwitchingDirs = parallelSpeed / slopedVelocity.magnitude < -0.1f;
-			if (isSwitchingDirs) { // Switching directions
-				float dV = switchDirectionsAcceleration * Time.fixedDeltaTime;
+			if (!_isSwitchingDirs) _isSwitchingDirs = parallelSpeed / slopedVelocity.magnitude < -0.1f;
+			if (_isSwitchingDirs) { // Switching directions
+				float dV = TurningSpeed * Time.fixedDeltaTime;
 
 				// Check if we have finished switching directions and also prevent overcorrection
 				if (dV > goalSpeed - parallelSpeed) {
 					parallelSpeed = goalSpeed;
-					isSwitchingDirs = false;
+					_isSwitchingDirs = false;
 				} else {
 					parallelSpeed += dV;
 				}
 			} else if (parallelSpeed < goalSpeed) { // Speeding up
-				parallelSpeed += speedUpAcceleration * Time.fixedDeltaTime;
+				parallelSpeed += SpeedUpAcceleration * Time.fixedDeltaTime;
 				parallelSpeed = Mathf.Min (parallelSpeed, goalSpeed); // prevent overcorrection
 			} else { // Slowing down
 				if (slowingDV > goalSpeed - parallelSpeed) { // prevent overcorrection
@@ -89,10 +88,29 @@ namespace Code.Characters.Movement {
 			}
 
 			// Combine all components of velocity
-			character.velocity = parallelSpeed * goalWalkingDir + perpendicularSpeed * perpendicularDir + normalVelocity * character.groundNormal;
+			_character.velocity =
+				      parallelSpeed * goalWalkingDir
+				      + perpendicularSpeed * perpendicularDir
+				      + normalVelocity * _character.groundNormal;
 
 			// Apply gravity
-			character.velocity += Physics.gravity * Time.fixedDeltaTime;
+			_character.velocity += Physics.gravity * Time.fixedDeltaTime;
+		}
+
+
+		Vector3 GetGoalDir()
+		{
+			Vector3 goalWalkingDir = new Vector3 (WalkingDir.x, 0f, WalkingDir.y);
+			goalWalkingDir -= Vector3.Dot (goalWalkingDir, _character.groundNormal) * _character.groundNormal;
+			goalWalkingDir = goalWalkingDir.normalized;
+			return goalWalkingDir;
+		}
+
+		float GetGoalSpeed ()
+		{
+			float walkMagnitude = Mathf.Min (WalkingDir.magnitude, 1);
+			float goalSpeed = walkMagnitude * MaxSpeed;
+			return goalSpeed;
 		}
 
 
@@ -103,5 +121,10 @@ namespace Code.Characters.Movement {
 		{
 			WalkingDir = heading;
 		}
-	}
+
+		public void SetDir (Vector3 heading)
+		{
+			WalkingDir = new Vector2 (heading.x, heading.z);
+		}
+	}	
 }

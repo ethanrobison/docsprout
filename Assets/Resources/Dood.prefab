@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 143285446212560468}
   - component: {fileID: 114126996383821324}
   - component: {fileID: 114798291312877102}
-  - component: {fileID: 114975809435871696}
+  - component: {fileID: 114025668400118382}
   m_Layer: 9
   m_Name: Dood
   m_TagString: Untagged
@@ -40,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1295375549642084}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 3.35, z: 2}
+  m_LocalPosition: {x: 7.237689, y: 4.9663663, z: -9.175299}
   m_LocalScale: {x: 0.75, y: 0.5, z: 0.75}
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,6 +88,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1295375549642084}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114025668400118382
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1295375549642084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16efd7c425c2e403ca21ed3128876469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxSpeed: 5
+  SpeedUpAcceleration: 30
+  SlowDownAcceleration: 40
+  TurningSpeed: 50
 --- !u!114 &114126996383821324
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -114,21 +129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8489f30ab611493e82813840070d4c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114975809435871696
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1295375549642084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c490a88d9a374dedb01db43df389316, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxSpeed: 5
-  SpeedUpAcceleration: 30
-  SlowDownAcceleration: 40
-  TurningSpeed: 50
 --- !u!136 &136220886127572716
 CapsuleCollider:
   m_ObjectHideFlags: 1

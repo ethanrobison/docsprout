@@ -10,7 +10,7 @@ namespace Code.Doods {
 		public void Initialize ()
 		{
 			Prefab = Resources.Load ("Dood");
-			for (int x = 0; x < 5; x++) {
+			for (int x = 0; x < 1; x++) {
 				for (int y = 0; y < 10; y++) {
 
 					MakeDood (new Vector3 (x, 0f, y));
