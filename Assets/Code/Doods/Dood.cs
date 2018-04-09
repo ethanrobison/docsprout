@@ -2,11 +2,11 @@
 using UnityEngine;
 
 namespace Code.Doods {
-	[RequireComponent (typeof (Walk))]
+	[RequireComponent (typeof (Characters.Movement.Walk))]
 	public class Dood : MonoBehaviour {
 
 		public Root Behavior { get; private set; }
-		Walk _walk;
+		Characters.Movement.Walk _walk;
 
 		public void Initialize ()
 		{
@@ -18,7 +18,7 @@ namespace Code.Doods {
 
 		void Start ()
 		{
-			_walk = GetComponent<Walk> ();
+			_walk = GetComponent<Characters.Movement.Walk> ();
 		}
 
 		void Update ()
