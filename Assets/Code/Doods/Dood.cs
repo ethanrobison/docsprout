@@ -10,16 +10,12 @@ namespace Code.Doods {
 
 		public void Initialize ()
 		{
-			int layermask = LayerMask.GetMask ("Player");
-			var follow = new FollowTarget<Player> (this, layermask);
-
-
-			var seq = new Sequence (this);
-			seq.AddChild (follow);
-			seq.AddChild (new Idle (this));
+			var follow = new FollowTarget<Player> (this,
+												   LayerMask.GetMask ("Player"),
+												   3);
 
 			var sel = new Selector (this);
-			sel.AddChild (seq);
+			sel.AddChild (follow);
 			sel.AddChild (new Idle (this));
 
 			Behavior = new Root (sel, this);
@@ -54,7 +50,8 @@ namespace Code.Doods {
 			return false;
 		}
 
-		public void StopMoving() {
+		public void StopMoving ()
+		{
 			_flock.SetDir (Vector2.zero);
 		}
 	}

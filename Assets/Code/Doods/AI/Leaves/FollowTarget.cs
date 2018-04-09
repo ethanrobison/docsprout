@@ -5,8 +5,8 @@ namespace Code.Doods.AI {
 		int _mask;
 
 		// we stay between far and close thresh if we can
-		float _farThresh;
-		float _closeThresh;
+		readonly float _farThresh;
+		readonly float _closeThresh;
 
 		Transform _target;
 
