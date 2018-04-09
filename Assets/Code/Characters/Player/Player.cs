@@ -76,9 +76,11 @@ public class Player : MonoBehaviour {
 			camY = 0f;
 		}
 		camController.moveCamera (camX * Time.deltaTime, camY * Time.deltaTime);
-
-
 	}
 
+	void FixedUpdate()
+	{
+		Physics.SyncTransforms ();
 
+	}
 }

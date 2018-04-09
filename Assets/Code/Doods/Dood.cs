@@ -16,7 +16,6 @@ namespace Code.Doods {
 
 			var seq = new Sequence (this);
 			seq.AddChild (follow);
-			seq.AddChild (new LogMessage ("Hello", this));
 			seq.AddChild (new Idle (this));
 
 			var sel = new Selector (this);

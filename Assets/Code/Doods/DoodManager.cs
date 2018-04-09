@@ -9,21 +9,23 @@ namespace Code.Doods {
 
 		public void Initialize ()
 		{
-			Prefab = Resources.Load ("Sphere Dood");
-			for (float x = 0; x < 8; x+= 1.2f) {
-				for (float y = 0; y < 12f; y+= 1.2f) {
+			string [] names = { "Sphere", "Capsule", "Cone", "Cube", "Cylinder" };
+			for (int i = 0; i < 5; i++) {
 
-					MakeDood (new Vector3 (x, 0f, y));
+				for (float y = 0; y < 12f; y += 1.2f) {
+					MakeDood (new Vector3 (i, 1f, y), names [i]);
 				}
 			}
+
 		}
 
 		public void ShutDown () { }
 
 
-		void MakeDood (Vector3 pos)
+		void MakeDood (Vector3 pos, string name)
 		{
-			var go = (GameObject)Object.Instantiate (Prefab, pos, Quaternion.Euler(-90f, 0f, 0f));
+			var prefab = Resources.Load ("Doods/" + name + " Dood");
+			var go = (GameObject)Object.Instantiate (prefab, pos, Quaternion.Euler (-90f, 0f, 0f));
 			var dood = go.GetComponent<Dood> ();
 			dood.Initialize ();
 
