@@ -9,9 +9,9 @@ namespace Code.Doods {
 
 		public void Initialize ()
 		{
-			Prefab = Resources.Load ("Dood");
-			for (int x = 0; x < 5; x++) {
-				for (int y = 0; y < 10; y++) {
+			Prefab = Resources.Load ("Sphere Dood");
+			for (float x = 0; x < 8; x+= 1.2f) {
+				for (float y = 0; y < 12f; y+= 1.2f) {
 
 					MakeDood (new Vector3 (x, 0f, y));
 				}
@@ -23,7 +23,7 @@ namespace Code.Doods {
 
 		void MakeDood (Vector3 pos)
 		{
-			var go = (GameObject)Object.Instantiate (Prefab, pos, Quaternion.identity);
+			var go = (GameObject)Object.Instantiate (Prefab, pos, Quaternion.Euler(-90f, 0f, 0f));
 			var dood = go.GetComponent<Dood> ();
 			dood.Initialize ();
 
