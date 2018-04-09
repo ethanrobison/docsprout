@@ -2,27 +2,33 @@
 using UnityEngine;
 
 namespace Code.Doods {
-	[RequireComponent (typeof (Walk))]
+	[RequireComponent (typeof (Flock))]
 	public class Dood : MonoBehaviour {
 
 		public Root Behavior { get; private set; }
-		Walk _walk;
+		Flock _flock;
 
 		public void Initialize ()
 		{
 			int layermask = LayerMask.GetMask ("Player");
 			var follow = new FollowTarget<Player> (this, layermask);
 
+
 			var seq = new Sequence (this);
 			seq.AddChild (follow);
 			seq.AddChild (new LogMessage ("Hello", this));
 			seq.AddChild (new Idle (this));
-			Behavior = new Root (seq, this);
+
+			var sel = new Selector (this);
+			sel.AddChild (seq);
+			sel.AddChild (new Idle (this));
+
+			Behavior = new Root (sel, this);
 		}
 
 		void Start ()
 		{
-			_walk = GetComponent<Walk> ();
+			_flock = GetComponent<Flock> ();
 		}
 
 		void Update ()
@@ -30,16 +36,12 @@ namespace Code.Doods {
 			var status = Behavior.Tick ();
 			switch (status) {
 			case Status.Invalid:
-				Debug.Log ("Invalid");
 				break;
 			case Status.Running:
-				Debug.Log ("Running");
 				break;
 			case Status.Success:
-				Debug.Log ("Success");
 				break;
 			case Status.Failure:
-				Debug.Log ("Failure");
 				break;
 			}
 		}
@@ -49,7 +51,7 @@ namespace Code.Doods {
 		{
 			if (Vector3.Distance (pos, transform.position) < thresh) { return true; }
 			var direction = (pos - transform.position).normalized;
-			_walk.SetDir (direction);
+			_flock.SetDir (direction);
 			return false;
 		}
 	}

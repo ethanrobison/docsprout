@@ -1,4 +1,5 @@
-using UnityEngine;
-
-public class NewMonoBehaviour : Walk {
+namespace Code.Doods {
+	public class Flock : Walk {
+		
+	}
 }
