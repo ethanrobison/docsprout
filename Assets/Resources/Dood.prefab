@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxSpeed: 5
   SpeedUpAcceleration: 30
-  SlowDownAcceleration: 40
+  SlowDownAcceleration: 20
   TurningSpeed: 50
 --- !u!114 &114126996383821324
 MonoBehaviour:
@@ -130,12 +130,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55938a49d9b341f89b8484f50d929ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NeighborhoodRadius: 2
-  minForce: 0
-  damping: 40
-  AttractWeight: 0
-  RepelWeight: 100
-  AlignWeight: 0
+  NeighborhoodRadius: 4
+  damping: 0
+  AttractWeight: 1
+  RepelWeight: 15
+  AlignWeight: 0.4
   AvoidWeight: 1
 --- !u!114 &114798291312877102
 MonoBehaviour:
@@ -150,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Walk: {fileID: 0}
   Character: {fileID: 0}
+  minForce: 0.6
 --- !u!136 &136220886127572716
 CapsuleCollider:
   m_ObjectHideFlags: 1

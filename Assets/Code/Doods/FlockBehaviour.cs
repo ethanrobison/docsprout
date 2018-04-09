@@ -8,7 +8,6 @@ namespace Code.Doods {
 	public class FlockBehaviour : MonoBehaviour {
 
 		public float NeighborhoodRadius = 5f;
-		public float minForce = .1f;
 		public float damping = 1f;
 		public float AttractWeight = 1f;
 		public float RepelWeight = 1f;
@@ -24,14 +23,12 @@ namespace Code.Doods {
 		}
 
 		// Update is called once per frame
-		public void Tick ()
+		public Vector3 CalculateForce ()
 		{
-			//_dood.Walk.SetDir (_dood.MoveTowardsDir);
 			Vector3 center = Vector3.zero;
 			int numNearby = 0;
 			Vector3 force = Vector3.zero;
 			float sqrRadius = NeighborhoodRadius * NeighborhoodRadius;
-			float sqrMinForce = minForce*minForce;
 			Vector3 temp;
 			foreach (Dood dood in Game.Ctx.Doods.DoodList) {
 				if (dood == _dood) continue;
@@ -39,6 +36,7 @@ namespace Code.Doods {
 				if (diff.sqrMagnitude < sqrRadius) {
 					center += dood.transform.position;
 					++numNearby;
+					diff /= diff.sqrMagnitude;
 					temp = diff * RepelWeight;
 					//if(temp.sqrMagnitude > sqrMinForce) {
 						force -= temp;
@@ -50,7 +48,7 @@ namespace Code.Doods {
 				}
 			}
 			if (numNearby == 0) {
-				return;
+				return Vector3.zero;
 			}
 			center /= numNearby;
 			temp = (center - transform.position) * AttractWeight;
@@ -59,11 +57,8 @@ namespace Code.Doods {
 			//}
 
 			force -= _dood.Character.velocity*damping;
-			if(force.sqrMagnitude < sqrMinForce) {
-				force = Vector3.zero;
-			}
 
-			_dood.Walk.AddDir (force*Time.deltaTime);
+			return force;
 		}
 	}
 }
