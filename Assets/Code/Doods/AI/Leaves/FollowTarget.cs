@@ -20,14 +20,14 @@ namespace Code.Doods.AI {
 			_farThresh = far;
 		}
 
-		static Collider [] _results = new Collider [4]; // you can safely ignore this warning
+		static readonly Collider [] _results = new Collider[10]; // you can safely ignore this warning
 		public override void OnInitialize ()
 		{
 			base.OnInitialize ();
 			Debug.Assert (_target == null, "Already have target!");
 
-			_results = Physics.OverlapSphere (_dood.transform.position, _farThresh, _mask);
-			if (_results.Length > 0) {
+			int count = Physics.OverlapSphereNonAlloc (_dood.transform.position, _farThresh, _results, _mask);
+			if (count > 0) {
 				var go = _results [0].gameObject;
 				if (go == null || go.GetComponent<T> () == null) {
 					return;
