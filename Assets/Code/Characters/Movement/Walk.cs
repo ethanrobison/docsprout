@@ -89,16 +89,16 @@ namespace Code.Characters.Movement {
 
 			// Combine all components of velocity
 			_character.velocity =
-				      parallelSpeed * goalWalkingDir
-				      + perpendicularSpeed * perpendicularDir
-				      + normalVelocity * _character.groundNormal;
+					  parallelSpeed * goalWalkingDir
+					  + perpendicularSpeed * perpendicularDir
+					  + normalVelocity * _character.groundNormal;
 
 			// Apply gravity
 			_character.velocity += Physics.gravity * Time.fixedDeltaTime;
 		}
 
 
-		Vector3 GetGoalDir()
+		Vector3 GetGoalDir ()
 		{
 			Vector3 goalWalkingDir = new Vector3 (WalkingDir.x, 0f, WalkingDir.y);
 			goalWalkingDir -= Vector3.Dot (goalWalkingDir, _character.groundNormal) * _character.groundNormal;
@@ -126,5 +126,15 @@ namespace Code.Characters.Movement {
 		{
 			WalkingDir = new Vector2 (heading.x, heading.z);
 		}
-	}	
+
+		public void AddDir (Vector2 heading)
+		{
+			WalkingDir += heading;
+		}
+
+		public void AddDir (Vector3 heading)
+		{
+			WalkingDir += new Vector2 (heading.x, heading.z);
+		}
+	}
 }

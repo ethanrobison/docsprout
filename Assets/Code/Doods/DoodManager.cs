@@ -5,13 +5,13 @@ namespace Code.Doods {
 	public class DoodManager : IContextManager {
 		static Object Prefab;
 
-		readonly List<Dood> _doods = new List<Dood> ();
+		public readonly List<Dood> DoodList = new List<Dood> ();
 
 		public void Initialize ()
 		{
 			Prefab = Resources.Load ("Dood");
-			for (int x = 0; x < 1; x++) {
-				for (int y = 0; y < 10; y++) {
+			for (int x = 0; x < 2; x++) {
+				for (int y = 0; y < 5; y++) {
 
 					MakeDood (new Vector3 (x, 0f, y));
 				}
@@ -27,7 +27,7 @@ namespace Code.Doods {
 			var dood = go.GetComponent<Dood> ();
 			dood.Initialize ();
 
-			_doods.Add (dood);
+			DoodList.Add (dood);
 		}
 	}
 }

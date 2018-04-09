@@ -2,11 +2,14 @@
 using UnityEngine;
 
 namespace Code.Doods {
-	[RequireComponent (typeof (Characters.Movement.Walk))]
+	[RequireComponent (typeof (FlockBehaviour))]
 	public class Dood : MonoBehaviour {
 
 		public Root Behavior { get; private set; }
-		Characters.Movement.Walk _walk;
+		public Characters.Movement.Walk Walk;
+		public Characters.Character Character;
+		FlockBehaviour _flock;
+		//public Vector3 MoveTowardsDir;
 
 		public void Initialize ()
 		{
@@ -28,7 +31,9 @@ namespace Code.Doods {
 
 		void Start ()
 		{
-			_walk = GetComponent<Characters.Movement.Walk> ();
+			Walk = GetComponent<Characters.Movement.Walk> ();
+			Character = GetComponent<Characters.Character> ();
+			_flock = GetComponent<FlockBehaviour>();
 		}
 
 		void Update ()
@@ -47,11 +52,17 @@ namespace Code.Doods {
 		}
 
 
-		public bool MoveTowards (Vector3 pos, float thresh = 1f)
+		public bool MoveTowards (Vector3 pos, float thresh = 2f)
 		{
-			if (Vector3.Distance (pos, transform.position) < thresh) { return true; }
+			if (Vector3.Distance (pos, transform.position) < thresh) { 
+				Walk.SetDir (Vector3.zero);
+				return true; 
+			}
 			var direction = (pos - transform.position).normalized;
-			_walk.SetDir (direction);
+			Walk.SetDir (direction);
+			_flock.Tick();
+			//MoveTowardsDir = direction;
+			//MoveTowardsDir = Vector3.zero;
 			return false;
 		}
 	}

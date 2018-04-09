@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114126996383821324}
   - component: {fileID: 114798291312877102}
   - component: {fileID: 114025668400118382}
+  - component: {fileID: 114172603819546226}
   m_Layer: 9
   m_Name: Dood
   m_TagString: Untagged
@@ -118,6 +119,24 @@ MonoBehaviour:
   isOnGround: 0
   collisionFlags: 0
   groundNormal: {x: 0, y: 1, z: 0}
+--- !u!114 &114172603819546226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1295375549642084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55938a49d9b341f89b8484f50d929ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NeighborhoodRadius: 2
+  minForce: 0
+  damping: 40
+  AttractWeight: 0
+  RepelWeight: 100
+  AlignWeight: 0
+  AvoidWeight: 1
 --- !u!114 &114798291312877102
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8489f30ab611493e82813840070d4c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Walk: {fileID: 0}
+  Character: {fileID: 0}
 --- !u!136 &136220886127572716
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -137,7 +158,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1295375549642084}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
