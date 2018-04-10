@@ -24,7 +24,7 @@ namespace Code.Session {
 			Input.Initialize ();
 
 			_mainMenu = new MainMenu ();
-			Menus.PushMenu (_mainMenu);
+			//Menus.PushMenu (_mainMenu);
 		}
 
 		//        private void Shutdown () {
