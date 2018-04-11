@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Characters.Movement {
+namespace Code.Characters {
 	/// <summary>
 	/// Component used for handling walking. To use, set walkingDir in the direction you want
 	/// the character to walk in with the magnitude being the portion of the component's
@@ -28,6 +28,7 @@ namespace Code.Characters.Movement {
 		}
 
 		void FixedUpdate ()
+		//void Update()
 		{
 			Move ();
 		}

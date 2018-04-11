@@ -6,7 +6,7 @@ namespace Code.Doods {
 	public class Dood : MonoBehaviour {
 
 		public Root Behavior { get; private set; }
-		public Characters.Movement.Walk Walk;
+		public Characters.Walk Walk;
 		public Characters.Character Character;
 		public float minForce = .5f;
 		FlockBehaviour _flock;
@@ -18,7 +18,7 @@ namespace Code.Doods {
 
 		void Start ()
 		{
-			Walk = GetComponent<Characters.Movement.Walk> ();
+			Walk = GetComponent<Characters.Walk> ();
 			Character = GetComponent<Characters.Character> ();
 			_flock = GetComponent<FlockBehaviour> ();
 		}

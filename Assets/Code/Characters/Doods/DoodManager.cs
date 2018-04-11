@@ -14,7 +14,7 @@ namespace Code.Doods {
 			for (int i = 0; i < 5; i++) {
 
 				for (float y = 0; y < 12f; y += 1.2f) {
-					MakeDood (new Vector3 (i, 1f, y), names [i]);
+					MakeDood (new Vector3 (i, 5f, y), names [i]);
 				}
 			}
 		}
