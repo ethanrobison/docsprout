@@ -153,6 +153,9 @@ MonoBehaviour:
   isOnGround: 0
   collisionFlags: 0
   groundNormal: {x: 0, y: 1, z: 0}
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!143 &143046152470139610
 CharacterController:
   m_ObjectHideFlags: 1

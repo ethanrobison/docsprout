@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Code.Characters.Player {
-	[RequireComponent (typeof (Movement.Walk))]
+	[RequireComponent (typeof (Walk))]
 	[RequireComponent (typeof (CameraController))]
 	public class Player : MonoBehaviour {
 
@@ -23,13 +23,13 @@ namespace Code.Characters.Player {
 
 		[HideInInspector] public PlayerState state;
 
-		Movement.Walk walkComponent;
+		Walk walkComponent;
 		CameraController camController;
 
 
 		void Start ()
 		{
-			walkComponent = GetComponent<Movement.Walk> ();
+			walkComponent = GetComponent<Walk> ();
 			camController = GetComponent<CameraController> ();
 
 			// Initialize input axes

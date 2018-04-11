@@ -6,7 +6,7 @@ namespace Code.Characters {
 	/// every physics update and stores the collision flags, checks whether or not the gameobject 
 	/// is touching the ground and stores the ground normal.
 	/// </summary>
-	[RequireComponent (typeof (CharacterController))]
+	//[RequireComponent (typeof (CharacterController))]
 	public class Character : MonoBehaviour {
 
 		CharacterController characterController;
@@ -15,6 +15,7 @@ namespace Code.Characters {
 		[HideInInspector] public bool isOnGround;
 		[HideInInspector] public CollisionFlags collisionFlags;
 		[HideInInspector] public Vector3 groundNormal = Vector3.up;
+		public LayerMask GroundLayers;
 
 
 		void Start ()
@@ -32,12 +33,17 @@ namespace Code.Characters {
 			RaycastHit hit;
 			Vector3 origin = transform.position - Vector3.up * (characterController.height / 2f - characterController.radius);
 			if (Physics.SphereCast (origin, characterController.radius, Vector3.down, out hit, 2f * characterController.skinWidth,
-			                    Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) {
+								GroundLayers, QueryTriggerInteraction.Ignore)) {
 
 
 				groundNormal = hit.normal;
-				isOnGround = true;
-				velocity -= Vector3.Dot (velocity, groundNormal) * groundNormal;
+				if(hit.normal.y > .5f) {
+					isOnGround = true;
+					velocity -= Vector3.Dot (velocity, groundNormal) * groundNormal;
+				}
+				else {
+					groundNormal = Vector3.up;
+				}
 			} else {
 				isOnGround = false;
 				groundNormal = Vector3.up;
@@ -45,9 +51,11 @@ namespace Code.Characters {
 		}
 
 		void FixedUpdate ()
+		//void Update()
 		{
 			// Move the character and record the collision flags
 			collisionFlags = characterController.Move (velocity * Time.fixedDeltaTime);
+			//collisionFlags = characterController.Move (velocity * Time.deltaTime);
 
 			// Check whether the character is on the ground
 			CheckGrounded ();
