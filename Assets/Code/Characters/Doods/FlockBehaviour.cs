@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 namespace Code.Doods {
-	[RequireComponent (typeof (Characters.Movement.Walk))]
+	[RequireComponent (typeof (Characters.Walk))]
 	public class FlockBehaviour : MonoBehaviour {
 
 		public float NeighborhoodRadius = 5f;
