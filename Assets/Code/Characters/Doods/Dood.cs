@@ -1,5 +1,4 @@
-﻿using Code.Characters.Player;
-using Code.Doods.AI;
+﻿using Code.Doods.AI;
 using UnityEngine;
 
 namespace Code.Doods {
