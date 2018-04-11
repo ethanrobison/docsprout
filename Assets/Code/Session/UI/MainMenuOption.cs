@@ -21,7 +21,11 @@ public class MainMenuOption : MonoBehaviour {
 
 	void Start ()
 	{
-		_state = new MenuState (gameObject, Option);
+		Action action;
+		if (!Actions.TryGetValue (Option, out action)) {
+			Debug.LogError ("Missing action for option " + Option);
+		}
+		_state = new MenuState (gameObject, Option, action);
 	}
 
 	void OnTriggerEnter (Collider other)
@@ -55,6 +59,35 @@ public class MainMenuOption : MonoBehaviour {
 	//}
 
 
+	static void StartNewGame ()
+	{
+		Game.Sesh.StartGame (1);
+	}
+
+	void LoadGame () { }
+
+	static void OpenOptions () { }
+
+	static void QuitGame ()
+	{
+#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit(); // Complains about dead code. Boo.
+#endif
+	}
+
+	void LoadAcknowledgements () { }
+
+	Dictionary<MenuOption, Action> Actions = new Dictionary<MenuOption, Action> {
+			{ MenuOption.StartGame, StartNewGame },
+			{ MenuOption.LoadGame, () => { } },
+			{ MenuOption.Options, () => {} },
+			{ MenuOption.Acknowledgements, () => {} },
+			{ MenuOption.QuitGame, QuitGame }
+	};
+
+
 	//
 	// container class
 
@@ -63,20 +96,24 @@ public class MainMenuOption : MonoBehaviour {
 		GameObject _parent;
 		GameObject _active;
 		readonly Text _infoText;
+		readonly Action _action;
 
 		public bool Active {
 			get { return _active.activeInHierarchy; }
 			set { _active.SetActive (value); }
 		}
 
-		public MenuState (GameObject parent, MenuOption option)
+		public MenuState (GameObject parent, MenuOption option, Action action)
 		{
-			_option = option;
 			_parent = parent;
 			_active = _parent.transform.Find ("Active").gameObject;
 			Active = false;
-			_infoText = UIUtils.FindUICompOfType<Text> (_parent.transform, "Info/Text");
 
+			_option = option;
+
+			_action = action;
+
+			_infoText = UIUtils.FindUICompOfType<Text> (_parent.transform, "Info/Text");
 			SetText ();
 		}
 
@@ -87,47 +124,16 @@ public class MainMenuOption : MonoBehaviour {
 
 		public void PerformAction ()
 		{
-			Action action;
-			if (!Actions.TryGetValue (_option, out action)) {
-				Debug.LogError ("Missing action for option " + _option);
-			}
-
-			action ();
+			_action ();
 		}
 
 		protected void SetText ()
 		{
-			_infoText.text = _option.ToString();
+			_infoText.text = _option.ToString ();
 		}
 
 
-		static void StartNewGame ()
-		{
-			Game.Sesh.StartGame (1);
-		}
 
-		void LoadGame () { }
-
-		static void OpenOptions () { }
-
-		static void QuitGame ()
-		{
-#if UNITY_EDITOR
-			UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit(); // Complains about dead code. Boo.
-#endif
-		}
-
-		void LoadAcknowledgements () { }
-
-		Dictionary<MenuOption, Action> Actions = new Dictionary<MenuOption, Action> {
-			{ MenuOption.StartGame, StartNewGame },
-			{ MenuOption.LoadGame, () => { } },
-			{ MenuOption.Options, () => {} },
-			{ MenuOption.Acknowledgements, () => {} },
-			{ MenuOption.QuitGame, QuitGame }
-		};
 	}
 }
 
