@@ -20,7 +20,7 @@ namespace Code {
 
 		public static void SetContext (GameSession sesh, GameContext ctx)
 		{
-			Debug.Assert (sesh == Sesh, "Wrong session trying to add context?");
+			Logging.Assert (sesh == Sesh, "Wrong session trying to add context?");
 			Ctx = ctx;
 		}
 	}

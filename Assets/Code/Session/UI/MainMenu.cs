@@ -48,7 +48,6 @@ namespace Code.Session.UI {
 
 		void LoadGame ()
 		{
-			Debug.Log ("Implement me!!"); // todo :3
 		}
 
 		static void OpenOptions ()
@@ -67,7 +66,6 @@ namespace Code.Session.UI {
 
 		void LoadAcknowledgements ()
 		{
-			Debug.Log ("Implement me!"); // todo :3
 		}
 	}
 }

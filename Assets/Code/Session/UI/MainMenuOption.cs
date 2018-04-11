@@ -23,7 +23,7 @@ public class MainMenuOption : MonoBehaviour {
 	{
 		Action action;
 		if (!Actions.TryGetValue (Option, out action)) {
-			Debug.LogError ("Missing action for option " + Option);
+			Logging.Error ("Missing action for option " + Option);
 		}
 		_state = new MenuState (gameObject, Option, action);
 	}
