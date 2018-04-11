@@ -25,6 +25,7 @@ namespace Code.Session {
 				return "";
 			}
 			if (controllers [0].Contains ("Xbox")) return "Xbox" + _platform;
+			if (controllers [0].Contains ("Sony")) return "PS" + _platform;
 			return "";
 		}
 
