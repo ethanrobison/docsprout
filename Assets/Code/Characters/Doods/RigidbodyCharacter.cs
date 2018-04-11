@@ -16,6 +16,7 @@ namespace Code.Characters.Doods {
 		void Start ()
 		{
 			_rig = GetComponent<Rigidbody> ();
+			_rig.useGravity = false;
 			_cap = GetComponent<CapsuleCollider> ();
 		}
 
@@ -24,9 +25,9 @@ namespace Code.Characters.Doods {
 		void CheckGrounded ()
 		{
 			RaycastHit hit;
-			Vector3 origin = transform.position - Vector3.up * (_cap.height / 2f - _cap.radius);
-			if (Physics.SphereCast (origin, _cap.radius, Vector3.down, out hit, 0.05f,
-			                    GroundLayers, QueryTriggerInteraction.Ignore)) {
+			Vector3 origin = transform.position + (Vector3.down * (_cap.height / 2f - _cap.radius) + transform.rotation * _cap.center) * transform.lossyScale.z + Vector3.up*.1f;
+			if (Physics.SphereCast (origin, _cap.radius * transform.lossyScale.z*.95f, Vector3.down, out hit, .2f,
+								GroundLayers, QueryTriggerInteraction.Ignore)) {
 
 
 				groundNormal = hit.normal;
@@ -46,6 +47,7 @@ namespace Code.Characters.Doods {
 		{
 			_rig.MovePosition (_rig.position + velocity * Time.deltaTime);
 			CheckGrounded ();
+			_rig.velocity = Vector3.zero;
 		}
 
 

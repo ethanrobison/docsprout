@@ -6,7 +6,7 @@ namespace Code.Characters {
 	/// every physics update and stores the collision flags, checks whether or not the gameobject 
 	/// is touching the ground and stores the ground normal.
 	/// </summary>
-	[RequireComponent (typeof (CharacterController))]
+	//[RequireComponent (typeof (CharacterController))]
 	public class Character : MonoBehaviour {
 
 		CharacterController characterController;
