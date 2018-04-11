@@ -1,6 +1,10 @@
-﻿using Code;
+﻿using System;
+using System.Collections.Generic;
+using Code;
 using Code.Characters.Player;
+using Code.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuOption : MonoBehaviour {
 	public enum MenuOption {
@@ -13,79 +17,120 @@ public class MainMenuOption : MonoBehaviour {
 
 	public MenuOption Option;
 
-	GameObject _active;
-	bool _state {
-		get { return _active.activeInHierarchy; }
-		set { _active.SetActive (value); }
-	}
+	MenuState _state;
 
 	void Start ()
 	{
-		_active = transform.Find ("Active").gameObject;
-		_state = false;
+		_state = new MenuState (gameObject, Option);
 	}
 
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.gameObject.GetComponent<Player> () == null) { return; }
-		SetOptionState (true);
+		_state.Active = true;
 	}
 
 	void OnTriggerExit (Collider other)
 	{
 		if (other.gameObject.GetComponent<Player> () == null) { return; }
-		SetOptionState (false);
+		_state.Active = false;
 	}
-
-	void SetOptionState (bool state)
-	{
-		_state = state;
-	}
-
 
 	void Update ()
 	{
-		if (!_state) { return; }
+		if (!_state.Active) { return; }
+
+		//ChangeMenuState ();
 		// todo this should be pressing the "action" button
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			FulfillPurpose ();
+		if (Input.GetKeyDown (KeyCode.Space)) { _state.PerformAction (); }
+	}
+
+	//protected void ChangeMenuState ()
+	//{
+	//	if (Input.GetKeyDown (KeyCode.Q)) {
+	//		_state.ChangeActiveOption (1);
+	//	} else if (Input.GetKeyDown (KeyCode.E)) {
+	//		_state.ChangeActiveOption (-1);
+	//	}
+	//}
+
+
+
+
+
+	//
+	// container class
+
+	class MenuState {
+		MenuOption _option;
+		GameObject _parent;
+		GameObject _active;
+		readonly Text _infoText;
+
+		public bool Active {
+			get { return _active.activeInHierarchy; }
+			set { _active.SetActive (value); }
 		}
-	}
 
-	// cheekily named
-	protected virtual void FulfillPurpose ()
-	{
-		StartNewGame ();
-	}
+		public MenuState (GameObject parent, MenuOption option)
+		{
+			_option = option;
+			_parent = parent;
+			_active = _parent.transform.Find ("Active").gameObject;
+			Active = false;
+			_infoText = UIUtils.FindUICompOfType<Text> (_parent.transform, "Info/Text");
 
-	protected virtual void ChangeMenuItem ()
-	{
-		if (Input.GetKeyDown (KeyCode.Q)) {
-
-		} else if (Input.GetKeyDown (KeyCode.E)) {
-
+			SetText ();
 		}
-	}
+
+		//public void ChangeActiveOption (int delta)
+		//{
+
+		//}
+
+		public void PerformAction ()
+		{
+			Action action;
+			if (!Actions.TryGetValue (_option, out action)) {
+				Debug.LogError ("Missing action for option " + _option);
+			}
+
+			action ();
+		}
+
+		protected void SetText ()
+		{
+			_infoText.text = "Lemons";
+		}
 
 
-	void StartNewGame ()
-	{
-		Game.Sesh.StartGame (1);
-	}
+		static void StartNewGame ()
+		{
+			Game.Sesh.StartGame (1);
+		}
 
-	void LoadGame () { }
+		void LoadGame () { }
 
-	static void OpenOptions () { }
+		static void OpenOptions () { }
 
-	static void QuitGame ()
-	{
+		static void QuitGame ()
+		{
 #if UNITY_EDITOR
-		UnityEditor.EditorApplication.isPlaying = false;
+			UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit(); // Complains about dead code. Boo.
 #endif
+		}
+
+		void LoadAcknowledgements () { }
+
+		Dictionary<MenuOption, Action> Actions = new Dictionary<MenuOption, Action> {
+			{ MenuOption.StartGame, StartNewGame },
+			{ MenuOption.LoadGame, () => { } },
+			{ MenuOption.Options, () => {} },
+			{ MenuOption.Acknowledgements, () => {} },
+			{ MenuOption.QuitGame, QuitGame }
+		};
 	}
-
-	void LoadAcknowledgements () { }
-
 }
+
