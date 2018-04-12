@@ -1,4 +1,5 @@
-﻿using Code.Doods.AI;
+﻿using System.Collections;
+using Code.Doods.AI;
 using UnityEngine;
 
 namespace Code.Doods {
@@ -8,8 +9,8 @@ namespace Code.Doods {
 		public Root Behavior { get; private set; }
 		public Characters.Walk Walk;
 		public Characters.Character Character;
-		public float minForce = .5f;
 		FlockBehaviour _flock;
+
 
 		public void Initialize ()
 		{
@@ -21,24 +22,36 @@ namespace Code.Doods {
 			Walk = GetComponent<Characters.Walk> ();
 			Character = GetComponent<Characters.Character> ();
 			_flock = GetComponent<FlockBehaviour> ();
-			minForce = 0f;
 		}
 
-		public bool MoveTowards (Vector3 pos, float thresh = 3f)
+		public bool MoveTowards (Vector3 pos, float thresh = 5f)
 		{
 			if (Vector3.Distance (pos, transform.position) < thresh) {
-				Walk.SetDir (Vector3.zero);
-				return true;
+				if(finishedMove) {
+					Walk.SetDir (Vector3.zero);
+					return true;	
+				}
+				if(!finishedMove && !isTiming) {
+					StartCoroutine(stopTimer());
+				}
+			}
+			if(finishedMove) {
+				finishedMove = false;
 			}
 			var direction = (pos - transform.position).normalized;
 			Vector3 force = _flock.CalculateForce ();
 			force = force * Time.deltaTime + direction;
-			if (force.sqrMagnitude < minForce * minForce) {
-				Walk.SetDir (Vector3.zero);
-			} else {
-				Walk.SetDir (force);
-			}
+			Walk.SetDir (force);
 			return false;
+		}
+
+		bool finishedMove;
+		bool isTiming;
+		IEnumerator stopTimer() {
+			isTiming = true;
+			yield return new WaitForSeconds(1.5f);
+			isTiming = false;
+			finishedMove = true;
 		}
 
 		public void StopMoving ()

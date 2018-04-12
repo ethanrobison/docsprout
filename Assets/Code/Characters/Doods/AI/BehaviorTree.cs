@@ -11,7 +11,7 @@ namespace Code.Doods.AI {
 			var dood = GetComponent<Dood> ();
 			var follow = new FollowTarget<Player> (dood,
 												   LayerMask.GetMask ("Player"),
-												   3);
+												   10);
 			int layermask = LayerMask.GetMask ("Player");
 
 			var seq = new Sequence (dood);
