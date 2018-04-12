@@ -21,6 +21,7 @@ namespace Code.Doods {
 			Walk = GetComponent<Characters.Walk> ();
 			Character = GetComponent<Characters.Character> ();
 			_flock = GetComponent<FlockBehaviour> ();
+			minForce = 0f;
 		}
 
 		public bool MoveTowards (Vector3 pos, float thresh = 3f)
