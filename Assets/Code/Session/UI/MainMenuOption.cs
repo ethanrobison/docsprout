@@ -61,7 +61,7 @@ public class MainMenuOption : MonoBehaviour {
 
 	static void StartNewGame ()
 	{
-		Game.Sesh.StartGame (2);
+		Game.Sesh.StartGame (1);
 	}
 
 	void LoadGame () { }
