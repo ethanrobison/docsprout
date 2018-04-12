@@ -12,7 +12,7 @@
 
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Cel fullforwardshadows nometa
+		#pragma surface surf Cel
 
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
@@ -33,15 +33,8 @@
 
 		struct Input {
 			float2 uv_MainTex;
-            //float2 pixPos;
             float4 screenPos;
 		};
-
-        //void vert(inout appdata_full v, out Input o) {
-            //float4 pixPos = ComputeScreenPos(UnityObjectToClipPos(v.vertex));
-            //UNITY_INITIALIZE_OUTPUT(Input,o);
-            //o.pixPos = pixPos.xy;
-        //}
         
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.

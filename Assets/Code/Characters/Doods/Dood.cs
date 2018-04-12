@@ -23,20 +23,35 @@ namespace Code.Doods {
 			Character = GetComponent<Characters.Character> ();
 			_flock = GetComponent<FlockBehaviour> ();
 		}
-
-		public bool MoveTowards (Vector3 pos, float thresh = 5f)
+		Vector3 lastPos;
+		public bool MoveTowards (Vector3 pos, float thresh = 10f, float minDist = 3f)
 		{
-			if (Vector3.Distance (pos, transform.position) < thresh) {
-				if(finishedMove) {
-					Walk.SetDir (Vector3.zero);
-					return true;	
-				}
-				if(!finishedMove && !isTiming) {
-					StartCoroutine(stopTimer());
-				}
+			float dist = Vector3.Distance (pos, transform.position);
+			float moveDelta = Vector3.Distance (pos, lastPos);
+			lastPos = pos;
+			if (dist < minDist) {
+				Walk.SetDir (Vector2.zero);
+				return false;
 			}
-			if(finishedMove) {
-				finishedMove = false;
+			if (moveDelta < 0.001f) {
+				if (dist < thresh) {
+					if (finishedMove) {
+						Walk.SetDir (Vector2.zero);
+						return false;
+					}
+					if (!finishedMove && !isTiming) {
+						StartCoroutine (stopTimer (dist));
+					}
+				} else {
+					if (isTiming) {
+						StopCoroutine ("stopTimer");
+						isTiming = false;
+					}
+					finishedMove = false;
+
+				}
+			} else {
+				StopCoroutine ("stopTimer");
 			}
 			var direction = (pos - transform.position).normalized;
 			Vector3 force = _flock.CalculateForce ();
@@ -47,16 +62,17 @@ namespace Code.Doods {
 
 		bool finishedMove;
 		bool isTiming;
-		IEnumerator stopTimer() {
+		IEnumerator stopTimer (float dist)
+		{
 			isTiming = true;
-			yield return new WaitForSeconds(1.5f);
+			yield return new WaitForSeconds (.15f * dist);
 			isTiming = false;
 			finishedMove = true;
 		}
 
 		public void StopMoving ()
 		{
-			//_flock.SetDir (Vector2.zero);
+			Walk.SetDir (Vector2.zero);
 		}
 	}
 }
