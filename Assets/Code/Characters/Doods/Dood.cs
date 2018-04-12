@@ -7,9 +7,10 @@ namespace Code.Doods {
 	public class Dood : MonoBehaviour {
 
 		public Root Behavior { get; private set; }
-		public Characters.Walk Walk;
+		Characters.Walk _walk;
 		public Characters.Character Character;
 		FlockBehaviour _flock;
+		public float stopMovingPeriod = .15f;
 
 
 		public void Initialize ()
@@ -19,7 +20,7 @@ namespace Code.Doods {
 
 		void Start ()
 		{
-			Walk = GetComponent<Characters.Walk> ();
+			_walk = GetComponent<Characters.Walk> ();
 			Character = GetComponent<Characters.Character> ();
 			_flock = GetComponent<FlockBehaviour> ();
 		}
@@ -30,13 +31,13 @@ namespace Code.Doods {
 			float moveDelta = Vector3.Distance (pos, lastPos);
 			lastPos = pos;
 			if (dist < minDist) {
-				Walk.SetDir (Vector2.zero);
+				_walk.SetDir (Vector2.zero);
 				return false;
 			}
 			if (moveDelta < 0.001f) {
 				if (dist < thresh) {
 					if (finishedMove) {
-						Walk.SetDir (Vector2.zero);
+						_walk.SetDir (Vector2.zero);
 						return false;
 					}
 					if (!finishedMove && !isTiming) {
@@ -56,7 +57,7 @@ namespace Code.Doods {
 			var direction = (pos - transform.position).normalized;
 			Vector3 force = _flock.CalculateForce ();
 			force = force * Time.deltaTime + direction;
-			Walk.SetDir (force);
+			_walk.SetDir (force);
 			return false;
 		}
 
@@ -65,14 +66,14 @@ namespace Code.Doods {
 		IEnumerator stopTimer (float dist)
 		{
 			isTiming = true;
-			yield return new WaitForSeconds (.15f * dist);
+			yield return new WaitForSeconds (stopMovingPeriod * dist);
 			isTiming = false;
 			finishedMove = true;
 		}
 
 		public void StopMoving ()
 		{
-			Walk.SetDir (Vector2.zero);
+			_walk.SetDir (Vector2.zero);
 		}
 	}
 }
