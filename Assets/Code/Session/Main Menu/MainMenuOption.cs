@@ -27,7 +27,12 @@ public class MainMenuOption : MonoBehaviour {
 		monitor.RegisterMapping (ControllerButton.AButton, () => {
 			if (_state.Active) { _state.PerformAction (); }
 		});
-		//monitor.RegisterMapping(ControllerButton.RightBumper)
+		monitor.RegisterMapping (ControllerButton.RightBumper, () => {
+			if (_state.Active) { _state.ChangeOption (1); }
+		});
+		monitor.RegisterMapping (ControllerButton.LeftBumper, () => {
+			if (_state.Active) { _state.ChangeOption (-1); }
+		});
 	}
 
 	void MakeState ()
@@ -70,7 +75,7 @@ public class MainMenuOption : MonoBehaviour {
 	abstract class MenuState {
 		MenuOption _option;
 		GameObject _parent, _active;
-		readonly Text _infoText;
+		readonly protected Text _infoText;
 
 		public bool Active {
 			get { return _active.activeInHierarchy; }
@@ -86,15 +91,13 @@ public class MainMenuOption : MonoBehaviour {
 			_option = option;
 
 			_infoText = UIUtils.FindUICompOfType<Text> (_parent.transform, "Info/Text");
-			SetText ();
+			_infoText.text = _option.ToString ();
 		}
 
 		public abstract void PerformAction ();
+		public abstract void ChangeOption (int direction);
 
-		protected void SetText ()
-		{
-			_infoText.text = _option.ToString ();
-		}
+		protected virtual void SetText () { }
 	}
 
 
@@ -112,13 +115,34 @@ public class MainMenuOption : MonoBehaviour {
             Application.Quit(); // Complains about dead code. Boo.
 #endif
 		}
+		public override void ChangeOption (int direction) { }
 	}
 
 	class StartState : MenuState {
+		int _scene;
+
 		public StartState (GameObject parent, MenuOption option = MenuOption.StartGame) : base (parent, option) { }
+
 		public override void PerformAction ()
 		{
-			Game.Sesh.StartGame (1);
+#if UNITY_EDITOR
+			Game.Sesh.StartGame (_scene);
+#else
+			Game.Sesh.StartGame (3);
+#endif
+		}
+
+		const int SCENE_COUNT = 4;
+		public override void ChangeOption (int direction)
+		{
+			_scene += direction;
+			if (_scene > SCENE_COUNT) { _scene -= SCENE_COUNT; }
+			if (_scene < 1) { _scene += SCENE_COUNT; }
+			SetText ();
+		}
+		protected override void SetText ()
+		{
+			_infoText.text = string.Format ("Start scene: {0}", _scene);
 		}
 	}
 
@@ -126,18 +150,21 @@ public class MainMenuOption : MonoBehaviour {
 		public OptionsState (GameObject parent, MenuOption option = MenuOption.Options) : base (parent, option) { }
 
 		public override void PerformAction () { }
+		public override void ChangeOption (int direction) { }
 	}
 
 	class AcknowledgementsState : MenuState {
 		public AcknowledgementsState (GameObject parent, MenuOption option = MenuOption.Acknowledgements) : base (parent, option) { }
 
 		public override void PerformAction () { }
+		public override void ChangeOption (int direction) { }
 	}
 
 	class LoadState : MenuState {
 		public LoadState (GameObject parent, MenuOption option = MenuOption.LoadGame) : base (parent, option) { }
 
 		public override void PerformAction () { }
+		public override void ChangeOption (int direction) { }
 	}
 }
 
