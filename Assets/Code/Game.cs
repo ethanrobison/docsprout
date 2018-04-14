@@ -8,7 +8,7 @@ namespace Code {
 		public static GameSession Sesh;
 		public static GameObject GO;
 
-		void Start ()
+		void Awake ()
 		{
 			GO = gameObject;
 

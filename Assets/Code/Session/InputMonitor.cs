@@ -7,7 +7,7 @@ namespace Code.Session {
 	/// <summary>
 	/// Unwieldy class for checking for button presses. I am sorry about all of the hard-coding.
 	/// </summary>
-	public class InputMonitor : MonoBehaviour {
+	public class InputMonitor : MonoBehaviour, ISessionManager {
 		public float LeftH { get { return Input.GetAxisRaw (leftH); } }
 		public float LeftV { get { return Input.GetAxisRaw (leftV); } }
 		public float RightH { get { return Input.GetAxisRaw (rightH); } }
@@ -21,8 +21,10 @@ namespace Code.Session {
 		Dictionary<ControllerButton, KeyCode> _buttonNames;
 		readonly List<ButtonPair> _mappings = new List<ButtonPair> ();
 
-		void Start ()
+		public void Initialize ()
 		{
+			_mappings.Clear ();
+
 			// HACK I am sorry, future me/kyle/alyssa
 			leftH = GetAxisName (true, true);
 			leftV = GetAxisName (true, false);
@@ -30,6 +32,9 @@ namespace Code.Session {
 			rightV = GetAxisName (false, false);
 			SetButtonNames ();
 		}
+
+		public void ShutDown () { }
+
 
 		void Update ()
 		{
@@ -83,6 +88,7 @@ namespace Code.Session {
 			var pair = new ButtonPair (buttonname, onpress);
 			_mappings.Add (pair);
 		}
+
 
 		//
 		// helper classes

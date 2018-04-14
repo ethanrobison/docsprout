@@ -46,6 +46,7 @@ namespace Code.Session {
 			SetupController ();
 
 			Monitor = Game.GO.AddComponent<InputMonitor> ();
+			Monitor.Initialize ();
 		}
 
 		public void ShutDown ()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Code;
 using Code.Characters.Player;
+using Code.Session;
 using Code.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +27,7 @@ public class MainMenuOption : MonoBehaviour {
 			Logging.Error ("Missing action for option " + Option);
 		}
 		_state = new MenuState (gameObject, Option, action);
+		Game.Sesh.Input.Monitor.RegisterMapping (ControllerButton.AButton, _state.PerformAction);
 	}
 
 	void OnTriggerEnter (Collider other)
@@ -38,28 +40,6 @@ public class MainMenuOption : MonoBehaviour {
 	{
 		if (other.gameObject.GetComponent<Player> () == null) { return; }
 		_state.Active = false;
-	}
-
-	void Update ()
-	{
-		if (!_state.Active) { return; }
-
-		//ChangeMenuState ();
-		// todo this should be pressing the "action" button
-
-#if UNITY_EDITOR
-		if (Option == MenuOption.StartGame) {
-			if (Input.GetKeyDown (KeyCode.Alpha1)) {
-				Game.Sesh.StartGame (1);
-			} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
-				Game.Sesh.StartGame (2);
-			} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
-				Game.Sesh.StartGame (3);
-			}
-		}
-#endif
-
-		if (Input.GetKeyDown (KeyCode.Space)) { _state.PerformAction (); }
 	}
 
 	//protected void ChangeMenuState ()
@@ -137,6 +117,7 @@ public class MainMenuOption : MonoBehaviour {
 
 		public void PerformAction ()
 		{
+			if (!Active) { return; }
 			_action ();
 		}
 
