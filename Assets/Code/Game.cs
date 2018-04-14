@@ -6,9 +6,12 @@ namespace Code {
 	public class Game : MonoBehaviour {
 		public static GameContext Ctx;
 		public static GameSession Sesh;
+		public static GameObject GO;
 
-		private void Start ()
+		void Start ()
 		{
+			GO = gameObject;
+
 			// todo I am a singleton; if I already exist, kill the Buddha
 			DontDestroyOnLoad (gameObject); // Please keep me kthxbai.
 			DontDestroyOnLoad (UIUtils.GetCanvas ().gameObject);
