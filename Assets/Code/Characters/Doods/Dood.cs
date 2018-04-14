@@ -1,4 +1,5 @@
-﻿using Code.Doods.AI;
+﻿using System.Collections;
+using Code.Doods.AI;
 using UnityEngine;
 
 namespace Code.Doods {
@@ -6,10 +7,11 @@ namespace Code.Doods {
 	public class Dood : MonoBehaviour {
 
 		public Root Behavior { get; private set; }
-		public Characters.Walk Walk;
+		Characters.Walk _walk;
 		public Characters.Character Character;
-		public float minForce = .5f;
 		FlockBehaviour _flock;
+		public float stopMovingPeriod = .15f;
+
 
 		public void Initialize ()
 		{
@@ -18,31 +20,60 @@ namespace Code.Doods {
 
 		void Start ()
 		{
-			Walk = GetComponent<Characters.Walk> ();
+			_walk = GetComponent<Characters.Walk> ();
 			Character = GetComponent<Characters.Character> ();
 			_flock = GetComponent<FlockBehaviour> ();
 		}
-
-		public bool MoveTowards (Vector3 pos, float thresh = 3f)
+		Vector3 lastPos;
+		public bool MoveTowards (Vector3 pos, float thresh = 10f, float minDist = 3f)
 		{
-			if (Vector3.Distance (pos, transform.position) < thresh) {
-				Walk.SetDir (Vector3.zero);
-				return true;
+			float dist = Vector3.Distance (pos, transform.position);
+			float moveDelta = Vector3.Distance (pos, lastPos);
+			lastPos = pos;
+			if (dist < minDist) {
+				_walk.SetDir (Vector2.zero);
+				return false;
+			}
+			if (moveDelta < 0.001f) {
+				if (dist < thresh) {
+					if (finishedMove) {
+						_walk.SetDir (Vector2.zero);
+						return false;
+					}
+					if (!finishedMove && !isTiming) {
+						StartCoroutine (stopTimer (dist));
+					}
+				} else {
+					if (isTiming) {
+						StopCoroutine ("stopTimer");
+						isTiming = false;
+					}
+					finishedMove = false;
+
+				}
+			} else {
+				StopCoroutine ("stopTimer");
 			}
 			var direction = (pos - transform.position).normalized;
 			Vector3 force = _flock.CalculateForce ();
 			force = force * Time.deltaTime + direction;
-			if (force.sqrMagnitude < minForce * minForce) {
-				Walk.SetDir (Vector3.zero);
-			} else {
-				Walk.SetDir (force);
-			}
+			_walk.SetDir (force);
 			return false;
+		}
+
+		bool finishedMove;
+		bool isTiming;
+		IEnumerator stopTimer (float dist)
+		{
+			isTiming = true;
+			yield return new WaitForSeconds (stopMovingPeriod * dist);
+			isTiming = false;
+			finishedMove = true;
 		}
 
 		public void StopMoving ()
 		{
-			//_flock.SetDir (Vector2.zero);
+			_walk.SetDir (Vector2.zero);
 		}
 	}
 }
