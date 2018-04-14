@@ -35,6 +35,7 @@ namespace Code.Characters {
 
 		void Move ()
 		{
+
 			float goalSpeed = GetGoalSpeed ();
 			Vector3 goalWalkingDir = GetGoalDir ();
 
@@ -88,6 +89,7 @@ namespace Code.Characters {
 				perpendicularSpeed -= slowingDV * perpSign;
 			}
 
+
 			// Combine all components of velocity
 			_character.velocity =
 					  parallelSpeed * goalWalkingDir
@@ -95,7 +97,10 @@ namespace Code.Characters {
 					  + normalVelocity * _character.groundNormal;
 
 			// Apply gravity
+			//if(GetComponent<CharacterController>())
+			//if(!_character.isOnGround) {
 			_character.velocity += Physics.gravity * Time.fixedDeltaTime;
+			//}
 		}
 
 

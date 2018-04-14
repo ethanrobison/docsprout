@@ -46,6 +46,18 @@ public class MainMenuOption : MonoBehaviour {
 
 		//ChangeMenuState ();
 		// todo this should be pressing the "action" button
+#if UNITY_EDITOR
+		if (Option == MenuOption.StartGame) {
+			if (Input.GetKeyDown (KeyCode.Alpha1)) {
+				Game.Sesh.StartGame (1);
+			} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
+				Game.Sesh.StartGame (2);
+			} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
+				Game.Sesh.StartGame (3);
+			}
+		}
+#endif
+
 		if (Input.GetKeyDown (KeyCode.Space)) { _state.PerformAction (); }
 	}
 
@@ -58,10 +70,9 @@ public class MainMenuOption : MonoBehaviour {
 	//	}
 	//}
 
-
 	static void StartNewGame ()
 	{
-		Game.Sesh.StartGame (1);
+		Game.Sesh.StartGame (0);
 	}
 
 	void LoadGame () { }

@@ -116,9 +116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8489f30ab611493e82813840070d4c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Walk: {fileID: 0}
   Character: {fileID: 0}
-  minForce: 0.5
+  stopMovingPeriod: 0.15
 --- !u!114 &114121551433599924
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NeighborhoodRadius: 4
-  damping: 0
+  Damping: 1
   AttractWeight: 1
   RepelWeight: 15
   AlignWeight: 0.4
@@ -186,7 +185,7 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1191347525030702}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: d0ae2e97ea78d48ed961e2a5a67961d7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1.1437414

@@ -3,7 +3,7 @@
 namespace Code.Characters.Player {
 	public class CameraController : MonoBehaviour {
 
-		public Camera camera;
+		public new Camera camera;
 		public Transform target;
 		float camRotY = 30f;
 		float camRotX;
@@ -19,7 +19,11 @@ namespace Code.Characters.Player {
 		public float stiffness = 25f;
 		public float AlphaSlope = 5f;
 
+		public float CollisionRadius;
+
 		RaycastHit [] alphaHits;
+		Collider [] alphaOverlaps;
+
 		// Use this for initialization
 		void Start ()
 		{
@@ -40,6 +44,7 @@ namespace Code.Characters.Player {
 			camera.transform.rotation = goalCamRot;
 
 			alphaHits = new RaycastHit [8];
+			alphaOverlaps = new Collider [4];
 
 		}
 
@@ -62,17 +67,31 @@ namespace Code.Characters.Player {
 		Environment.ScreenDoorTransparency lastSet;
 		void Update ()
 		{
-			float camDist = followDistance;
-			int numHit = Physics.RaycastNonAlloc (camera.transform.position - camera.transform.forward, camera.transform.forward, alphaHits,
-											 Vector3.Distance (camera.transform.position, target.position), ~obscuresCamera.value,
-											 QueryTriggerInteraction.Ignore);
-
+			//float camDist = followDistance;
 			Environment.ScreenDoorTransparency sdt = null;
-			float dist = 0;
-			for (int i = 0; i < numHit; ++i) {
+			float dist = 0f;
+			int n = Physics.OverlapSphereNonAlloc (camera.transform.position, CollisionRadius, alphaOverlaps);
+			for (int i = 0; i < n; ++i) {
 				if (sdt = alphaHits [i].collider.gameObject.GetComponent<Environment.ScreenDoorTransparency> ()) {
-					dist = alphaHits [i].distance;
+					dist = 0f;
 					break;
+				}
+			}
+			if (sdt == null) {
+#if UNITY_EDITOR
+				Debug.DrawLine (camera.transform.position, camera.transform.position +
+						   camera.transform.forward *
+						   Vector3.Distance (camera.transform.position, target.position));
+#endif
+				n = Physics.RaycastNonAlloc (camera.transform.position, camera.transform.forward, alphaHits,
+												  Vector3.Distance (camera.transform.position, target.position), ~obscuresCamera.value,
+												  QueryTriggerInteraction.Ignore);
+
+				for (int i = 0; i < n; ++i) {
+					if (sdt = alphaHits [i].collider.gameObject.GetComponent<Environment.ScreenDoorTransparency> ()) {
+						dist = alphaHits [i].distance;
+						break;
+					}
 				}
 			}
 			if (lastSet) {
@@ -92,7 +111,7 @@ namespace Code.Characters.Player {
 
 			RaycastHit hit;
 			float camDist = followDistance;
-			if (Physics.SphereCast (target.position, .25f, -(goalCamRot * Vector3.forward), out hit, followDistance - .25f, obscuresCamera, QueryTriggerInteraction.Ignore)) {
+			if (Physics.SphereCast (target.position, CollisionRadius, -(goalCamRot * Vector3.forward), out hit, followDistance - CollisionRadius, obscuresCamera, QueryTriggerInteraction.Ignore)) {
 				camDist = hit.distance;
 			}
 
