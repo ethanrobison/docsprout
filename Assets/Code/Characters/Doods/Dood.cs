@@ -10,6 +10,7 @@ namespace Code.Doods {
 		public Characters.Character Character;
 		public float minForce = .5f;
 		FlockBehaviour _flock;
+		public int Happiness;
 
 		public void Initialize ()
 		{
