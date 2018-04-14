@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 1519700575}
   - component: {fileID: 1519700574}
   - component: {fileID: 1519700573}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
