@@ -2,60 +2,103 @@
 using UnityEngine;
 
 namespace Code.Session {
-	public class InputManager : ISessionManager {
+	public enum Platform {
+		Invalid, OSX, Windows, Linux
+	}
 
+	public enum Controller {
+		None, XBox, Dualshock
+	}
+
+	public class InputManager : ISessionManager {
 		public InputMonitor Monitor { get; private set; }
 
-		string _platform;
+		public Platform Platform { get; private set; }
+		public Controller Controller { get; private set; }
 
 		public void Initialize ()
 		{
-			if (Application.platform == RuntimePlatform.OSXEditor || Application.platform == RuntimePlatform.OSXPlayer) {
-				_platform = "Mac";
-			} else {
-				_platform = "Win";
-			}
+			SetupPlatform ();
+			SetupController ();
 
-			Monitor = new InputMonitor (this);
+			Monitor = new InputMonitor ();
 		}
 
 		public void ShutDown () { }
 
-		public string GetButtonSuffix ()
+		void SetupPlatform ()
+		{
+			switch (Application.platform) {
+			case RuntimePlatform.OSXEditor:
+			case RuntimePlatform.OSXPlayer:
+				Platform = Platform.OSX;
+				break;
+			case RuntimePlatform.WindowsPlayer:
+			case RuntimePlatform.WindowsEditor:
+				Platform = Platform.Windows;
+				break;
+			case RuntimePlatform.LinuxPlayer:
+			case RuntimePlatform.LinuxEditor:
+				Platform = Platform.Linux;
+				break;
+			default:
+				Logging.Error ("Unknown platform: " + Application.platform);
+				Platform = Platform.Invalid;
+				break;
+			}
+		}
+
+		void SetupController ()
 		{
 			string [] controllers = Input.GetJoystickNames ();
-			if (controllers.Length == 0) {
-				Logging.Warn ("No controllers plugged in.");
-				return "";
+
+			if (controllers.Length > 0) {
+				if (controllers [0].Contains ("Xbox")) {
+					Controller = Controller.XBox;
+					return;
+				}
+				if (controllers [0].Contains ("Sony")) {
+					Controller = Controller.Dualshock;
+					return;
+				}
+
+				Logging.Error ("Unknown controller name: " + controllers [0]);
 			}
 
-			if (controllers [0].Contains ("Xbox")) return "Xbox" + _platform;
-			if (controllers [0].Contains ("Sony")) return "PS" + _platform;
-
-			Logging.Error ("Unknown controller name: " + controllers [0]);
-			return null;
+			Logging.Warn ("No controllers plugged in.");
+			Controller = Controller.None;
 		}
 	}
 
 	// todo something something standalone input module?
 	public class InputMonitor {
-		static string leftH = "leftHorizontal";
-		static string leftV = "leftVertical";
-		static string rightH = "rightHorizontal";
-		static string rightV = "rightVertical";
+		readonly string leftH;
+		readonly string leftV;
+		readonly string rightH;
+		readonly string rightV;
 
 		public float LeftH { get { return Input.GetAxisRaw (leftH); } }
 		public float LeftV { get { return Input.GetAxisRaw (leftV); } }
 		public float RightH { get { return Input.GetAxisRaw (rightH); } }
 		public float RightV { get { return Input.GetAxisRaw (rightV); } }
 
-		public InputMonitor (InputManager manager)
+		public InputMonitor ()
 		{
-			var suffix = manager.GetButtonSuffix ();
-			leftH += suffix;
-			leftV += suffix;
-			rightH += suffix;
-			rightV += suffix;
+			leftH = GetAxisName (true, true);
+			leftV = GetAxisName (true, false);
+			rightH = GetAxisName (false, true);
+			rightV = GetAxisName (false, false);
+		}
+
+		// put all of the string manipulation nastiness into one function
+		string GetAxisName (bool left, bool horizontal)
+		{
+			string name = "";
+			name += left ? "left" : "right";
+			if (Game.Sesh.Input.Controller != Controller.None) { name += "Joy"; }
+			name += horizontal ? "H" : "V";
+
+			return name;
 		}
 	}
 }

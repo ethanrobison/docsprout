@@ -46,6 +46,7 @@ public class MainMenuOption : MonoBehaviour {
 
 		//ChangeMenuState ();
 		// todo this should be pressing the "action" button
+
 #if UNITY_EDITOR
 		if (Option == MenuOption.StartGame) {
 			if (Input.GetKeyDown (KeyCode.Alpha1)) {
