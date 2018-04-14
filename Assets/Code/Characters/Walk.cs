@@ -28,12 +28,11 @@ namespace Code.Characters {
 		}
 
 		void FixedUpdate ()
-		//void Update()
 		{
 			Move ();
 		}
 
-		void Move ()
+		protected virtual void Move ()
 		{
 
 			float goalSpeed = GetGoalSpeed ();
