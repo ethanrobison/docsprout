@@ -102,7 +102,16 @@ namespace Code.Session {
 		static class ButtonMappings {
 			//public static readonly Dictionary<ControllerButton, string> WindowsXBox = new Dictionary<ControllerButton, string> { };
 			//public static readonly Dictionary<ControllerButton, string> WindowsDS4 = new Dictionary<ControllerButton, string> { };
-			public static readonly Dictionary<ControllerButton, KeyCode> OSXXBox = new Dictionary<ControllerButton, KeyCode> { };
+			public static readonly Dictionary<ControllerButton, KeyCode> OSXXBox = new Dictionary<ControllerButton, KeyCode> {
+				{ControllerButton.AButton,KeyCode.JoystickButton16},
+				{ControllerButton.BButton,KeyCode.JoystickButton17},
+				{ControllerButton.XButton, KeyCode.JoystickButton18},
+				{ControllerButton.YButton,KeyCode.JoystickButton19},
+				{ControllerButton.RightBumper,KeyCode.JoystickButton13},
+				{ControllerButton.LeftBumper, KeyCode.JoystickButton14},
+				{ControllerButton.Start,KeyCode.JoystickButton9},
+				{ControllerButton.Select,KeyCode.JoystickButton10}
+			};
 			public static readonly Dictionary<ControllerButton, KeyCode> OSXDS4 = new Dictionary<ControllerButton, KeyCode> {
 				{ControllerButton.AButton,KeyCode.JoystickButton1},
 				{ControllerButton.BButton,KeyCode.JoystickButton2},
@@ -111,7 +120,7 @@ namespace Code.Session {
 				{ControllerButton.RightBumper,KeyCode.JoystickButton4},
 				{ControllerButton.LeftBumper, KeyCode.JoystickButton5},
 				{ControllerButton.Start,KeyCode.JoystickButton9},
-				{ControllerButton.Select,KeyCode.JoystickButton8}
+				{ControllerButton.Select,KeyCode.JoystickButton17}
 			};
 		}
 	}
