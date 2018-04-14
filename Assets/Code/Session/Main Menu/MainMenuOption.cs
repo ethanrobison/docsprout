@@ -116,7 +116,6 @@ public class MainMenuOption : MonoBehaviour {
 		public override void ChangeOption (int direction) { }
 	}
 
-
 	class StartState : MenuInfo {
 		int _scene = 1;
 
