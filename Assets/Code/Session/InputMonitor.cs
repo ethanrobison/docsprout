@@ -35,6 +35,9 @@ namespace Code.Session {
 
 		public void ShutDown () { }
 
+		public void OnGameStart() {
+			_mappings.Clear ();
+		}
 
 		void Update ()
 		{
@@ -88,7 +91,6 @@ namespace Code.Session {
 			var pair = new ButtonPair (buttonname, onpress);
 			_mappings.Add (pair);
 		}
-
 
 		//
 		// helper classes

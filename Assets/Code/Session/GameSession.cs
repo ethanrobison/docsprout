@@ -34,5 +34,6 @@
 	public interface ISessionManager {
 		void Initialize ();
 		void ShutDown ();
+		void OnGameStart ();
 	}
 }

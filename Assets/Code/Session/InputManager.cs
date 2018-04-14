@@ -55,6 +55,10 @@ namespace Code.Session {
 			Monitor = null;
 		}
 
+		public void OnGameStart ()
+		{
+			Monitor.OnGameStart ();
+		}
 
 		void SetupPlatform ()
 		{
