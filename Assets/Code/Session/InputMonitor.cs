@@ -125,8 +125,8 @@ namespace Code.Session {
 				{ControllerButton.BButton,KeyCode.JoystickButton2},
 				{ControllerButton.XButton, KeyCode.JoystickButton0},
 				{ControllerButton.YButton,KeyCode.JoystickButton3},
-				{ControllerButton.RightBumper,KeyCode.JoystickButton4},
-				{ControllerButton.LeftBumper, KeyCode.JoystickButton5},
+				{ControllerButton.RightBumper,KeyCode.JoystickButton5},
+				{ControllerButton.LeftBumper, KeyCode.JoystickButton4},
 				{ControllerButton.Start,KeyCode.JoystickButton9},
 				{ControllerButton.Select,KeyCode.JoystickButton17}
 			};
