@@ -1,4 +1,4 @@
-using UnityEngine;
+using Code.Utils;
 
 namespace Code.Doods.AI {
 	public class LogMessage : BehaviorTreeNode {
@@ -11,7 +11,7 @@ namespace Code.Doods.AI {
 
 		protected override Status Update ()
 		{
-			Debug.Log (_message);
+			Logging.Log (_message);
 			return Status.Success;
 		}
 	}

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace Code.Doods {
@@ -8,7 +6,7 @@ namespace Code.Doods {
 	public class FlockBehaviour : MonoBehaviour {
 
 		public float NeighborhoodRadius = 5f;
-		public float damping = 1f;
+		public float Damping = 1f;
 		public float AttractWeight = 1f;
 		public float RepelWeight = 1f;
 		public float AlignWeight = 1f;
@@ -16,13 +14,11 @@ namespace Code.Doods {
 
 		Dood _dood;
 
-		// Use this for initialization
 		void Start ()
 		{
 			_dood = GetComponent<Dood> ();
 		}
 
-		// Update is called once per frame
 		public Vector3 CalculateForce ()
 		{
 			Vector3 center = Vector3.zero;
@@ -39,11 +35,11 @@ namespace Code.Doods {
 					diff /= diff.sqrMagnitude;
 					temp = diff * RepelWeight;
 					//if(temp.sqrMagnitude > sqrMinForce) {
-						force -= temp;
+					force -= temp;
 					//}
 					temp = (dood.Character.velocity - _dood.Character.velocity) * AlignWeight;
 					//if(temp.sqrMagnitude > sqrMinForce) {
-						force += temp;
+					force += temp;
 					//}
 				}
 			}
@@ -53,10 +49,10 @@ namespace Code.Doods {
 			center /= numNearby;
 			temp = (center - transform.position) * AttractWeight;
 			//if(temp.sqrMagnitude > sqrMinForce) {
-				force += temp;
+			force += temp;
 			//}
 
-			force -= _dood.Character.velocity*damping;
+			force -= _dood.Character.velocity * Damping;
 
 			return force;
 		}

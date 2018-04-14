@@ -6,15 +6,15 @@ using UnityEngine.EventSystems;
 
 namespace Code.Session.UI {
 	public class MainMenu : Menu {
-		private static int _sceneTarget = 4; // Magic constant for the demo scene. TODO BIT OF A HACK
+		static int _sceneTarget = 4; // Magic constant for the demo scene. TODO BIT OF A HACK
 
 		protected override void CreateGameObject ()
 		{
-			GO = UIUtils.MakeUIPrefab (UIPrefab.MainMenu);
-			InitializeButtons ();
+			//GO = UIUtils.MakeUIPrefab (UIPrefab.MainMenu);
+			//InitializeButtons ();
 		}
 
-		private void InitializeButtons ()
+		void InitializeButtons ()
 		{
 			InitializeButton ("Buttons/Start", StartNewGame);
 			Button button = UIUtils.FindUICompOfType<Button> (GO.transform, "Buttons/Start");
@@ -31,13 +31,13 @@ namespace Code.Session.UI {
 #endif
 		}
 
-		private void InitializeButton (string name, UnityAction listener)
+		void InitializeButton (string name, UnityAction listener)
 		{
 			UIUtils.FindUICompOfType<Button> (GO.transform, name).onClick.AddListener (listener);
 		}
 
 
-		private void StartNewGame ()
+		void StartNewGame ()
 		{
 #if UNITY_EDITOR
 			var drop = UIUtils.FindUICompOfType<Dropdown> (GO.transform, "Development/Dropdown");
@@ -46,17 +46,16 @@ namespace Code.Session.UI {
 			Game.Sesh.StartGame (_sceneTarget);
 		}
 
-		private void LoadGame ()
+		void LoadGame ()
 		{
-			Debug.Log ("Implement me!!"); // todo :3
 		}
 
-		private static void OpenOptions ()
+		static void OpenOptions ()
 		{
 			Game.Sesh.Menus.PushMenu (new OptionsMenu ());
 		}
 
-		private static void QuitGame ()
+		static void QuitGame ()
 		{
 #if UNITY_EDITOR
 			UnityEditor.EditorApplication.isPlaying = false;
@@ -65,9 +64,8 @@ namespace Code.Session.UI {
 #endif
 		}
 
-		private void LoadAcknowledgements ()
+		void LoadAcknowledgements ()
 		{
-			Debug.Log ("Implement me!"); // todo :3
 		}
 	}
 }

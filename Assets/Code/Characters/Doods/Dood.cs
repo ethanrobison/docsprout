@@ -1,5 +1,4 @@
-﻿using Code.Characters.Player;
-using Code.Doods.AI;
+﻿using Code.Doods.AI;
 using UnityEngine;
 
 namespace Code.Doods {
@@ -14,21 +13,7 @@ namespace Code.Doods {
 
 		public void Initialize ()
 		{
-			var follow = new FollowTarget<Player> (this,
-												   LayerMask.GetMask ("Player"),
-												   3);
-			int layermask = LayerMask.GetMask ("Player");
-
-			var seq = new Sequence (this);
-			seq.AddChild (follow);
-			seq.AddChild (new LogMessage ("Hello", this));
-			seq.AddChild (new Idle (this));
-
-			var sel = new Selector (this);
-			sel.AddChild (follow);
-			sel.AddChild (new Idle (this));
-
-			Behavior = new Root (sel, this);
+			Behavior = GetComponent<BehaviorTree> ().Root;
 		}
 
 		void Start ()
@@ -37,22 +22,6 @@ namespace Code.Doods {
 			Character = GetComponent<Characters.Character> ();
 			_flock = GetComponent<FlockBehaviour> ();
 		}
-
-		void Update ()
-		{
-			var status = Behavior.Tick ();
-			switch (status) {
-			case Status.Invalid:
-				break;
-			case Status.Running:
-				break;
-			case Status.Success:
-				break;
-			case Status.Failure:
-				break;
-			}
-		}
-
 
 		public bool MoveTowards (Vector3 pos, float thresh = 3f)
 		{

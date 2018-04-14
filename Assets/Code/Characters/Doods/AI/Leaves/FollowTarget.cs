@@ -1,3 +1,4 @@
+using Code.Utils;
 using UnityEngine;
 
 namespace Code.Doods.AI {
@@ -24,7 +25,7 @@ namespace Code.Doods.AI {
 		public override void OnInitialize ()
 		{
 			base.OnInitialize ();
-			Debug.Assert (_target == null, "Already have target!");
+			Logging.Assert (_target == null, "Already have target!");
 
 			int count = Physics.OverlapSphereNonAlloc (_dood.transform.position, _farThresh, _results, _mask);
 			if (count > 0) {
