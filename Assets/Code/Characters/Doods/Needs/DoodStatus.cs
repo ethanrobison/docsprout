@@ -9,10 +9,11 @@ public class DoodStatus : MonoBehaviour {
 	public float Happiness;
 	private float HappMin;
 	private float HappMax;
+	private float HappSubtotal;
 
 	public Waterable Waterable;
-	public float WaterMeter;
-	public float [] WaterRange;
+	private float WaterMeter;
+	private float [] WaterRange;
 
 	// Use this for initialization
 	void Start ()
@@ -31,24 +32,23 @@ public class DoodStatus : MonoBehaviour {
 	void CalcHapp ()
 	{
 		if (WaterRange [0] <= WaterMeter && WaterMeter <= WaterRange [1]) {
-			WaterMeter += 5f;
-		} else { WaterMeter -= 5f; }
+			Happiness += 5f*Time.deltaTime;
+		} else { Happiness -= 5f*Time.deltaTime; }
 
-		if (WaterMeter <= HappMin) {
-			WaterMeter = HappMin;
-		} else if (WaterMeter >= HappMax) {
-			WaterMeter = HappMax;
+		if (Happiness <= HappMin) {
+			Happiness = HappMin;
+		} else if (Happiness >= HappMax) {
+			Happiness = HappMax;
 		}
 
-		Happiness = WaterMeter;
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
+		WaterMeter = Waterable.NeedMeter;
 		CalcHapp ();
-		Code.Utils.Logging.Log ("WaterMeter: " + WaterMeter.ToString ());
+		//Code.Utils.Logging.Log ("WaterMeter: " + WaterMeter.ToString ());
 		Code.Utils.Logging.Log ("Happiness: " + Happiness.ToString ());
-		Debug.Log ("HI");
 	}
 }

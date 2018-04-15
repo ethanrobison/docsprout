@@ -31,7 +31,7 @@ public class Needs : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update ()
+	protected virtual void Update ()
 	{
 		DecrMeter (Time.deltaTime);
 	}

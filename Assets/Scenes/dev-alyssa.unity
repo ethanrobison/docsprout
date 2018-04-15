@@ -660,9 +660,9 @@ MonoBehaviour:
   NeedMeter: 60
   NeedRange:
   - 30
-  - 90
-  NeedIncr: 20
-  NeedDecr: 10
+  - 80
+  NeedIncr: 10
+  NeedDecr: 5
 --- !u!114 &857052648 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114194885181121400, guid: ef17d8b6473794d98880c9c1ae2610cc,
@@ -687,12 +687,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dood: {fileID: 857052651}
-  Happiness: 80
+  Happiness: 60
   Waterable: {fileID: 857052645}
-  WaterMeter: 0
-  WaterRange:
-  - 30
-  - 90
 --- !u!1 &920197409
 GameObject:
   m_ObjectHideFlags: 0
