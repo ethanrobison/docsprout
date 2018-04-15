@@ -49,6 +49,6 @@ public class DoodStatus : MonoBehaviour {
 		WaterMeter = Waterable.NeedMeter;
 		CalcHapp ();
 		//Code.Utils.Logging.Log ("WaterMeter: " + WaterMeter.ToString ());
-		Code.Utils.Logging.Log ("Happiness: " + Happiness.ToString ());
+		//Code.Utils.Logging.Log ("Happiness: " + Happiness.ToString ());
 	}
 }
