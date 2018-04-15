@@ -31,6 +31,12 @@ namespace Code.Doods.AI {
 			_current = 0;
 		}
 
+		public override void OnTerminate (Status result)
+		{
+			if (_current < _children.Count) { _children [_current].OnTerminate (result); }
+			base.OnTerminate (result);
+		}
+
 		protected override Status Update ()
 		{
 			// todo we need to make sure to shut things down?
@@ -50,6 +56,12 @@ namespace Code.Doods.AI {
 		public override void OnInitialize ()
 		{
 			_current = 0;
+		}
+
+		public override void OnTerminate (Status result)
+		{
+			if (_current < _children.Count) { _children [_current].OnTerminate (result); }
+			base.OnTerminate (result);
 		}
 
 		protected override Status Update ()
