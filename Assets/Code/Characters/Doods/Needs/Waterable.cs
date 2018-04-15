@@ -26,7 +26,7 @@ public class Waterable : Needs {
 	void WaterTheDood() {
 		if (Input.GetKeyDown(KeyCode.Joystick1Button18)){ // X
 			IncrMeter ();
-			Code.Utils.Logging.Log ("NeedMeter: " + NeedMeter.ToString());
+			//Code.Utils.Logging.Log ("NeedMeter: " + NeedMeter.ToString());
 		}
 	}
 }

@@ -657,10 +657,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dood: {fileID: 857052651}
-  NeedMeter: 60
+  NeedMeter: 55
   NeedRange:
-  - 30
-  - 80
+  - 60
+  - 100
   NeedIncr: 10
   NeedDecr: 5
 --- !u!114 &857052646
