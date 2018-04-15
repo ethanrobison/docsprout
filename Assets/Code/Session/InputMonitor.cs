@@ -35,7 +35,8 @@ namespace Code.Session {
 
 		public void ShutDown () { }
 
-		public void OnGameStart() {
+		public void OnGameStart ()
+		{
 			_mappings.Clear ();
 		}
 
