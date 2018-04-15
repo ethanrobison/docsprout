@@ -9,7 +9,7 @@ namespace Code.Doods
     {
 
         public Root Behavior { get; private set; }
-        Characters.Walk _walk;
+        //Characters.Walk _walk;
         public Characters.Character Character;
         FlockBehaviour _flock;
         public float stopMovingPeriod = .15f;
@@ -21,7 +21,7 @@ namespace Code.Doods
         }
 
         void Start () {
-            _walk = GetComponent<Characters.Walk>();
+            //_walk = GetComponent<Characters.Walk>();
             Character = GetComponent<Characters.Character>();
             _flock = GetComponent<FlockBehaviour>();
         }
@@ -31,13 +31,13 @@ namespace Code.Doods
             float moveDelta = Vector3.Distance(pos, lastPos);
             lastPos = pos;
             if (dist < minDist) {
-                _walk.SetDir(Vector2.zero);
+				StopMoving();
                 return false;
             }
             if (moveDelta < 0.001f) {
                 if (dist < thresh) {
                     if (finishedMove) {
-                        _walk.SetDir(Vector2.zero);
+						StopMoving();
                         return false;
                     }
                     if (!finishedMove && !isTiming) {
@@ -56,9 +56,12 @@ namespace Code.Doods
                 StopCoroutine("stopTimer");
             }
             var direction = (pos - transform.position).normalized;
-            Vector3 force = _flock.CalculateForce();
-            force = force * Time.deltaTime + direction;
-            _walk.SetDir(force);
+            //Vector3 force = _flock.CalculateForce();
+            //force = force * Time.deltaTime + direction;
+            //_walk.SetDir(force);
+			_flock.IsFlocking = true;
+			_flock.AlignWeight = .4f;
+			_flock.SetDir(direction);
             return false;
         }
 
@@ -72,7 +75,9 @@ namespace Code.Doods
         }
 
         public void StopMoving () {
-            _walk.SetDir(Vector2.zero);
+			_flock.IsFlocking = false;
+			//_flock.AlignWeight = 10f;
+            _flock.SetDir(Vector2.zero);
         }
     }
 }

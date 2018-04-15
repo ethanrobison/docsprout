@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33403400788367402}
   - component: {fileID: 23415635763203870}
   - component: {fileID: 114127320986544524}
-  - component: {fileID: 114180465760234054}
   - component: {fileID: 114533009892871612}
   - component: {fileID: 114521481397257990}
   - component: {fileID: 114222685819968402}
@@ -118,21 +117,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   stopMovingPeriod: 0.15
---- !u!114 &114180465760234054
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1616230278856332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16efd7c425c2e403ca21ed3128876469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxSpeed: 5
-  SpeedUpAcceleration: 30
-  SlowDownAcceleration: 40
-  TurningSpeed: 50
+  minForce: 0.5
+  Happiness: 0
 --- !u!114 &114222685819968402
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -173,12 +159,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55938a49d9b341f89b8484f50d929ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxSpeed: 5
+  SpeedUpAcceleration: 30
+  SlowDownAcceleration: 40
+  TurningSpeed: 50
   NeighborhoodRadius: 4
-  Damping: 1
+  Damping: 0
   AttractWeight: 1
   RepelWeight: 15
-  AlignWeight: 0.4
+  AlignWeight: 0
   AvoidWeight: 1
+  IsFlocking: 0
 --- !u!136 &136723769064745836
 CapsuleCollider:
   m_ObjectHideFlags: 1

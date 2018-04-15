@@ -22,12 +22,12 @@ namespace Code.Characters {
 		[HideInInspector] public Vector2 WalkingDir { get; private set; }
 
 
-		void Start ()
+		protected virtual void Start ()
 		{
 			_character = GetComponent<Character> ();
 		}
 
-		void FixedUpdate ()
+		protected void FixedUpdate ()
 		{
 			Move ();
 		}
@@ -132,14 +132,5 @@ namespace Code.Characters {
 			WalkingDir = new Vector2 (heading.x, heading.z);
 		}
 
-		public void AddDir (Vector2 heading)
-		{
-			WalkingDir += heading;
-		}
-
-		public void AddDir (Vector3 heading)
-		{
-			WalkingDir += new Vector2 (heading.x, heading.z);
-		}
 	}
 }

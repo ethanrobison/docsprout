@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33496491580210202}
   - component: {fileID: 23715735923894460}
   - component: {fileID: 114810946240294356}
-  - component: {fileID: 114503996089303892}
   - component: {fileID: 114725309172221498}
   - component: {fileID: 114194885181121400}
   - component: {fileID: 114129846030030584}
@@ -134,21 +133,6 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1
---- !u!114 &114503996089303892
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1482123146661854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16efd7c425c2e403ca21ed3128876469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxSpeed: 5
-  SpeedUpAcceleration: 30
-  SlowDownAcceleration: 40
-  TurningSpeed: 50
 --- !u!114 &114725309172221498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,12 +144,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55938a49d9b341f89b8484f50d929ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxSpeed: 5
+  SpeedUpAcceleration: 30
+  SlowDownAcceleration: 40
+  TurningSpeed: 50
   NeighborhoodRadius: 4
-  Damping: 1
+  Damping: 0
   AttractWeight: 1
   RepelWeight: 15
-  AlignWeight: 0.4
+  AlignWeight: 0
   AvoidWeight: 1
+  IsFlocking: 0
 --- !u!114 &114810946240294356
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -179,6 +168,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   stopMovingPeriod: 0.15
+  minForce: 0.5
+  Happiness: 0
 --- !u!136 &136478789778570138
 CapsuleCollider:
   m_ObjectHideFlags: 1

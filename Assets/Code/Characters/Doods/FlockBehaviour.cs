@@ -12,14 +12,31 @@ namespace Code.Doods {
 		public float AlignWeight = 1f;
 		public float AvoidWeight = 1f;
 
+		[HideInInspector] public bool IsFlocking = true;
+
 		Dood _dood;
 
-		void Start ()
+		protected override void Start ()
 		{
+			base.Start();
 			_dood = GetComponent<Dood> ();
 		}
 
-		public Vector3 CalculateForce ()
+		protected override void Move ()
+		{
+			Vector2 force;
+			Vector2 dir = WalkingDir;
+			if(IsFlocking) {
+				force = CalculateForce()*Time.fixedDeltaTime;
+				SetDir(force + dir);
+			}
+			base.Move ();
+			if(IsFlocking) {
+				SetDir(dir);
+			}
+		}
+
+		public Vector2 CalculateForce ()
 		{
 			Vector3 center = Vector3.zero;
 			int numNearby = 0;
@@ -54,7 +71,7 @@ namespace Code.Doods {
 
 			force -= _dood.Character.velocity * Damping;
 
-			return force;
+			return new Vector2(force.x, force.z);
 		}
 	}
 }
