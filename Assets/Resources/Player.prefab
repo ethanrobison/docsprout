@@ -104,6 +104,10 @@ MonoBehaviour:
   obscuresCamera:
     serializedVersion: 2
     m_Bits: 17
+  CameraZoomZone:
+    serializedVersion: 2
+    m_Bits: 0
+  ZoomZoneSpeed: 5
   xSensitivity: 100
   ySensitivity: 50
   followDistance: 16
@@ -112,7 +116,7 @@ MonoBehaviour:
   invertY: 0
   stiffness: 15
   AlphaSlope: 16
-  CollisionRadius: 0
+  CollisionRadius: 0.25
 --- !u!114 &114195883025543934
 MonoBehaviour:
   m_ObjectHideFlags: 1

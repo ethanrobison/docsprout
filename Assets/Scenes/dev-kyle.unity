@@ -788,7 +788,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 528697301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf54c042bb3d4851a2217d248f5dda7, type: 3}
+  m_Script: {fileID: 11500000, guid: a6b383c01bb99406688929d1054dc264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   camDist: 5

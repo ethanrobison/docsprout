@@ -24,7 +24,10 @@ namespace Code.Doods
             //_walk = GetComponent<Characters.Walk>();
             Character = GetComponent<Characters.Character>();
             _flock = GetComponent<FlockBehaviour>();
+            Behavior = GetComponent<BehaviorTree>().Root;
+
         }
+
         Vector3 lastPos;
         public bool MoveTowards (Vector3 pos, float thresh = 10f, float minDist = 3f) {
             float dist = Vector3.Distance(pos, transform.position);
@@ -41,7 +44,7 @@ namespace Code.Doods
                         return false;
                     }
                     if (!finishedMove && !isTiming) {
-                        StartCoroutine(stopTimer(dist));
+                        StartCoroutine(StopTimer(dist));
                     }
                 }
                 else {
@@ -65,14 +68,17 @@ namespace Code.Doods
             return false;
         }
 
+
         bool finishedMove;
         bool isTiming;
-        IEnumerator stopTimer (float dist) {
+
+        IEnumerator StopTimer (float dist) {
             isTiming = true;
             yield return new WaitForSeconds(stopMovingPeriod * dist);
             isTiming = false;
             finishedMove = true;
         }
+
 
         public void StopMoving () {
 			_flock.IsFlocking = false;

@@ -10,6 +10,9 @@ namespace Code.Characters.Player {
 
 		public LayerMask obscuresCamera;
 
+		public LayerMask CameraZoomZone;
+		public float ZoomZoneSpeed = 2f;
+
 		public float xSensitivity = 100f;
 		public float ySensitivity = 50f;
 		public float followDistance = 16f;
@@ -21,8 +24,8 @@ namespace Code.Characters.Player {
 
 		public float CollisionRadius;
 
-		RaycastHit [] alphaHits;
-		Collider [] alphaOverlaps;
+		RaycastHit [] _alphaHits;
+		Collider [] _overlaps;
 
 		// Use this for initialization
 		void Start ()
@@ -43,8 +46,10 @@ namespace Code.Characters.Player {
 			camera.transform.position = goalCamPos;
 			camera.transform.rotation = goalCamRot;
 
-			alphaHits = new RaycastHit [8];
-			alphaOverlaps = new Collider [4];
+			_alphaHits = new RaycastHit [8];
+			_overlaps = new Collider [4];
+
+			_camDist = followDistance;
 
 		}
 
@@ -65,14 +70,24 @@ namespace Code.Characters.Player {
 		}
 
 		Environment.ScreenDoorTransparency lastSet;
+		float _camDist;
 		void Update ()
 		{
-			//float camDist = followDistance;
+			float goalDist = followDistance;
+			int n = Physics.OverlapSphereNonAlloc (target.position, CollisionRadius, _overlaps);
+			for (int i = 0; i < n; ++i) {
+				CameraZoomZone ccz = _overlaps [i].gameObject.GetComponent<CameraZoomZone> ();
+				if(ccz) {
+					goalDist = Mathf.Min(ccz.camDist, goalDist);
+				}
+			}
+			_camDist = Mathf.Lerp(_camDist, goalDist, ZoomZoneSpeed*Time.deltaTime);
 			Environment.ScreenDoorTransparency sdt = null;
 			float dist = 0f;
-			int n = Physics.OverlapSphereNonAlloc (camera.transform.position, CollisionRadius, alphaOverlaps);
+			n = Physics.OverlapSphereNonAlloc (camera.transform.position, CollisionRadius, _overlaps);
 			for (int i = 0; i < n; ++i) {
-				if (sdt = alphaHits [i].collider.gameObject.GetComponent<Environment.ScreenDoorTransparency> ()) {
+				
+				if (sdt = _overlaps [i].gameObject.GetComponent<Environment.ScreenDoorTransparency> ()) {
 					dist = 0f;
 					break;
 				}
@@ -83,13 +98,13 @@ namespace Code.Characters.Player {
 						   camera.transform.forward *
 						   Vector3.Distance (camera.transform.position, target.position));
 #endif
-				n = Physics.RaycastNonAlloc (camera.transform.position, camera.transform.forward, alphaHits,
+				n = Physics.RaycastNonAlloc (camera.transform.position, camera.transform.forward, _alphaHits,
 												  Vector3.Distance (camera.transform.position, target.position), ~obscuresCamera.value,
 												  QueryTriggerInteraction.Ignore);
 
 				for (int i = 0; i < n; ++i) {
-					if (sdt = alphaHits [i].collider.gameObject.GetComponent<Environment.ScreenDoorTransparency> ()) {
-						dist = alphaHits [i].distance;
+					if (sdt = _alphaHits [i].collider.gameObject.GetComponent<Environment.ScreenDoorTransparency> ()) {
+						dist = _alphaHits [i].distance;
 						break;
 					}
 				}
@@ -110,7 +125,7 @@ namespace Code.Characters.Player {
 			goalCamRot *= Quaternion.AngleAxis (camRotY, Vector3.right);
 
 			RaycastHit hit;
-			float camDist = followDistance;
+			float camDist = _camDist;
 			if (Physics.SphereCast (target.position, CollisionRadius, -(goalCamRot * Vector3.forward), out hit, followDistance - CollisionRadius, obscuresCamera, QueryTriggerInteraction.Ignore)) {
 				camDist = hit.distance;
 			}

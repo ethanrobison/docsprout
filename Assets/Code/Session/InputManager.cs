@@ -10,6 +10,30 @@ namespace Code.Session {
 		None, XBox, Dualshock
 	}
 
+	// if you kludge long enough, it becomes the standard
+	// and no one remembers the before time
+	public enum ControllerButton {
+		// ... shapes?
+		AButton,
+		BButton,
+		XButton,
+		YButton,
+
+		// D-Pad
+		//Up,
+		//Down,
+		//Left,
+		//Right,
+
+		// bumpers
+		RightBumper,
+		LeftBumper,
+
+		// other
+		Start,
+		Select,
+	}
+
 	public class InputManager : ISessionManager {
 		public InputMonitor Monitor { get; private set; }
 
@@ -21,10 +45,20 @@ namespace Code.Session {
 			SetupPlatform ();
 			SetupController ();
 
-			Monitor = new InputMonitor ();
+			Monitor = Game.GO.AddComponent<InputMonitor> ();
+			Monitor.Initialize ();
 		}
 
-		public void ShutDown () { }
+		public void ShutDown ()
+		{
+			Object.Destroy (Monitor);
+			Monitor = null;
+		}
+
+		public void OnGameStart ()
+		{
+			Monitor.OnGameStart ();
+		}
 
 		void SetupPlatform ()
 		{
@@ -67,38 +101,6 @@ namespace Code.Session {
 
 			Logging.Warn ("No controllers plugged in.");
 			Controller = Controller.None;
-		}
-	}
-
-	// todo something something standalone input module?
-	public class InputMonitor {
-		readonly string leftH;
-		readonly string leftV;
-		readonly string rightH;
-		readonly string rightV;
-
-		public float LeftH { get { return Input.GetAxisRaw (leftH); } }
-		public float LeftV { get { return Input.GetAxisRaw (leftV); } }
-		public float RightH { get { return Input.GetAxisRaw (rightH); } }
-		public float RightV { get { return Input.GetAxisRaw (rightV); } }
-
-		public InputMonitor ()
-		{
-			leftH = GetAxisName (true, true);
-			leftV = GetAxisName (true, false);
-			rightH = GetAxisName (false, true);
-			rightV = GetAxisName (false, false);
-		}
-
-		// put all of the string manipulation nastiness into one function
-		string GetAxisName (bool left, bool horizontal)
-		{
-			string name = "";
-			name += left ? "left" : "right";
-			if (Game.Sesh.Input.Controller != Controller.None) { name += "Joy"; }
-			name += horizontal ? "H" : "V";
-
-			return name;
 		}
 	}
 }

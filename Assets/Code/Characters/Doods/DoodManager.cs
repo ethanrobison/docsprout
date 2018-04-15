@@ -27,7 +27,7 @@ namespace Code.Doods {
 			var prefab = Resources.Load ("Doods/" + name + " Dood");
 			var go = (GameObject)Object.Instantiate (prefab, pos, Quaternion.Euler (-90f, 0f, 0f));
 			var dood = go.GetComponent<Dood> ();
-			dood.Initialize ();
+			//dood.Initialize ();
 
 			DoodList.Add (dood);
 		}
