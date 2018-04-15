@@ -6,9 +6,17 @@ namespace Code.Doods.AI {
 
 		protected Composite (Dood dood) : base (dood) { }
 
-		public void AddChild (BehaviorTreeNode node)
+		public void AddToEnd (BehaviorTreeNode node)
 		{
 			_children.Add (node);
+		}
+
+		// HACK ummm???
+		public void AddToFront (BehaviorTreeNode node)
+		{
+			_children.Reverse ();
+			_children.Add (node);
+			_children.Reverse ();
 		}
 	}
 

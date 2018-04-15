@@ -14,16 +14,30 @@ namespace Code.Doods.AI {
 												   10);
 			int layermask = LayerMask.GetMask ("Player");
 
-			var seq = new Sequence (dood);
-			seq.AddChild (follow);
-			seq.AddChild (new LogMessage ("Hello", dood));
-			seq.AddChild (new Idle (dood));
+			//var seq = new Sequence (dood);
+			//seq.AddChild (follow);
+			//seq.AddChild (new LogMessage ("Hello", dood));
+			//seq.AddChild (new Idle (dood));
 
 			var sel = new Selector (dood);
-			sel.AddChild (follow);
-			sel.AddChild (new Idle (dood));
+			//sel.AddChild (follow);
+			//sel.AddChild (new Idle (dood));
 
-			Root = new Root (sel, dood);
+			var close = new PlayerDistance (dood, -1f, 5f);
+			close.AddToEnd (new LogMessage (dood, "close"));
+
+			var medium = new PlayerDistance (dood, 5f, 15f);
+			medium.AddToEnd (new LogMessage (dood, "medium"));
+
+			var far = new PlayerDistance (dood, 15f, float.PositiveInfinity);
+			far.AddToEnd (new LogMessage (dood, "far"));
+
+			sel.AddToEnd (close);
+			sel.AddToEnd (medium);
+			sel.AddToEnd (far);
+
+			Root = new Root (dood);
+			Root.SetChild (sel);
 		}
 
 		void Update ()

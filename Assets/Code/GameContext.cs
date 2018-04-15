@@ -1,11 +1,14 @@
-﻿using Code.Doods;
+﻿using Code.Characters.Player;
+using Code.Doods;
 using Code.UI;
+using Code.Utils;
 using UnityEngine.SceneManagement;
 
 namespace Code {
 	public class GameContext {
 		public DialogManager Dialogs { get; private set; }
 		public DoodManager Doods { get; private set; }
+		public Player Player { get; private set; }
 
 		public void StartGame (int scene)
 		{
@@ -16,6 +19,11 @@ namespace Code {
 			SceneManager.LoadScene (scene);
 
 			Initialize ();
+		}
+
+		public void SetPlayer (Player player)
+		{
+			Player = player;
 		}
 
 		void Initialize ()

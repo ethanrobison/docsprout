@@ -39,9 +39,11 @@
 
 
 	public class Root : BehaviorTreeNode {
-		readonly BehaviorTreeNode _child;
+		BehaviorTreeNode _child;
 
-		public Root (BehaviorTreeNode child, Dood dood) : base (dood)
+		public Root (Dood dood) : base (dood) { }
+
+		public void SetChild (BehaviorTreeNode child)
 		{
 			_child = child;
 		}

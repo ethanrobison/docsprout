@@ -4,7 +4,7 @@ namespace Code.Doods.AI {
 	public class LogMessage : BehaviorTreeNode {
 		readonly string _message;
 
-		public LogMessage (string message, Dood dood) : base (dood)
+		public LogMessage (Dood dood, string message) : base (dood)
 		{
 			_message = message;
 		}
