@@ -52,6 +52,7 @@ public class MainMenuOption : MonoBehaviour {
 			_state = new QuitState (gameObject);
 			break;
 		}
+		_state.Reset ();
 	}
 
 	void OnTriggerEnter (Collider other)
@@ -92,10 +93,15 @@ public class MainMenuOption : MonoBehaviour {
 			_infoText.text = _option.ToString ();
 		}
 
+		protected virtual void SetText () { }
+
 		public abstract void PerformAction ();
 		public abstract void ChangeOption (int direction);
+		public void Reset ()
+		{
+			SetText ();
+		}
 
-		protected virtual void SetText () { }
 	}
 
 
