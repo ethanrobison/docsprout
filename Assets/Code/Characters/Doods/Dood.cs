@@ -14,7 +14,6 @@ namespace Code.Doods
         FlockBehaviour _flock;
         public float stopMovingPeriod = .15f;
         public float minForce = .5f;
-        public int Happiness;
 
         public void Initialize () {
             Behavior = GetComponent<BehaviorTree>().Root;

@@ -7,23 +7,24 @@ public class Waterable : Needs {
 	// Use this for initialization
 	protected override void Start () {
 		base.Start ();
-		NeedMeter = 75;
-		NeedRange = new int [2];
-		NeedRange [0] = 30;
-		NeedRange [1] = 90;
-		NeedIncr = 30;
-		NeedDecr = 20;
-		HappIncr = 20;
-		HappDecr = 10;
+		//NeedMeter = 75f;
+		//NeedRange = new float [2];
+		//NeedRange [0] = 30f;
+		//NeedRange [1] = 90f;
+		//NeedIncr = 30f;
+		//NeedDecr = 7f;
+		//HappIncr = 20;
+		//HappDecr = 10;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		WaterTheDood ();
+
 	}
 
 	void WaterTheDood() {
-		if (Input.GetKeyDown(KeyCode.Joystick1Button18)){
+		if (Input.GetKeyDown(KeyCode.Joystick1Button18)){ // X
 			IncrMeter ();
 			Code.Utils.Logging.Log ("NeedMeter: " + NeedMeter.ToString());
 		}
