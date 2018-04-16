@@ -15,10 +15,12 @@ public class DoodStatus : MonoBehaviour {
 	private float WaterMeter;
 	private float [] WaterRange;
 
+	Code.Doods.DoodColor _doodColor;
 	// Use this for initialization
 	void Start ()
 	{
 		dood = GetComponent<Code.Doods.Dood> ();
+		_doodColor = GetComponent<Code.Doods.DoodColor>();
 
 		HappMin = 0f;
 		HappMax = 100f;
@@ -48,6 +50,9 @@ public class DoodStatus : MonoBehaviour {
 	{
 		WaterMeter = Waterable.NeedMeter;
 		CalcHapp ();
+		if(_doodColor) {
+			_doodColor.Happiness = Happiness/HappMax;
+		}
 		//Code.Utils.Logging.Log ("WaterMeter: " + WaterMeter.ToString ());
 		//Code.Utils.Logging.Log ("Happiness: " + Happiness.ToString ());
 	}

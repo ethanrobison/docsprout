@@ -1643,11 +1643,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4044994274156972, guid: c2731e6701c0f4bf496aa4df96bfb79b, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1685,49 +1680,37 @@ Prefab:
       propertyPath: camera
       value: 
       objectReference: {fileID: 282840813}
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.data[0].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.data[1].inSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.data[1].outSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 114092569214295398, guid: c2731e6701c0f4bf496aa4df96bfb79b,
-        type: 2}
-      propertyPath: zoomCurve.m_Curve.Array.data[1].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c2731e6701c0f4bf496aa4df96bfb79b, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1598507740 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1648072005316490, guid: c2731e6701c0f4bf496aa4df96bfb79b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1598507739}
+--- !u!135 &1598507741
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1598507740}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1598507751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1598507740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b0adeb9b51d4ef9a41a4415d83ceee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1623029331
 GameObject:
   m_ObjectHideFlags: 0
