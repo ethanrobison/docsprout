@@ -1,4 +1,5 @@
-﻿using Code;
+﻿using System.Collections.Generic;
+using Code;
 using Code.Characters.Player;
 using Code.Session;
 using Code.Utils;
@@ -6,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenuOption : MonoBehaviour {
-	public enum MenuOption {
+	public enum OptionType {
 		StartGame,
 		LoadGame,
 		Options,
@@ -14,7 +15,7 @@ public class MainMenuOption : MonoBehaviour {
 		QuitGame
 	}
 
-	public MenuOption Option;
+	public OptionType Option;
 
 	MenuInfo _state;
 
@@ -36,19 +37,19 @@ public class MainMenuOption : MonoBehaviour {
 	void MakeState ()
 	{
 		switch (Option) {
-		case MenuOption.StartGame:
+		case OptionType.StartGame:
 			_state = new StartState (gameObject);
 			break;
-		case MenuOption.LoadGame:
+		case OptionType.LoadGame:
 			_state = new LoadState (gameObject);
 			break;
-		case MenuOption.Options:
+		case OptionType.Options:
 			_state = new OptionsState (gameObject);
 			break;
-		case MenuOption.Acknowledgements:
+		case OptionType.Acknowledgements:
 			_state = new AcknowledgementsState (gameObject);
 			break;
-		case MenuOption.QuitGame:
+		case OptionType.QuitGame:
 			_state = new QuitState (gameObject);
 			break;
 		}
@@ -69,19 +70,22 @@ public class MainMenuOption : MonoBehaviour {
 
 
 	//
-	// container class
+	// menu state
 
 	abstract class MenuInfo {
-		MenuOption _option;
+		OptionType _option;
 		GameObject _parent, _active;
+		protected int _currentOption;
+
 		readonly protected Text _infoText;
+		readonly protected List<MenuOption> _options = new List<MenuOption> ();
 
 		public bool Active {
 			get { return _active != null && _active.activeInHierarchy; }
 			set { _active.SetActive (value); }
 		}
 
-		protected MenuInfo (GameObject parent, MenuOption option)
+		protected MenuInfo (GameObject parent, OptionType option)
 		{
 			_parent = parent;
 			_active = _parent.transform.Find ("Active").gameObject;
@@ -96,7 +100,14 @@ public class MainMenuOption : MonoBehaviour {
 		protected virtual void SetText () { }
 
 		public abstract void PerformAction ();
-		public abstract void ChangeOption (int direction);
+		public virtual void ChangeOption (int direction)
+		{
+			var max = _options.Count;
+			_currentOption += direction;
+			if (_currentOption < 0) { _currentOption += max; }
+			if (_currentOption > max - 1) { _currentOption -= max; }
+		}
+
 		public void Reset ()
 		{
 			SetText ();
@@ -104,12 +115,19 @@ public class MainMenuOption : MonoBehaviour {
 
 	}
 
+	struct MenuOption {
+		public int Index { get; private set; }
+		public string Description { get; private set; }
 
-	//
-	// Menu state
+		public MenuOption (string description, int index)
+		{
+			Index = index;
+			Description = description;
+		}
+	}
 
 	class QuitState : MenuInfo {
-		public QuitState (GameObject parent, MenuOption option = MenuOption.QuitGame) : base (parent, option) { }
+		public QuitState (GameObject parent, OptionType option = OptionType.QuitGame) : base (parent, option) { }
 
 		public override void PerformAction ()
 		{
@@ -119,60 +137,58 @@ public class MainMenuOption : MonoBehaviour {
             Application.Quit(); // Complains about dead code. Boo.
 #endif
 		}
-		public override void ChangeOption (int direction) { }
 	}
 
 	class StartState : MenuInfo {
-		int _scene = 1;
-
-		public StartState (GameObject parent, MenuOption option = MenuOption.StartGame) : base (parent, option) { }
+		public StartState (GameObject parent, OptionType option = OptionType.StartGame) : base (parent, option)
+		{
+			_options.Add (new MenuOption ("dev-ethan", 1));
+			_options.Add (new MenuOption ("dev-kyle", 2));
+			_options.Add (new MenuOption ("dev-alyssa", 3));
+			_options.Add (new MenuOption ("Demo", 4));
+		}
 
 		// FIXME I am hard-coded
 		public override void PerformAction ()
 		{
 #if UNITY_EDITOR
-			Game.Sesh.StartGame (_scene);
+			Game.Sesh.StartGame (_options [_currentOption].Index);
 #else
 			Game.Sesh.StartGame (3);
 #endif
 		}
 
-		const int SCENE_COUNT = 4;
 		public override void ChangeOption (int direction)
 		{
-			_scene += direction;
-			if (_scene > SCENE_COUNT) { _scene -= SCENE_COUNT; }
-			if (_scene < 1) { _scene += SCENE_COUNT; }
+			base.ChangeOption (direction);
 			SetText ();
 		}
+
 		protected override void SetText ()
 		{
-			_infoText.text = string.Format ("Start scene: {0}", _scene);
+			_infoText.text = string.Format ("Start scene: {0}", _options [_currentOption].Index);
 		}
 	}
 
 
 	class OptionsState : MenuInfo {
-		public OptionsState (GameObject parent, MenuOption option = MenuOption.Options) : base (parent, option) { }
+		public OptionsState (GameObject parent, OptionType option = OptionType.Options) : base (parent, option) { }
 
 		public override void PerformAction () { }
-		public override void ChangeOption (int direction) { }
 	}
 
 
 	class AcknowledgementsState : MenuInfo {
-		public AcknowledgementsState (GameObject parent, MenuOption option = MenuOption.Acknowledgements) : base (parent, option) { }
+		public AcknowledgementsState (GameObject parent, OptionType option = OptionType.Acknowledgements) : base (parent, option) { }
 
 		public override void PerformAction () { }
-		public override void ChangeOption (int direction) { }
 	}
 
 
 	class LoadState : MenuInfo {
-		public LoadState (GameObject parent, MenuOption option = MenuOption.LoadGame) : base (parent, option) { }
+		public LoadState (GameObject parent, OptionType option = OptionType.LoadGame) : base (parent, option) { }
 
 		public override void PerformAction () { }
-		public override void ChangeOption (int direction) { }
 	}
 }
 
