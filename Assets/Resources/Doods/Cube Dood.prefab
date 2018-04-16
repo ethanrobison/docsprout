@@ -21,12 +21,12 @@ GameObject:
   - component: {fileID: 4575573772489638}
   - component: {fileID: 33159600050591604}
   - component: {fileID: 23367660324888900}
+  - component: {fileID: 136035155002666406}
+  - component: {fileID: 54645343655804636}
   - component: {fileID: 114755926977949780}
   - component: {fileID: 114209381027200970}
   - component: {fileID: 114305946404934072}
   - component: {fileID: 114761358609688482}
-  - component: {fileID: 136035155002666406}
-  - component: {fileID: 54645343655804636}
   - component: {fileID: 114427886444243136}
   - component: {fileID: 114699187481208036}
   - component: {fileID: 114550775511848138}
@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff7cc57e07ca4cc8a425dc28c79dadb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dood: {fileID: 114755926977949780}
+  Dood: {fileID: 0}
   Happiness: 60
   Waterable: {fileID: 114427886444243136}
 --- !u!114 &114572850062439924

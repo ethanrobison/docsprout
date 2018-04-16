@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Doods {
 	public class DoodColor : MonoBehaviour {
-
 		[SerializeField] Color _color;
 		[SerializeField] float _happiness;
 		[SerializeField] Texture _texture;

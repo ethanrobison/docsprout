@@ -41,7 +41,6 @@ public class DoodStatus : MonoBehaviour {
 		} else if (Happiness >= _maxHappiness) {
 			Happiness = _maxHappiness;
 		}
-
 	}
 
 	void Update ()
