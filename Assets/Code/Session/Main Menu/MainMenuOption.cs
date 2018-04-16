@@ -116,12 +116,12 @@ public class MainMenuOption : MonoBehaviour {
 	}
 
 	struct MenuOption {
-		public int Index { get; private set; }
+		public int Value { get; private set; }
 		public string Description { get; private set; }
 
-		public MenuOption (string description, int index)
+		public MenuOption (string description, int value)
 		{
-			Index = index;
+			Value = value;
 			Description = description;
 		}
 	}
@@ -142,20 +142,18 @@ public class MainMenuOption : MonoBehaviour {
 	class StartState : MenuInfo {
 		public StartState (GameObject parent, OptionType option = OptionType.StartGame) : base (parent, option)
 		{
+#if UNITY_EDITOR
 			_options.Add (new MenuOption ("dev-ethan", 1));
 			_options.Add (new MenuOption ("dev-kyle", 2));
 			_options.Add (new MenuOption ("dev-alyssa", 3));
+#endif
 			_options.Add (new MenuOption ("Demo", 4));
 		}
 
 		// FIXME I am hard-coded
 		public override void PerformAction ()
 		{
-#if UNITY_EDITOR
-			Game.Sesh.StartGame (_options [_currentOption].Index);
-#else
-			Game.Sesh.StartGame (3);
-#endif
+			Game.Sesh.StartGame (_options [_currentOption].Value);
 		}
 
 		public override void ChangeOption (int direction)
@@ -166,7 +164,7 @@ public class MainMenuOption : MonoBehaviour {
 
 		protected override void SetText ()
 		{
-			_infoText.text = string.Format ("Start scene: {0}", _options [_currentOption].Index);
+			_infoText.text = string.Format ("Start scene: {0}", _options [_currentOption].Value);
 		}
 	}
 
