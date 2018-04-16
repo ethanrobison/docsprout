@@ -24,6 +24,8 @@ namespace Code.Characters.Player {
 
 		public float CollisionRadius;
 
+		//public AnimationCurve zoomCurve;
+
 		RaycastHit [] _alphaHits;
 		Collider [] _overlaps;
 
@@ -81,7 +83,13 @@ namespace Code.Characters.Player {
 					goalDist = Mathf.Min(ccz.camDist, goalDist);
 				}
 			}
-			_camDist = Mathf.Lerp(_camDist, goalDist, ZoomZoneSpeed*Time.deltaTime);
+
+			if(_camDist < goalDist) {
+				_camDist = Mathf.Min(_camDist + ZoomZoneSpeed*Time.deltaTime, goalDist);
+			}
+			if(_camDist > goalDist) {
+				_camDist = Mathf.Max(_camDist - ZoomZoneSpeed*Time.deltaTime, goalDist);
+			}
 			Environment.ScreenDoorTransparency sdt = null;
 			float dist = 0f;
 			n = Physics.OverlapSphereNonAlloc (camera.transform.position, CollisionRadius, _overlaps);

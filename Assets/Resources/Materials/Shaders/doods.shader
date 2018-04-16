@@ -1,5 +1,6 @@
 ﻿Shader "Custom/doods" {
 	Properties {
+        [PerRendererData] _MainTex("Texture", 2D) = "black" {}
 		_Color ("Happy Color", Color) = (1,1,1,1)
         _SickColor ("Sick Color", Color) = (1,1,1,1)
         _Happiness ("Happiness", Range(0, 1)) = 1
@@ -19,7 +20,7 @@
 
         #include "celLighting.cginc"
 
-		sampler2D _MainTex;
+        sampler2D _MainTex;
 
 		struct Input {
 			float2 uv_MainTex;
@@ -47,9 +48,10 @@
         }*/
 
 		void surf (Input IN, inout SurfaceOutput o) {
+            fixed4 texCol = tex2D(_MainTex, IN.uv_MainTex);
             fixed4 c = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
             fixed h = UNITY_ACCESS_INSTANCED_PROP(Props, _Happiness);
-			o.Albedo = lerp(_SickColor.rgb, c.rgb, h);
+			o.Albedo = lerp(lerp(_SickColor.rgb, c.rgb, h), texCol.rgb, texCol.a);
 		}
 		ENDCG
 	}

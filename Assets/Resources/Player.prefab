@@ -107,7 +107,7 @@ MonoBehaviour:
   CameraZoomZone:
     serializedVersion: 2
     m_Bits: 0
-  ZoomZoneSpeed: 5
+  ZoomZoneSpeed: 25
   xSensitivity: 100
   ySensitivity: 50
   followDistance: 16
