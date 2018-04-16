@@ -23,8 +23,6 @@ namespace Code.Session {
 
 		public void Initialize ()
 		{
-			_mappings.Clear ();
-
 			// HACK I am sorry, future me/kyle/alyssa
 			leftH = GetAxisName (true, true);
 			leftV = GetAxisName (true, false);
@@ -42,7 +40,8 @@ namespace Code.Session {
 
 		void Update ()
 		{
-			foreach (var pair in _mappings) {
+			for (int i = 0, c = _mappings.Count; i < c; i++) {
+				var pair = _mappings [i];
 				if (Input.GetKeyDown (pair.ButtonName)) { pair.OnPress (); }
 			}
 		}

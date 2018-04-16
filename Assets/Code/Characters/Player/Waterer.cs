@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Code;
+using Code.Session;
+using Code.Utils;
 using UnityEngine;
 
 public class Waterer : MonoBehaviour {
@@ -9,21 +10,16 @@ public class Waterer : MonoBehaviour {
 
 	void Start ()
 	{
-		
+		Game.Sesh.Input.Monitor.RegisterMapping (ControllerButton.XButton, WaterNearby);
 	}
 
-	void Update ()
+
+	void WaterNearby ()
 	{
-		if (Input.GetKeyDown (KeyCode.Joystick1Button18)) { //X
-			Collider [] cols = Physics.OverlapSphere (SpherePos.position, Radius);
-			Waterable waterable;
-			foreach (Collider col in cols) {
-				waterable = col.gameObject.GetComponent<Waterable> ();
-				if (waterable) {
-					waterable.IncrMeter ();
-				}
-			}
+		Collider [] cols = Physics.OverlapSphere (SpherePos.position, Radius);
+		foreach (Collider col in cols) {
+			var waterable = col.gameObject.GetComponent<Waterable> ();
+			if (waterable != null) { waterable.IncrMeter (); }
 		}
 	}
-
 }

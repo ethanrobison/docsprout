@@ -28,6 +28,9 @@
 			Game.SetContext (this, ctx);
 
 			ctx.StartGame (scene);
+
+			Input.OnGameStart ();
+			Prefs.OnGameStart ();
 		}
 	}
 
