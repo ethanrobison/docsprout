@@ -19,6 +19,8 @@ namespace Code.Characters.Player {
 		{
 			_walkComponent = GetComponent<Walk> ();
 			_camController = GetComponent<CameraController> ();
+
+			if (Game.Ctx != null) { Game.Ctx.SetPlayer (this); }
 		}
 
 		void Update ()

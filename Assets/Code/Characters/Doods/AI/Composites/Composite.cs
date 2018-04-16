@@ -6,9 +6,17 @@ namespace Code.Doods.AI {
 
 		protected Composite (Dood dood) : base (dood) { }
 
-		public void AddChild (BehaviorTreeNode node)
+		public void AddToEnd (BehaviorTreeNode node)
 		{
 			_children.Add (node);
+		}
+
+		// HACK ummm???
+		public void AddToFront (BehaviorTreeNode node)
+		{
+			_children.Reverse ();
+			_children.Add (node);
+			_children.Reverse ();
 		}
 	}
 
@@ -21,6 +29,12 @@ namespace Code.Doods.AI {
 		public override void OnInitialize ()
 		{
 			_current = 0;
+		}
+
+		public override void OnTerminate (Status result)
+		{
+			if (_current < _children.Count) { _children [_current].OnTerminate (result); }
+			base.OnTerminate (result);
 		}
 
 		protected override Status Update ()
@@ -42,6 +56,12 @@ namespace Code.Doods.AI {
 		public override void OnInitialize ()
 		{
 			_current = 0;
+		}
+
+		public override void OnTerminate (Status result)
+		{
+			if (_current < _children.Count) { _children [_current].OnTerminate (result); }
+			base.OnTerminate (result);
 		}
 
 		protected override Status Update ()
