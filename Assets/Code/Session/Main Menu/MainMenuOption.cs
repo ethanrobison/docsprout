@@ -77,7 +77,7 @@ public class MainMenuOption : MonoBehaviour {
 		readonly protected Text _infoText;
 
 		public bool Active {
-			get { return _active.activeInHierarchy; }
+			get { return _active != null && _active.activeInHierarchy; }
 			set { _active.SetActive (value); }
 		}
 
