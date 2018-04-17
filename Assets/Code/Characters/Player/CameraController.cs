@@ -135,7 +135,7 @@ namespace Code.Characters.Player {
 
 			RaycastHit hit;
 			float camDist = _camDist;
-			if (Physics.SphereCast (target.position, CollisionRadius, -(goalCamRot * Vector3.forward), out hit, followDistance - CollisionRadius, obscuresCamera, QueryTriggerInteraction.Ignore)) {
+			if (Physics.SphereCast (target.position, CollisionRadius, -(goalCamRot * Vector3.forward), out hit, camDist - CollisionRadius, obscuresCamera, QueryTriggerInteraction.Ignore)) {
 				camDist = hit.distance;
 			}
 

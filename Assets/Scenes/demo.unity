@@ -263,7 +263,8 @@ GameObject:
   - component: {fileID: 266166476}
   - component: {fileID: 266166478}
   - component: {fileID: 266166477}
-  m_Layer: 0
+  - component: {fileID: 266166479}
+  m_Layer: 11
   m_Name: tree (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,6 +315,18 @@ CapsuleCollider:
   m_Height: 0.05
   m_Direction: 2
   m_Center: {x: 0, y: 0.002, z: 0.02}
+--- !u!114 &266166479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 266166475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2ee44594275464799a07abaf0d335b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alpha: 1
 --- !u!1 &282840810
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,7 +408,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 519181034}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,7 +437,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 635285555}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,7 +467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 651046159}
   - component: {fileID: 651046160}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,7 +548,7 @@ GameObject:
   m_Component:
   - component: {fileID: 681903717}
   - component: {fileID: 681903718}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +681,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 740275570}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -866,7 +879,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 976685809}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -896,7 +909,7 @@ GameObject:
   m_Component:
   - component: {fileID: 999727630}
   - component: {fileID: 999727631}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -976,7 +989,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1025291114}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1005,7 +1018,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1134212231}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1081,7 +1094,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1214392505}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1110,7 +1123,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1294960505}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1321,7 +1334,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1602163736}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1351,7 +1364,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1674167015}
   - component: {fileID: 1674167016}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1464,7 +1477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b383c01bb99406688929d1054dc264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CamDist: 6
+  CamDist: 7
 --- !u!65 &1680626878
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1561,7 +1574,8 @@ GameObject:
   - component: {fileID: 1794321460}
   - component: {fileID: 1794321462}
   - component: {fileID: 1794321461}
-  m_Layer: 0
+  - component: {fileID: 1794321463}
+  m_Layer: 11
   m_Name: tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1612,6 +1626,18 @@ CapsuleCollider:
   m_Height: 0.05
   m_Direction: 2
   m_Center: {x: 0, y: 0.002, z: 0.02}
+--- !u!114 &1794321463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1794321459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2ee44594275464799a07abaf0d335b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alpha: 1
 --- !u!1 &1804555176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,7 +1646,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1804555177}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone.005_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1648,7 +1674,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1859800264}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1677,7 +1703,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2110230906}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bone.005_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
