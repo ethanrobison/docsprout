@@ -7,8 +7,13 @@ namespace Code.Interaction
     /// </summary>
     public class SpriteFacing : MonoBehaviour
     {
+        public bool Reverse;
+
         private void Update () {
-            transform.rotation = Quaternion.LookRotation(-Camera.main.transform.forward, Camera.main.transform.up);
+            transform.rotation = Quaternion.LookRotation(
+                (Reverse ? -1 : 1) * Camera.main.transform.forward,
+                Camera.main.transform.up
+            );
         }
     }
 }
