@@ -18,6 +18,7 @@ namespace Code.Characters.Doods.Needs
         private void Start () {
             GetComponent<Dood>();
             _doodColor = GetComponent<DoodColor>();
+            _doodColor.IsHighlighted = true;
 
             _minHappiness = 0f;
             _maxHappiness = 100f;

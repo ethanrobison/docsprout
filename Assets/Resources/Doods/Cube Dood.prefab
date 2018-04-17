@@ -281,7 +281,6 @@ MonoBehaviour:
   AttractWeight: 1
   RepelWeight: 15
   AlignWeight: 0
-  AvoidWeight: 1
   IsFlocking: 0
 --- !u!114 &114305946404934072
 MonoBehaviour:
@@ -294,10 +293,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 644cb295d212b4e1f9f69beb3e1b4ebb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: {x: 0, y: 0, z: 0}
-  isOnGround: 0
-  collisionFlags: 0
-  groundNormal: {x: 0, y: 1, z: 0}
+  Velocity: {x: 0, y: 0, z: 0}
+  IsOnGround: 0
+  CollisionFlags: 0
+  GroundNormal: {x: 0, y: 1, z: 0}
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1
@@ -312,8 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd1598187056442a83b7f9b8b4ee5af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dood: {fileID: 114755926977949780}
-  NeedMeter: 40
+  StartingMeter: 50
   NeedRange:
   - 50
   - 90
@@ -330,7 +328,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff7cc57e07ca4cc8a425dc28c79dadb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dood: {fileID: 0}
   Happiness: 60
   Waterable: {fileID: 114427886444243136}
 --- !u!114 &114572850062439924
@@ -366,7 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48cccd1bc36364bb8886f0bf77cd5a13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dood: {fileID: 114755926977949780}
+  Dood: {fileID: 0}
   StatusDisplay: {fileID: 1951386401433650}
   NeedWater: {fileID: 1223590202223632}
   StopWater: {fileID: 1470907255665958}
@@ -382,8 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Character: {fileID: 114305946404934072}
-  stopMovingPeriod: 0.15
-  minForce: 0.5
+  StopMovingPeriod: 0.15
 --- !u!114 &114761358609688482
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -431,6 +427,7 @@ MonoBehaviour:
   _color: {r: 0.493388, g: 0.8773585, b: 0.34349412, a: 0}
   _happiness: 0
   _texture: {fileID: 0}
+  _highlightColor: {r: 0, g: 0.9825597, b: 1, a: 0}
 --- !u!136 &136035155002666406
 CapsuleCollider:
   m_ObjectHideFlags: 1

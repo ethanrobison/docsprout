@@ -24,9 +24,9 @@ namespace Code.Environment
 
         // Update is called once per frame
         private void Update () {
-            _time1 += Time.deltaTime / Period1;
+            _time1 += Time.deltaTime / Period1 + 0.01f;
             _time1 %= 1f;
-            _time2 += Time.deltaTime / Period2;
+            _time2 += Time.deltaTime / Period2 + 0.01f;
             _time2 %= 1f;
             Bone1.localRotation = _rot1 * Quaternion.AngleAxis(Mathf.Sin(_time1 * 2f * Mathf.PI), Vector3.right);
             Bone2.localRotation = _rot2 * Quaternion.AngleAxis(Mathf.Sin(_time2 * 2f * Mathf.PI), Vector3.right);

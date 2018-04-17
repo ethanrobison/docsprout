@@ -22,7 +22,10 @@ namespace Code.Interaction
 
         void IApproachable.OnDepart () { StatusDisplay.SetActive(false); }
 
-        private void Start () { _waterable = Dood.GetComponent<Waterable>(); }
+        private void Start () {
+            Dood = GetComponent<Dood>();
+            _waterable = Dood.GetComponent<Waterable>();
+        }
 
         private void Update () {
             if (!_waterable) { return; }

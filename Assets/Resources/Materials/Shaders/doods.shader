@@ -13,52 +13,6 @@
 		Tags { "RenderType"="Opaque" }
 		LOD 200
 
-        Pass {
-            Cull Front
-
-            CGPROGRAM
-
-            #pragma vertex vert
-            #pragma fragment frag
-
-            #include "UnityCG.cginc"
-
-            struct appdata {
-                float4 vertex : POSITION;
-                float3 normal : NORMAL;
-                UNITY_VERTEX_INPUT_INSTANCE_ID
-            };
-
-            struct v2f {
-                float4 pos : SV_POSITION;
-                UNITY_VERTEX_INPUT_INSTANCE_ID
-            };
-
-            UNITY_INSTANCING_BUFFER_START(Props)
-                UNITY_DEFINE_INSTANCED_PROP(float4, _HighlightColor)
-                UNITY_DEFINE_INSTANCED_PROP(float, _HighlightSize)
-            UNITY_INSTANCING_BUFFER_END(Props)
-
-            v2f vert(appdata v) {
-                v2f o;
-                UNITY_SETUP_INSTANCE_ID(v);
-                UNITY_TRANSFER_INSTANCE_ID(v, o);
-                float4 viewNorm = mul(UNITY_MATRIX_IT_MV, float4(v.normal, 0));
-                float4 viewPos = float4(UnityObjectToViewPos(v.vertex), 1);
-                viewPos += viewNorm*UNITY_ACCESS_INSTANCED_PROP(Props, _HighlightSize);
-                o.pos = mul(UNITY_MATRIX_P, viewPos);
-                return o;
-            }
-
-            half4 frag(v2f i) : SV_TARGET
-            {
-                UNITY_SETUP_INSTANCE_ID(i);
-                return UNITY_ACCESS_INSTANCED_PROP(Props, _HighlightColor);
-            }
-
-            ENDCG
-        }
-
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
 		#pragma surface surf Cel fullforwardshadows
@@ -102,6 +56,58 @@
 			o.Albedo = lerp(lerp(_SickColor.rgb, c.rgb, h), texCol.rgb, texCol.a);
 		}
 		ENDCG
+		
+		
+		Pass {
+		    Tags { "LightMode" = "Always" }
+            Cull Front
+            
+//            ZWrite on
+//            ZTest LEqual
+
+            CGPROGRAM
+
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include "UnityCG.cginc"
+
+            struct appdata {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct v2f {
+                float4 pos : SV_POSITION;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            UNITY_INSTANCING_BUFFER_START(Props)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _HighlightColor)
+                UNITY_DEFINE_INSTANCED_PROP(float, _HighlightSize)
+            UNITY_INSTANCING_BUFFER_END(Props)
+
+            v2f vert(appdata v) {
+                v2f o;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_TRANSFER_INSTANCE_ID(v, o);
+                float3 worldNorm = UnityObjectToWorldNormal(v.normal);
+                float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
+                worldPos.xyz += worldNorm*UNITY_ACCESS_INSTANCED_PROP(Props, _HighlightSize);
+                o.pos = mul(UNITY_MATRIX_VP, worldPos);
+                return o;
+            }
+
+            half4 frag(v2f i) : SV_TARGET
+            {
+                UNITY_SETUP_INSTANCE_ID(i);
+                return UNITY_ACCESS_INSTANCED_PROP(Props, _HighlightColor);
+            }
+
+            ENDCG
+            
+        }
 	}
 	FallBack "Diffuse"
 }

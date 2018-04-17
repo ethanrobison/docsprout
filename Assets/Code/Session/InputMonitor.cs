@@ -50,7 +50,10 @@ namespace Code.Session
         private void Update () {
             for (int i = 0, c = _mappings.Count; i < c; i++) {
                 var pair = _mappings[i];
-                if (Input.GetKeyDown(pair.ButtonName)) { pair.OnPress(); }
+                if (Input.GetKeyDown(pair.ButtonName)) {
+                    pair.OnPress();
+                    c = _mappings.Count;
+                }
             }
         }
 
@@ -59,7 +62,9 @@ namespace Code.Session
         private static string GetAxisName (bool left, bool horizontal) {
             var axisname = "";
             axisname += left ? "left" : "right";
-            if (Game.Sesh.Input.Controller != Controller.None) { axisname += "Joy"; }
+            if (Game.Sesh.Input.Controller != Controller.None) {
+                axisname += "Joy";
+            }
 
             axisname += horizontal ? "H" : "V";
 
@@ -67,7 +72,9 @@ namespace Code.Session
         }
 
         private void SetButtonNames () {
-            if (Game.Sesh.Input.Controller == Controller.None) { return; } // todo how to handle this?
+            if (Game.Sesh.Input.Controller == Controller.None) {
+                return;
+            } // todo how to handle this?
 
             var xbox = Game.Sesh.Input.Controller == Controller.XBox;
 

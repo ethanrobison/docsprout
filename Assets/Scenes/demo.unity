@@ -297,12 +297,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34acc24047e141d8b56a10cc95ff0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  period1: 2
-  amplitude1: 10
-  bone1: {fileID: 519181034}
-  period2: 1.3
-  amplitude2: 3
-  bone2: {fileID: 635285555}
+  Period1: 10
+  Bone1: {fileID: 519181034}
+  Period2: 3
+  Bone2: {fileID: 1294960505}
 --- !u!136 &266166478
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1463,10 +1461,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1680626875}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cf54c042bb3d4851a2217d248f5dda7, type: 3}
+  m_Script: {fileID: 11500000, guid: a6b383c01bb99406688929d1054dc264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camDist: 5
+  CamDist: 6
 --- !u!65 &1680626878
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1597,12 +1595,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34acc24047e141d8b56a10cc95ff0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  period1: 2
-  amplitude1: 10
-  bone1: {fileID: 1025291114}
-  period2: 1.3
-  amplitude2: 3
-  bone2: {fileID: 1214392505}
+  Period1: 10
+  Bone1: {fileID: 1025291114}
+  Period2: 3
+  Bone2: {fileID: 1134212231}
 --- !u!136 &1794321462
 CapsuleCollider:
   m_ObjectHideFlags: 0
