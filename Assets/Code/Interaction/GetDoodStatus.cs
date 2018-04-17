@@ -1,45 +1,44 @@
-﻿using Code.Doods;
+﻿using Code.Characters.Doods;
+using Code.Characters.Doods.Needs;
 using UnityEngine;
 
-public class GetDoodStatus : MonoBehaviour, IApproachable {
+namespace Code.Interaction
+{
+    public class GetDoodStatus : MonoBehaviour, IApproachable
+    {
+        public Dood Dood;
 
-	// get a dood's status when you approach it
+        public GameObject StatusDisplay;
 
-	public Code.Doods.Dood dood;
-	private Waterable Waterable;
+        public GameObject NeedWater;
+        public GameObject StopWater;
 
-	public GameObject StatusDisplay;
+        private Waterable _waterable;
 
-	public GameObject NeedWater;
-	public GameObject StopWater;
+        void IApproachable.OnApproach () {
+            StatusDisplay.SetActive(true);
+            // display happiness meter
+        }
 
-	void IApproachable.OnApproach() {
-		StatusDisplay.SetActive (true);
-		// display happiness meter
-	}
+        void IApproachable.OnDepart () { StatusDisplay.SetActive(false); }
 
-	void IApproachable.OnDepart() {
-		StatusDisplay.SetActive (false);
-	}
+        private void Start () { _waterable = Dood.GetComponent<Waterable>(); }
 
-	// Use this for initialization
-	void Start () {
-		Waterable = dood.GetComponent<Waterable> ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (Waterable) {
-			if (Waterable.NeedMeter < Waterable.NeedRange [0]) {
-				NeedWater.SetActive (true);
-				StopWater.SetActive (false);
-			} else if (Waterable.NeedMeter > Waterable.NeedRange [1]) {
-				StopWater.SetActive (true);
-				NeedWater.SetActive (false);
-			} else {
-				NeedWater.SetActive (false);
-				StopWater.SetActive (false);
-			}
-		}
-	}
+        private void Update () {
+            if (!_waterable) { return; }
+
+            if (_waterable.StartingMeter < _waterable.NeedRange[0]) {
+                NeedWater.SetActive(true);
+                StopWater.SetActive(false);
+            }
+            else if (_waterable.StartingMeter > _waterable.NeedRange[1]) {
+                StopWater.SetActive(true);
+                NeedWater.SetActive(false);
+            }
+            else {
+                NeedWater.SetActive(false);
+                StopWater.SetActive(false);
+            }
+        }
+    }
 }

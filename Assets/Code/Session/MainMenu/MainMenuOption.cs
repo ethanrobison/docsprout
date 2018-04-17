@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Characters.Player;
 using Code.Utils;
 using UnityEngine;
@@ -6,189 +7,184 @@ using UnityEngine.UI;
 
 namespace Code.Session.MainMenu
 {
-	public class MainMenuOption : MonoBehaviour {
-		public enum OptionType {
-			StartGame,
-			LoadGame,
-			Options,
-			Acknowledgements,
-			QuitGame
-		}
+    public class MainMenuOption : MonoBehaviour
+    {
+        public enum OptionType
+        {
+            StartGame,
+            LoadGame,
+            Options,
+            Acknowledgements,
+            QuitGame
+        }
 
-		public OptionType Option;
+        public OptionType Option;
 
-		MenuInfo _state;
+        MenuInfo _state;
 
-		void Start ()
-		{
-			MakeState ();
-			var monitor = Game.Sesh.Input.Monitor;
-			monitor.RegisterMapping (ControllerButton.AButton, () => {
-				if (_state.Active) { _state.PerformAction (); }
-			});
-			monitor.RegisterMapping (ControllerButton.RightBumper, () => {
-				if (_state.Active) { _state.ChangeOption (1); }
-			});
-			monitor.RegisterMapping (ControllerButton.LeftBumper, () => {
-				if (_state.Active) { _state.ChangeOption (-1); }
-			});
-		}
+        private void Start () {
+            MakeState();
+            var monitor = Game.Sesh.Input.Monitor;
+            monitor.RegisterMapping(ControllerButton.AButton, () => {
+                if (_state.Active) { _state.PerformAction(); }
+            });
+            monitor.RegisterMapping(ControllerButton.RightBumper, () => {
+                if (_state.Active) { _state.ChangeOption(1); }
+            });
+            monitor.RegisterMapping(ControllerButton.LeftBumper, () => {
+                if (_state.Active) { _state.ChangeOption(-1); }
+            });
+        }
 
-		void MakeState ()
-		{
-			switch (Option) {
-				case OptionType.StartGame:
-					_state = new StartState (gameObject);
-					break;
-				case OptionType.LoadGame:
-					_state = new LoadState (gameObject);
-					break;
-				case OptionType.Options:
-					_state = new OptionsState (gameObject);
-					break;
-				case OptionType.Acknowledgements:
-					_state = new AcknowledgementsState (gameObject);
-					break;
-				case OptionType.QuitGame:
-					_state = new QuitState (gameObject);
-					break;
-			}
-			_state.Reset ();
-		}
+        void MakeState () {
+            switch (Option) {
+                case OptionType.StartGame:
+                    _state = new StartState(gameObject);
+                    break;
+                case OptionType.LoadGame:
+                    _state = new LoadState(gameObject);
+                    break;
+                case OptionType.Options:
+                    _state = new OptionsState(gameObject);
+                    break;
+                case OptionType.Acknowledgements:
+                    _state = new AcknowledgementsState(gameObject);
+                    break;
+                case OptionType.QuitGame:
+                    _state = new QuitState(gameObject);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
-		void OnTriggerEnter (Collider other)
-		{
-			if (other.gameObject.GetComponent<Player> () == null) { return; }
-			_state.Active = true;
-		}
+            _state.Reset();
+        }
 
-		void OnTriggerExit (Collider other)
-		{
-			if (other.gameObject.GetComponent<Player> () == null) { return; }
-			_state.Active = false;
-		}
+        private void OnTriggerEnter (Collider other) {
+            if (other.gameObject.GetComponent<Player>() == null) { return; }
+
+            _state.Active = true;
+        }
+
+        private void OnTriggerExit (Collider other) {
+            if (other.gameObject.GetComponent<Player>() == null) { return; }
+
+            _state.Active = false;
+        }
 
 
-		//
-		// menu state
+        //
+        // menu state
 
-		abstract class MenuInfo {
-			OptionType _option;
-			GameObject _parent, _active;
-			protected int _currentOption;
+        private abstract class MenuInfo
+        {
+            protected int CurrentOption;
 
-			readonly protected Text _infoText;
-			readonly protected List<MenuOption> _options = new List<MenuOption> ();
+            protected readonly Text InfoText;
+            protected readonly List<MenuOption> Options = new List<MenuOption>();
 
-			public bool Active {
-				get { return _active != null && _active.activeInHierarchy; }
-				set { _active.SetActive (value); }
-			}
+            private readonly GameObject _active;
 
-			protected MenuInfo (GameObject parent, OptionType option)
-			{
-				_parent = parent;
-				_active = _parent.transform.Find ("Active").gameObject;
-				Active = false;
+            public bool Active {
+                get { return _active != null && _active.activeInHierarchy; }
+                set { _active.SetActive(value); }
+            }
 
-				_option = option;
+            protected MenuInfo (GameObject parent, OptionType option) {
+                var parent1 = parent;
+                _active = parent1.transform.Find("Active").gameObject;
+                Active = false;
 
-				_infoText = UIUtils.FindUICompOfType<Text> (_parent.transform, "Info/Text");
-				_infoText.text = _option.ToString ();
-			}
+                InfoText = UIUtils.FindUICompOfType<Text>(parent1.transform, "Info/Text");
+                InfoText.text = option.ToString();
+            }
 
-			protected virtual void SetText () { }
+            protected virtual void SetText () { }
 
-			public abstract void PerformAction ();
-			public virtual void ChangeOption (int direction)
-			{
-				var max = _options.Count;
-				_currentOption += direction;
-				if (_currentOption < 0) { _currentOption += max; }
-				if (_currentOption > max - 1) { _currentOption -= max; }
-			}
+            public abstract void PerformAction ();
 
-			public void Reset ()
-			{
-				SetText ();
-			}
+            public virtual void ChangeOption (int direction) {
+                var max = Options.Count;
+                CurrentOption += direction;
+                if (CurrentOption < 0) { CurrentOption += max; }
 
-		}
+                if (CurrentOption > max - 1) { CurrentOption -= max; }
+            }
 
-		struct MenuOption {
-			public int Index { get; private set; }
-			public string Description { get; private set; }
+            public void Reset () { SetText(); }
+        }
 
-			public MenuOption (string description, int index) : this()
-			{
-				Index = index;
-				Description = description;
-			}
-		}
+        private struct MenuOption
+        {
+            public int Index { get; private set; }
 
-		class QuitState : MenuInfo {
-			public QuitState (GameObject parent, OptionType option = OptionType.QuitGame) : base (parent, option) { }
+            public MenuOption (int index) : this() { Index = index; }
+        }
 
-			public override void PerformAction ()
-			{
+        private class QuitState : MenuInfo
+        {
+            public QuitState (GameObject parent, OptionType option = OptionType.QuitGame) : base(parent, option) { }
+
+            public override void PerformAction () {
 #if UNITY_EDITOR
-				UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
 #else
             Application.Quit(); // Complains about dead code. Boo.
 #endif
-			}
-		}
+            }
+        }
 
-		class StartState : MenuInfo {
-			public StartState (GameObject parent, OptionType option = OptionType.StartGame) : base (parent, option)
-			{
-				_options.Add (new MenuOption ("dev-ethan", 1));
-				_options.Add (new MenuOption ("dev-kyle", 2));
-				_options.Add (new MenuOption ("dev-alyssa", 3));
-				_options.Add (new MenuOption ("Demo", 4));
-			}
+        private class StartState : MenuInfo
+        {
+            public StartState (GameObject parent, OptionType option = OptionType.StartGame) : base(parent, option) {
+                Options.Add(new MenuOption(1));
+                Options.Add(new MenuOption(2));
+                Options.Add(new MenuOption(3));
+                Options.Add(new MenuOption(4));
+            }
 
-			// FIXME I am hard-coded
-			public override void PerformAction ()
-			{
+            // FIXME I am hard-coded
+            public override void PerformAction () {
 #if UNITY_EDITOR
-				Game.Sesh.StartGame (_options [_currentOption].Index);
+                Game.Sesh.StartGame(Options[CurrentOption].Index);
 #else
 			Game.Sesh.StartGame (3);
 #endif
-			}
+            }
 
-			public override void ChangeOption (int direction)
-			{
-				base.ChangeOption (direction);
-				SetText ();
-			}
+            public override void ChangeOption (int direction) {
+                base.ChangeOption(direction);
+                SetText();
+            }
 
-			protected override void SetText ()
-			{
-				_infoText.text = string.Format ("Start scene: {0}", _options [_currentOption].Index);
-			}
-		}
+            protected override void SetText () {
+                InfoText.text = string.Format("Start scene: {0}", Options[CurrentOption].Index);
+            }
+        }
 
 
-		class OptionsState : MenuInfo {
-			public OptionsState (GameObject parent, OptionType option = OptionType.Options) : base (parent, option) { }
+        private class OptionsState : MenuInfo
+        {
+            public OptionsState (GameObject parent, OptionType option = OptionType.Options) : base(parent, option) { }
 
-			public override void PerformAction () { }
-		}
-
-
-		class AcknowledgementsState : MenuInfo {
-			public AcknowledgementsState (GameObject parent, OptionType option = OptionType.Acknowledgements) : base (parent, option) { }
-
-			public override void PerformAction () { }
-		}
+            public override void PerformAction () { }
+        }
 
 
-		class LoadState : MenuInfo {
-			public LoadState (GameObject parent, OptionType option = OptionType.LoadGame) : base (parent, option) { }
+        private class AcknowledgementsState : MenuInfo
+        {
+            public AcknowledgementsState (GameObject parent, OptionType option = OptionType.Acknowledgements) : base(
+                parent, option) { }
 
-			public override void PerformAction () { }
-		}
-	}
+            public override void PerformAction () { }
+        }
+
+
+        private class LoadState : MenuInfo
+        {
+            public LoadState (GameObject parent, OptionType option = OptionType.LoadGame) : base(parent, option) { }
+
+            public override void PerformAction () { }
+        }
+    }
 }

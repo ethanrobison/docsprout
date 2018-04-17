@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 
-/// <summary>
-///  the interactor that approaches or departs IApproachable go's
-/// </summary>
-public class Interactor : MonoBehaviour {
-	void OnTriggerEnter (Collider other)
-	{
-		if (other.GetComponent<IApproachable> () != null) {
-			other.GetComponent<IApproachable> ().OnApproach ();
-		}
-	}
+namespace Code.Interaction
+{
+    /// <inheritdoc />
+    /// <summary>
+    ///  The interactor that approaches or departs IApproachable's.
+    /// </summary>
+    public class Interactor : MonoBehaviour
+    {
+        private void OnTriggerEnter (Collider other) {
+            if (other.GetComponent<IApproachable>() != null) {
+                other.GetComponent<IApproachable>().OnApproach();
+            }
+        }
 
-	void OnTriggerExit (Collider other)
-	{
-		if (other.GetComponent<IApproachable> () != null) {
-			other.GetComponent<IApproachable> ().OnDepart ();
-		}
-	}
+        private void OnTriggerExit (Collider other) {
+            if (other.GetComponent<IApproachable>() != null) {
+                other.GetComponent<IApproachable>().OnDepart();
+            }
+        }
+    }
 }

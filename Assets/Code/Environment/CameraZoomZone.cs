@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CameraZoomZone : MonoBehaviour {
-
-	public float camDist = 5f;
-
+namespace Code.Environment
+{
+    public class CameraZoomZone : MonoBehaviour
+    {
+        public float CamDist = 5f;
+    }
 }

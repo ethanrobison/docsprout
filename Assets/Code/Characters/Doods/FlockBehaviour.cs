@@ -1,77 +1,67 @@
-﻿using UnityEngine;
+﻿using Code.Doods;
+using UnityEngine;
 
+namespace Code.Characters.Doods
+{
+    public class FlockBehaviour : Walk
+    {
+        public float NeighborhoodRadius = 5f;
+        public float Damping = 1f;
+        public float AttractWeight = 1f;
+        public float RepelWeight = 1f;
+        public float AlignWeight = 1f;
 
-namespace Code.Doods {
-	//[RequireComponent (typeof (Characters.Walk))]
-	public class FlockBehaviour : Walk {
+        [HideInInspector] public bool IsFlocking = true;
 
-		public float NeighborhoodRadius = 5f;
-		public float Damping = 1f;
-		public float AttractWeight = 1f;
-		public float RepelWeight = 1f;
-		public float AlignWeight = 1f;
-		public float AvoidWeight = 1f;
+        private Dood _dood;
 
-		[HideInInspector] public bool IsFlocking = true;
+        protected override void Start () {
+            base.Start();
+            _dood = GetComponent<Dood>();
+        }
 
-		Dood _dood;
+        protected override void Move () {
+            var dir = WalkingDir;
+            if (IsFlocking) {
+                var force = CalculateForce() * Time.fixedDeltaTime;
+                SetDir(force + dir);
+            }
 
-		protected override void Start ()
-		{
-			base.Start();
-			_dood = GetComponent<Dood> ();
-		}
+            base.Move();
+            if (IsFlocking) {
+                SetDir(dir);
+            }
+        }
 
-		protected override void Move ()
-		{
-			Vector2 force;
-			Vector2 dir = WalkingDir;
-			if(IsFlocking) {
-				force = CalculateForce()*Time.fixedDeltaTime;
-				SetDir(force + dir);
-			}
-			base.Move ();
-			if(IsFlocking) {
-				SetDir(dir);
-			}
-		}
+        private Vector2 CalculateForce () {
+            var center = Vector3.zero;
+            var numNearby = 0;
+            var force = Vector3.zero;
+            var sqrRadius = NeighborhoodRadius * NeighborhoodRadius;
+            Vector3 temp;
+            foreach (var dood in Game.Ctx.Doods.DoodList) {
+                if (dood == _dood) continue;
+                var diff = dood.transform.position - transform.position;
+                if (!(diff.sqrMagnitude < sqrRadius)) { continue; }
 
-		public Vector2 CalculateForce ()
-		{
-			Vector3 center = Vector3.zero;
-			int numNearby = 0;
-			Vector3 force = Vector3.zero;
-			float sqrRadius = NeighborhoodRadius * NeighborhoodRadius;
-			Vector3 temp;
-			foreach (Dood dood in Game.Ctx.Doods.DoodList) {
-				if (dood == _dood) continue;
-				Vector3 diff = dood.transform.position - transform.position;
-				if (diff.sqrMagnitude < sqrRadius) {
-					center += dood.transform.position;
-					++numNearby;
-					diff /= diff.sqrMagnitude;
-					temp = diff * RepelWeight;
-					//if(temp.sqrMagnitude > sqrMinForce) {
-					force -= temp;
-					//}
-					temp = (dood.Character.velocity - _dood.Character.velocity) * AlignWeight;
-					//if(temp.sqrMagnitude > sqrMinForce) {
-					force += temp;
-					//}
-				}
-			}
-			if (numNearby == 0) {
-				return Vector3.zero;
-			}
-			center /= numNearby;
-			temp = (center - transform.position) * AttractWeight;
-			//if(temp.sqrMagnitude > sqrMinForce) {
-			force += temp;
-			//}
+                center += dood.transform.position;
+                ++numNearby;
+                diff /= diff.sqrMagnitude;
+                temp = diff * RepelWeight;
+                force -= temp;
+                temp = (dood.Character.Velocity - _dood.Character.Velocity) * AlignWeight;
+                force += temp;
+            }
 
-			force -= _dood.Character.velocity * Damping;
+            if (numNearby == 0) { return Vector3.zero; }
 
-			return new Vector2(force.x, force.z);
-		}
-	}
+            center /= numNearby;
+            temp = (center - transform.position) * AttractWeight;
+            force += temp;
+
+            force -= _dood.Character.Velocity * Damping;
+
+            return new Vector2(force.x, force.z);
+        }
+    }
 }

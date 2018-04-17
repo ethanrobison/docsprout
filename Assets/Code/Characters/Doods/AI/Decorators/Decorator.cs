@@ -1,14 +1,12 @@
-namespace Code.Doods.AI {
-	// todo implement me
-	public abstract class Decorator : BehaviorTreeNode {
-		BehaviorTreeNode _child;
+namespace Code.Characters.Doods.AI
+{
+    // todo implement me
+    public abstract class Decorator : BehaviorTreeNode
+    {
+        private BehaviorTreeNode _child;
 
-		protected Decorator (Dood dood) : base (dood) { }
+        protected Decorator (Dood dood) : base(dood) { }
 
-		protected override Status Update ()
-		{
-
-			return Status.Failure;
-		}
-	}
+        protected override Status Update () { return Status.Failure; }
+    }
 }

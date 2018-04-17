@@ -10,17 +10,13 @@ namespace Code.UI
 
         public void ShutDown () { }
 
-        public void PushDialog (BaseDialog dialog) {
-            _dialogs.Push(dialog);
-        }
+        public void PushDialog (BaseDialog dialog) { _dialogs.Push(dialog); }
 
         public void CloseToMe (BaseDialog dialog) {
             var element = _dialogs.Pop();
             while (element != dialog) { element = _dialogs.Pop(); }
         }
 
-        public void CloseAll () {
-            _dialogs.Clear();
-        }
+        public void CloseAll () { _dialogs.Clear(); }
     }
 }

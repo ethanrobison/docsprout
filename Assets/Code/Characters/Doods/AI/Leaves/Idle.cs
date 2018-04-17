@@ -1,10 +1,9 @@
-﻿namespace Code.Doods.AI {
-	public class Idle : BehaviorTreeNode {
-		public Idle (Dood dood) : base (dood) { }
+﻿namespace Code.Characters.Doods.AI
+{
+    public class Idle : BehaviorTreeNode
+    {
+        public Idle (Dood dood) : base(dood) { }
 
-		protected override Status Update ()
-		{
-			return Status.Success;
-		}
-	}
+        protected override Status Update () { return Status.Success; }
+    }
 }

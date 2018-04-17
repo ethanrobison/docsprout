@@ -2,32 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Approachable : MonoBehaviour, IApproachable {
+namespace Code.Interaction
+{
+    public class Approachable : MonoBehaviour, IApproachable
+    {
+        void IApproachable.OnApproach () { Utils.Logging.Log("Hi"); }
 
-	void IApproachable.OnApproach () {
-		Code.Utils.Logging.Log ("Hi");
-	}
+        void IApproachable.OnDepart () { Utils.Logging.Log("Bye"); }
+    }
 
-	void IApproachable.OnDepart() {
-		Code.Utils.Logging.Log ("Bye");
-	}
-
-
-	// Use this for initialization
-	void Start ()
-	{
-
-	}
-
-	// Update is called once per frame
-	void Update ()
-	{
-
-	}
-
-}
-
-public interface IApproachable {
-	void OnApproach ();
-	void OnDepart ();
+    public interface IApproachable
+    {
+        void OnApproach ();
+        void OnDepart ();
+    }
 }

@@ -1,42 +1,43 @@
-﻿namespace Code.Session {
-	public class GameSession {
-		public PreferencesManager Prefs { get; private set; }
-		public InputManager Input { get; private set; }
+﻿namespace Code.Session
+{
+    public class GameSession
+    {
+        public PreferencesManager Prefs { get; private set; }
+        public InputManager Input { get; private set; }
 
-		public void Initialize ()
-		{
-			Prefs = new PreferencesManager ();
-			Input = new InputManager ();
+        public void Initialize () {
+            Prefs = new PreferencesManager();
+            Input = new InputManager();
 
-			Prefs.Initialize ();
-			Input.Initialize ();
-		}
+            Prefs.Initialize();
+            Input.Initialize();
+        }
 
-		//        private void Shutdown () {
-		//            Dialogs.ShutDown();
-		//            Prefs.ShutDown();
-		//
-		//            Dialogs = null;
-		//            Prefs = null;
-		//        }
+        //        private void Shutdown () {
+        //            Dialogs.ShutDown();
+        //            Prefs.ShutDown();
+        //
+        //            Dialogs = null;
+        //            Prefs = null;
+        //        }
 
 
-		// todo this isn't very sophisticated in fact I dislike it
-		public void StartGame (int scene)
-		{
-			var ctx = new GameContext ();
-			Game.SetContext (this, ctx);
+        // todo this isn't very sophisticated in fact I dislike it
+        public void StartGame (int scene) {
+            var ctx = new GameContext();
+            Game.SetContext(this, ctx);
 
-			ctx.StartGame (scene);
+            ctx.StartGame(scene);
 
-			Input.OnGameStart ();
-			Prefs.OnGameStart ();
-		}
-	}
+            Input.OnGameStart();
+            Prefs.OnGameStart();
+        }
+    }
 
-	public interface ISessionManager {
-		void Initialize ();
-		void ShutDown ();
-		void OnGameStart ();
-	}
+    public interface ISessionManager
+    {
+        void Initialize ();
+        void ShutDown ();
+        void OnGameStart ();
+    }
 }

@@ -6,9 +6,7 @@ namespace Code.Utils
     {
         private readonly Stack<T> _elements = new Stack<T>();
 
-        public int Count () {
-            return _elements.Count;
-        }
+        public int Count () { return _elements.Count; }
 
         /// <summary>
         /// Pushes an element to the stack. Calls OnPush, then calls Activate.
@@ -34,9 +32,7 @@ namespace Code.Utils
             return result;
         }
 
-        public T Peek () {
-            return _elements.Peek();
-        }
+        public T Peek () { return _elements.Peek(); }
 
         public void Clear () {
             while (_elements.Count != 0) { Pop(true); }

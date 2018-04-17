@@ -1,46 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Code.Doods {
-	public class Need : MonoBehaviour {
-		public Dood dood;
-		private float NeedMeterMin;
-		private float NeedMeterMax;
-		public float NeedMeter;
-		public float [] NeedRange; // range that the dood needs to be c:
-		public float NeedIncr; // give need
-		public float NeedDecr; // neglect need
+namespace Code.Characters.Doods.Needs
+{
+    public abstract class Need : MonoBehaviour
+    {
+        public float StartingMeter = 50f;
+        public float[] NeedRange; // range that the dood needs to be c:
+        public float NeedIncr; // give need
+        public float NeedDecr; // neglect need
 
-		// Use this for initialization
-		protected virtual void Start ()
-		{
-			NeedMeterMin = 0f;
-			NeedMeterMax = 100f;
-			dood = GetComponent<Dood> ();
-		}
+        private NeedValues _values;
 
-		public void IncrMeter ()
-		{
-			NeedMeter = Mathf.Min (NeedMeter + NeedIncr, NeedMeterMax);
-		}
+        protected void Start () { _values = new NeedValues {Max = 100f, Min = 0f, Meter = StartingMeter}; }
 
-		public void DecrMeter (float time)
-		{
-			NeedMeter = Mathf.Max (NeedMeter - NeedDecr * time, NeedMeterMin);
-		}
+        public void IncrMeter () { _values.ChangeValue(NeedIncr); }
 
-		// Update is called once per frame
-		protected virtual void Update ()
-		{
-			DecrMeter (Time.deltaTime);
-		}
+        private void DecrMeter (float time) { _values.ChangeValue(-time * NeedDecr); }
 
-		struct NeedValues {
-			public float Min { get; private set; }
-			public float Max { get; private set; }
-			public float Meter { get; private set; }
+        protected void Update () { DecrMeter(Time.deltaTime); }
 
-		}
-	}
+        private struct NeedValues
+        {
+            public float Min;
+            public float Max;
+            public float Meter;
+
+            public void ChangeValue (float delta) {
+                var result = Meter + delta;
+                Meter = Mathf.Clamp(result, Min, Max);
+            }
+        }
+    }
 }

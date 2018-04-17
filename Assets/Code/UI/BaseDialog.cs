@@ -10,13 +10,9 @@ namespace Code.UI
         private readonly UIPrefab _prefab;
 
 
-        protected BaseDialog (UIPrefab prefab) {
-            _prefab = prefab;
-        }
+        protected BaseDialog (UIPrefab prefab) { _prefab = prefab; }
 
-        protected virtual void CreateGameObject () {
-            GO = UIUtils.MakeUIPrefab(_prefab);
-        }
+        protected virtual void CreateGameObject () { GO = UIUtils.MakeUIPrefab(_prefab); }
 
         protected virtual void RemoveGameObject () {
             Object.Destroy(GO);
@@ -24,20 +20,12 @@ namespace Code.UI
         }
 
 
-        public virtual void OnPush () {
-            CreateGameObject();
-        }
+        public virtual void OnPush () { CreateGameObject(); }
 
-        public virtual void Activate () {
-            GO.SetActive(true);
-        }
+        public virtual void Activate () { GO.SetActive(true); }
 
-        public virtual void Deactivate () {
-            GO.SetActive(false);
-        }
+        public virtual void Deactivate () { GO.SetActive(false); }
 
-        public virtual void OnPop () {
-            RemoveGameObject();
-        }
+        public virtual void OnPop () { RemoveGameObject(); }
     }
 }

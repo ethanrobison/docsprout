@@ -1,87 +1,82 @@
 ﻿using System.Collections;
+using Code.Characters.Doods.AI;
 using Code.Doods.AI;
 using UnityEngine;
 
-namespace Code.Doods
+namespace Code.Characters.Doods
 {
     [RequireComponent(typeof(FlockBehaviour))]
     public class Dood : MonoBehaviour
     {
-
         public Root Behavior { get; private set; }
-        //Characters.Walk _walk;
-        public Characters.Character Character;
-        FlockBehaviour _flock;
-        public float stopMovingPeriod = .15f;
-        public float minForce = .5f;
 
-        public void Initialize () {
-            Behavior = GetComponent<BehaviorTree>().Root;
-        }
+        public Character Character;
+        public float StopMovingPeriod = .15f;
 
-        void Start () {
-            //_walk = GetComponent<Characters.Walk>();
-            Character = GetComponent<Characters.Character>();
+        private FlockBehaviour _flock;
+        private Vector3 _lastPos;
+
+        private void Start () {
+            Character = GetComponent<Character>();
             _flock = GetComponent<FlockBehaviour>();
             Behavior = GetComponent<BehaviorTree>().Root;
-
         }
 
-        Vector3 lastPos;
+
+        private bool _finishedMove;
+        private bool _isTiming;
+
         public bool MoveTowards (Vector3 pos, float thresh = 10f, float minDist = 3f) {
-            float dist = Vector3.Distance(pos, transform.position);
-            float moveDelta = Vector3.Distance(pos, lastPos);
-            lastPos = pos;
+            var dist = Vector3.Distance(pos, transform.position);
+            var moveDelta = Vector3.Distance(pos, _lastPos);
+            _lastPos = pos;
             if (dist < minDist) {
-				StopMoving();
+                StopMoving();
                 return false;
             }
+
             if (moveDelta < 0.001f) {
                 if (dist < thresh) {
-                    if (finishedMove) {
-						StopMoving();
+                    if (_finishedMove) {
+                        StopMoving();
                         return false;
                     }
-                    if (!finishedMove && !isTiming) {
+
+                    if (!_finishedMove && !_isTiming) {
                         StartCoroutine(StopTimer(dist));
                     }
                 }
                 else {
-                    if (isTiming) {
-                        StopCoroutine("stopTimer");
-                        isTiming = false;
+                    if (_isTiming) {
+                        StopCoroutine("StopTimer");
+                        _isTiming = false;
                     }
-                    finishedMove = false;
+
+                    _finishedMove = false;
                 }
             }
             else {
-                StopCoroutine("stopTimer");
+                StopCoroutine("StopTimer");
             }
+
             var direction = (pos - transform.position).normalized;
-            //Vector3 force = _flock.CalculateForce();
-            //force = force * Time.deltaTime + direction;
-            //_walk.SetDir(force);
-			_flock.IsFlocking = true;
-			_flock.AlignWeight = .4f;
-			_flock.SetDir(direction);
+            _flock.IsFlocking = true;
+            _flock.AlignWeight = .4f;
+            _flock.SetDir(direction);
             return false;
         }
 
 
-        bool finishedMove;
-        bool isTiming;
-
-        IEnumerator StopTimer (float dist) {
-            isTiming = true;
-            yield return new WaitForSeconds(stopMovingPeriod * dist);
-            isTiming = false;
-            finishedMove = true;
+        private IEnumerator StopTimer (float dist) {
+            _isTiming = true;
+            yield return new WaitForSeconds(StopMovingPeriod * dist);
+            _isTiming = false;
+            _finishedMove = true;
         }
 
 
         public void StopMoving () {
-			_flock.IsFlocking = false;
-			//_flock.AlignWeight = 10f;
+            _flock.IsFlocking = false;
             _flock.SetDir(Vector2.zero);
         }
     }

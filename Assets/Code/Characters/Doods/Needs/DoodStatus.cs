@@ -1,56 +1,52 @@
 ﻿using UnityEngine;
 
-namespace Code.Doods.Needs
+namespace Code.Characters.Doods.Needs
 {
-	public class DoodStatus : MonoBehaviour {
+    public class DoodStatus : MonoBehaviour
+    {
+        public float Happiness;
+        public Waterable Waterable;
 
-		public Dood Dood;
+        private float _minHappiness;
+        private float _maxHappiness;
 
-		public float Happiness;
-		public Waterable Waterable;
+        private float _waterMeter;
+        private float[] _waterRange;
 
-		float _minHappiness;
-		float _maxHappiness;
+        private DoodColor _doodColor;
 
-		float _waterMeter;
-		float [] _waterRange;
+        private void Start () {
+            GetComponent<Dood>();
+            _doodColor = GetComponent<DoodColor>();
 
-		DoodColor _doodColor;
+            _minHappiness = 0f;
+            _maxHappiness = 100f;
 
-		void Start ()
-		{
-			Dood = GetComponent<Dood> ();
-			_doodColor = GetComponent<DoodColor> ();
+            Waterable = GetComponent<Waterable>();
+            _waterMeter = Waterable.StartingMeter;
+            _waterRange = Waterable.NeedRange;
+        }
 
-			_minHappiness = 0f;
-			_maxHappiness = 100f;
-			//Happiness = 75f;
+        private void CalculateHappiness () {
+            if (_waterRange[0] <= _waterMeter && _waterMeter <= _waterRange[1]) {
+                Happiness += 5f * Time.deltaTime;
+            }
+            else { Happiness -= 5f * Time.deltaTime; }
 
-			Waterable = GetComponent<Waterable> ();
-			_waterMeter = Waterable.NeedMeter;
-			_waterRange = Waterable.NeedRange;
-		}
+            if (Happiness <= _minHappiness) {
+                Happiness = _minHappiness;
+            }
+            else if (Happiness >= _maxHappiness) {
+                Happiness = _maxHappiness;
+            }
+        }
 
-		void CalcHapp ()
-		{
-			if (_waterRange [0] <= _waterMeter && _waterMeter <= _waterRange [1]) {
-				Happiness += 5f * Time.deltaTime;
-			} else { Happiness -= 5f * Time.deltaTime; }
-
-			if (Happiness <= _minHappiness) {
-				Happiness = _minHappiness;
-			} else if (Happiness >= _maxHappiness) {
-				Happiness = _maxHappiness;
-			}
-		}
-
-		void Update ()
-		{
-			_waterMeter = Waterable.NeedMeter;
-			CalcHapp ();
-			if (_doodColor) {
-				_doodColor.Happiness = Happiness / _maxHappiness;
-			}
-		}
-	}
+        private void Update () {
+            _waterMeter = Waterable.StartingMeter;
+            CalculateHappiness();
+            if (_doodColor) {
+                _doodColor.Happiness = Happiness / _maxHappiness;
+            }
+        }
+    }
 }

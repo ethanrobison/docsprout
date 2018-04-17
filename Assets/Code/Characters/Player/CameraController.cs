@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.Environment;
+using UnityEngine;
 
 namespace Code.Characters.Player {
 	public class CameraController : MonoBehaviour {
@@ -80,7 +81,7 @@ namespace Code.Characters.Player {
 			for (int i = 0; i < n; ++i) {
 				CameraZoomZone ccz = _overlaps [i].gameObject.GetComponent<CameraZoomZone> ();
 				if(ccz) {
-					goalDist = Mathf.Min(ccz.camDist, goalDist);
+					goalDist = Mathf.Min(ccz.CamDist, goalDist);
 				}
 			}
 

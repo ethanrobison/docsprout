@@ -1,56 +1,54 @@
-﻿namespace Code.Doods.AI {
-	public enum Status {
-		Invalid,
-		Running,
-		Success,
-		Failure
-	}
+﻿namespace Code.Characters.Doods.AI
+{
+    public enum Status
+    {
+        Invalid,
+        Running,
+        Success,
+        Failure
+    }
 
 
-	public abstract class BehaviorTreeNode {
-		Status _status;
+    public abstract class BehaviorTreeNode
+    {
+        Status _status;
 
-		protected Dood _dood;
-		protected Root _root { get { return _dood.Behavior; } }
+        protected readonly Dood Dood;
 
-		protected BehaviorTreeNode (Dood dood)
-		{
-			_dood = dood;
-		}
+        protected Root Root {
+            get { return Dood.Behavior; }
+        }
 
-		public virtual void OnInitialize () { }
-		public virtual void OnTerminate (Status result) { }
-		// force the node to wrap up (mostly makes sense for leaves)
-		public virtual void Abort ()
-		{
-			if (_status != Status.Invalid) OnTerminate (Status.Failure);
-		}
+        protected BehaviorTreeNode (Dood dood) { Dood = dood; }
 
-		protected abstract Status Update ();
+        public virtual void OnInitialize () { }
 
-		public Status Tick ()
-		{
-			if (_status != Status.Running) OnInitialize ();
-			_status = Update ();
-			if (_status != Status.Running) OnTerminate (_status);
-			return _status;
-		}
-	}
+        public virtual void OnTerminate (Status result) { }
+
+        // force the node to wrap up (mostly makes sense for leaves)
+        public virtual void Abort () {
+            if (_status != Status.Invalid) OnTerminate(Status.Failure);
+        }
+
+        protected abstract Status Update ();
+
+        public Status Tick () {
+            if (_status != Status.Running) OnInitialize();
+            _status = Update();
+            if (_status != Status.Running) OnTerminate(_status);
+            return _status;
+        }
+    }
 
 
-	public class Root : BehaviorTreeNode {
-		BehaviorTreeNode _child;
+    public class Root : BehaviorTreeNode
+    {
+        private BehaviorTreeNode _child;
 
-		public Root (Dood dood) : base (dood) { }
+        public Root (Dood dood) : base(dood) { }
 
-		public void SetChild (BehaviorTreeNode child)
-		{
-			_child = child;
-		}
+        public void SetChild (BehaviorTreeNode child) { _child = child; }
 
-		protected override Status Update ()
-		{
-			return _child.Tick ();
-		}
-	}
+        protected override Status Update () { return _child.Tick(); }
+    }
 }
