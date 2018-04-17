@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Code.Characters;
+using UnityEngine;
 
-namespace Code.Characters {
+namespace Code {
 	/// <summary>
 	/// Component used for handling walking. To use, set walkingDir in the direction you want
 	/// the character to walk in with the magnitude being the portion of the component's
@@ -19,7 +20,7 @@ namespace Code.Characters {
 		Character _character;
 		bool _isSwitchingDirs;
 
-		[HideInInspector] public Vector2 WalkingDir { get; private set; }
+		public Vector2 WalkingDir { get; private set; }
 
 
 		protected virtual void Start ()

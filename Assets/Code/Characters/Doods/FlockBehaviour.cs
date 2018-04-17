@@ -3,7 +3,7 @@
 
 namespace Code.Doods {
 	//[RequireComponent (typeof (Characters.Walk))]
-	public class FlockBehaviour : Characters.Walk {
+	public class FlockBehaviour : Walk {
 
 		public float NeighborhoodRadius = 5f;
 		public float Damping = 1f;

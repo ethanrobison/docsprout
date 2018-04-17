@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Code.Doods;
 using UnityEngine;
 
 public class GetDoodStatus : MonoBehaviour, IApproachable {
