@@ -5,11 +5,59 @@
         _SickColor ("Sick Color", Color) = (1,1,1,1)
         _Happiness ("Happiness", Range(0, 1)) = 1
         _LightMultiplier ("Ramp Multiplier", Float) = 1
+        _HighlightColor("Highlight Color", Color) = (.3, 0, 1, 1)
+        _HighlightSize ("Highlight Size", Float) = .1
         
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
 		LOD 200
+
+        Pass {
+            Cull Front
+
+            CGPROGRAM
+
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include "UnityCG.cginc"
+
+            struct appdata {
+                float4 vertex : POSITION;
+                float3 normal : NORMAL;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct v2f {
+                float4 pos : SV_POSITION;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            UNITY_INSTANCING_BUFFER_START(Props)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _HighlightColor)
+                UNITY_DEFINE_INSTANCED_PROP(float, _HighlightSize)
+            UNITY_INSTANCING_BUFFER_END(Props)
+
+            v2f vert(appdata v) {
+                v2f o;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_TRANSFER_INSTANCE_ID(v, o);
+                float4 viewNorm = mul(UNITY_MATRIX_IT_MV, float4(v.normal, 0));
+                float4 viewPos = float4(UnityObjectToViewPos(v.vertex), 1);
+                viewPos += viewNorm*UNITY_ACCESS_INSTANCED_PROP(Props, _HighlightSize);
+                o.pos = mul(UNITY_MATRIX_P, viewPos);
+                return o;
+            }
+
+            half4 frag(v2f i) : SV_TARGET
+            {
+                UNITY_SETUP_INSTANCE_ID(i);
+                return UNITY_ACCESS_INSTANCED_PROP(Props, _HighlightColor);
+            }
+
+            ENDCG
+        }
 
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
@@ -27,7 +75,7 @@
 		};
         
         //float _LightMultiplier;
-        fixed4 _SickColor;
+        fixed4 _SickColor; //sick color, dood
 
 		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.

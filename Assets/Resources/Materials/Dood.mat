@@ -67,6 +67,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Happiness: 1
+    - _HighlightSize: 0.03
     - _LightMultiplier: 0.7
     - _Metallic: 0
     - _Mode: 0
@@ -81,4 +82,5 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 0.1462264, b: 0.1462264, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HighlightColor: {r: 0, g: 1, b: 0.9563775, a: 1}
     - _SickColor: {r: 0.7735849, g: 0.766515, b: 0.6604664, a: 1}
