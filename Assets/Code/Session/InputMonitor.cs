@@ -10,6 +10,13 @@ namespace Code.Session
     /// </summary>
     public class InputMonitor : MonoBehaviour, ISessionManager
     {
+        public enum PressType
+        {
+            ButtonDown,
+            ButtonUp,
+            Hold
+        }
+
         public float LeftH {
             get { return Input.GetAxisRaw(_leftH); }
         }
@@ -47,12 +54,25 @@ namespace Code.Session
 
         public void OnGameStart () { _mappings.Clear(); }
 
+        // todo maybe loop unroll me? seems like overkill
         private void Update () {
             for (int i = 0, c = _mappings.Count; i < c; i++) {
                 var pair = _mappings[i];
-                if (Input.GetKeyDown(pair.ButtonName)) {
-                    pair.OnPress();
-                    c = _mappings.Count;
+                switch (pair.PressType) {
+                    case PressType.ButtonDown:
+                        if (Input.GetKeyDown(pair.ButtonName)) { pair.OnPress(); }
+
+                        break;
+                    case PressType.ButtonUp:
+                        if (Input.GetKeyUp(pair.ButtonName)) { pair.OnPress(); }
+
+                        break;
+                    case PressType.Hold:
+                        if (Input.GetKey(pair.ButtonName)) { pair.OnPress(); }
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
         }
@@ -86,23 +106,25 @@ namespace Code.Session
                     break;
                 case Platform.Linux:
                     break;
-                default:
+                case Platform.Invalid:
                     Logging.Error("Invalid platform; can't choose bindings.");
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
         //
         // API
 
-        public void RegisterMapping (ControllerButton button, Action onpress) {
+        public void RegisterMapping (ControllerButton button, Action onpress, PressType type = PressType.ButtonDown) {
             KeyCode buttonname;
             if (!_buttonNames.TryGetValue(button, out buttonname)) {
                 Logging.Error("Missing name for button: " + button);
                 return;
             }
 
-            var pair = new ButtonPair(buttonname, onpress);
+            var pair = new ButtonPair(buttonname, onpress, type);
             _mappings.Add(pair);
         }
 
@@ -113,10 +135,12 @@ namespace Code.Session
         {
             public readonly KeyCode ButtonName;
             public readonly Action OnPress;
+            public readonly PressType PressType;
 
-            public ButtonPair (KeyCode button, Action action) {
+            public ButtonPair (KeyCode button, Action action, PressType type) {
                 ButtonName = button;
                 OnPress = action;
+                PressType = type;
             }
         }
 
