@@ -29,7 +29,7 @@ namespace Code.Characters.Player {
 			case PlayerState.Walking:
 				float x = Game.Sesh.Input.Monitor.LeftH;
 				float y = Game.Sesh.Input.Monitor.LeftV;
-				if (x * x + y * y < 0.01) {
+				if (x * x + y * y < 0.01 || Game.Sesh.Input.Monitor.LT >= 0.1f) {
 					_walkComponent.SetDir (Vector3.zero);
 					break;
 				}

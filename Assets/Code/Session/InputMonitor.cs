@@ -25,11 +25,21 @@ namespace Code.Session
         public float RightV {
             get { return Input.GetAxisRaw(_rightV); }
         }
+        
+        public float RT {
+            get { return Input.GetAxisRaw(_RT);}
+        }
+        
+        public float LT {
+            get { return Input.GetAxisRaw(_LT);}
+        }
 
         private string _leftH;
         private string _leftV;
         private string _rightH;
         private string _rightV;
+        private string _RT = "RT";
+        private string _LT = "LT";
 
         private Dictionary<ControllerButton, KeyCode> _buttonNames;
         private readonly List<ButtonPair> _mappings = new List<ButtonPair>();
@@ -131,8 +141,8 @@ namespace Code.Session
                     {ControllerButton.BButton, KeyCode.JoystickButton17},
                     {ControllerButton.XButton, KeyCode.JoystickButton18},
                     {ControllerButton.YButton, KeyCode.JoystickButton19},
-                    {ControllerButton.RightBumper, KeyCode.JoystickButton13},
-                    {ControllerButton.LeftBumper, KeyCode.JoystickButton14},
+                    {ControllerButton.RightBumper, KeyCode.JoystickButton14},
+                    {ControllerButton.LeftBumper, KeyCode.JoystickButton13},
                     {ControllerButton.Start, KeyCode.JoystickButton9},
                     {ControllerButton.Select, KeyCode.JoystickButton10}
                 };

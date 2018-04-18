@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using Code.Characters.Doods.AI;
 using Code.Doods.AI;
+using Code.Session;
 using UnityEngine;
 
 namespace Code.Characters.Doods
 {
     [RequireComponent(typeof(FlockBehaviour))]
-    public class Dood : MonoBehaviour
+    public class Dood : MonoBehaviour, ISelectable
     {
         public Root Behavior { get; private set; }
 
         public Character Character;
         public float StopMovingPeriod = .15f;
+        
+        [HideInInspector] public bool IsSelected;
+        private DoodColor _doodColor;
 
         private FlockBehaviour _flock;
         private Vector3 _lastPos;
@@ -20,6 +24,7 @@ namespace Code.Characters.Doods
             Character = GetComponent<Character>();
             _flock = GetComponent<FlockBehaviour>();
             Behavior = GetComponent<BehaviorTree>().Root;
+            _doodColor = GetComponent<DoodColor>();
         }
 
 
@@ -78,6 +83,17 @@ namespace Code.Characters.Doods
         public void StopMoving () {
             _flock.IsFlocking = false;
             _flock.SetDir(Vector2.zero);
+        }
+        
+        
+        void ISelectable.OnSelect() {
+            IsSelected = true;
+            _doodColor.IsHighlighted = true;
+        }
+        
+        void ISelectable.OnDeselect() {
+            IsSelected = false;
+            _doodColor.IsHighlighted = false;
         }
     }
 }

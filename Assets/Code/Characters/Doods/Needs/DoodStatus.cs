@@ -18,7 +18,6 @@ namespace Code.Characters.Doods.Needs
         private void Start () {
             GetComponent<Dood>();
             _doodColor = GetComponent<DoodColor>();
-            _doodColor.IsHighlighted = true;
 
             _minHappiness = 0f;
             _maxHappiness = 100f;
@@ -32,7 +31,9 @@ namespace Code.Characters.Doods.Needs
             if (_waterRange[0] <= _waterMeter && _waterMeter <= _waterRange[1]) {
                 Happiness += 5f * Time.deltaTime;
             }
-            else { Happiness -= 5f * Time.deltaTime; }
+            else {
+                Happiness -= 5f * Time.deltaTime;
+            }
 
             if (Happiness <= _minHappiness) {
                 Happiness = _minHappiness;
