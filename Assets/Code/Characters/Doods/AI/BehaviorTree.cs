@@ -1,5 +1,5 @@
 ﻿using System;
-using Code.Doods.AI;
+using Code.Characters.Doods.Needs;
 using UnityEngine;
 
 namespace Code.Characters.Doods.AI
@@ -16,18 +16,25 @@ namespace Code.Characters.Doods.AI
             var close = new PlayerDistance(dood, -1f, 5f);
             close.AddToEnd(new Idle(dood));
 
-            var medium = new PlayerDistance(dood, 5f, 15f);
+            var medium = new PlayerDistance(dood, 5f, 20f);
             medium.AddToEnd(new FollowPlayer(dood));
 
-            var far = new PlayerDistance(dood, 15f, float.PositiveInfinity);
-            far.AddToEnd(new Idle(dood));
+            var far = new PlayerDistance(dood, 20f, float.PositiveInfinity);
+            far.AddToEnd(new Wander(dood));
 
             sel.AddToEnd(close);
             sel.AddToEnd(medium);
             sel.AddToEnd(far);
 
+            var water = new NeedLevel<Waterable>(dood, GetComponent<Waterable>());
+            water.AddToEnd(new Idle(dood));
+
+            var top = new Selector(dood);
+            top.AddToEnd(water);
+            top.AddToEnd(sel);
+
             Root = new Root(dood);
-            Root.SetChild(sel);
+            Root.SetChild(top);
         }
 
         private void Update () {
