@@ -1,8 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Code.Characters.Doods.AI;
 using Code.Characters.Doods.Needs;
+using Code.Utils;
 using UnityEngine;
 
 namespace Code.Characters.Doods
@@ -17,7 +16,6 @@ namespace Code.Characters.Doods
         private Vector3 _lastPos;
 
         private void Start () { Comps = new DoodComponents(this); }
-
 
         private bool _finishedMove, _isTiming;
 
@@ -92,20 +90,26 @@ namespace Code.Characters.Doods
 
     public class DoodComponents
     {
-        public Root Behavior { get; private set; }
         public Character Character { get; private set; }
-        public DoodColor Color { get; private set; }
-        public List<Need> Needs { get; private set; }
         public FlockBehaviour Flock { get; private set; }
 
+        public DoodColor Color { get; private set; }
+        public Root Behavior { get; private set; }
+        public Need[] Needs { get; private set; }
+
+
+        private Transform _behavior;
+        private Transform _visuals;
+        private Transform _status;
 
         public DoodComponents (Dood dood) {
             var go = dood.gameObject;
-            Character = go.GetComponent<Character>();
-            Behavior = go.GetComponentInChildren<BehaviorTree>().Root;
-            Color = go.GetComponentInChildren<DoodColor>();
-            Needs = go.GetComponents<Need>().ToList();
-            Flock = go.GetComponent<FlockBehaviour>();
+            Flock = go.GetRequiredComponent<FlockBehaviour>();
+            Character = go.GetRequiredComponent<Character>();
+
+            Color = go.GetRequiredComponentInChildren<DoodColor>();
+            Behavior = go.GetRequiredComponentInChildren<BehaviorTree>().Root;
+            Needs = go.GetRequiredComponents<Need>();
         }
     }
 }
