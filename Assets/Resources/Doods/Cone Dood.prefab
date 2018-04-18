@@ -25,7 +25,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1284389505831278
 GameObject:
   m_ObjectHideFlags: 1
@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 114512709368785502}
   - component: {fileID: 114331704945554874}
   - component: {fileID: 114230243369131368}
-  - component: {fileID: 114619845734562330}
   - component: {fileID: 114181664076344248}
   - component: {fileID: 114678406243730506}
   m_Layer: 9
@@ -320,11 +319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingMeter: 50
-  NeedRange:
-  - 50
-  - 90
-  NeedIncr: 10
-  NeedDecr: 1
+  Range: {x: 40, y: 60, z: 80}
 --- !u!114 &114254897101602014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -336,6 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114272037509707714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -347,6 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114331704945554874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -376,21 +373,6 @@ MonoBehaviour:
   GroundLayers:
     serializedVersion: 2
     m_Bits: 1
---- !u!114 &114619845734562330
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1643489972984422}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48cccd1bc36364bb8886f0bf77cd5a13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Dood: {fileID: 0}
-  StatusDisplay: {fileID: 1025855605497302}
-  NeedWater: {fileID: 1786560497540974}
-  StopWater: {fileID: 1349231472384192}
 --- !u!114 &114678406243730506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -417,6 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114945667361687380
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -428,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!136 &136229550878905548
 CapsuleCollider:
   m_ObjectHideFlags: 1

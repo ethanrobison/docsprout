@@ -13,8 +13,8 @@ namespace Code.Characters.Doods
         public void Initialize () {
             // todo what is going on here
             string[] names = {"Sphere", "Capsule", "Cone", "Cube", "Cylinder"};
-            for (var i = 0; i < 5; i++) {
-                for (float y = 0; y < 12f; y += 1.2f) {
+            for (var i = 0; i < 1; i++) {
+                for (float y = 0; y < 1.2f; y += 1.2f) {
                     MakeDood(new Vector3(i, 5f, y), names[i]);
                 }
             }

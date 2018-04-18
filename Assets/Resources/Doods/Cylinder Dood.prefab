@@ -77,7 +77,6 @@ GameObject:
   - component: {fileID: 114065050505057214}
   - component: {fileID: 114167787657255256}
   - component: {fileID: 114449424755678470}
-  - component: {fileID: 114695867264112520}
   - component: {fileID: 114829469850528656}
   - component: {fileID: 114690426961903168}
   m_Layer: 9
@@ -272,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114065050505057214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -312,6 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114418582528765714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -345,11 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingMeter: 50
-  NeedRange:
-  - 50
-  - 90
-  NeedIncr: 10
-  NeedDecr: 1
+  Range: {x: 40, y: 60, z: 80}
 --- !u!114 &114468330193374202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -378,21 +375,6 @@ MonoBehaviour:
   _happiness: 0
   _texture: {fileID: 0}
   _highlightColor: {r: 1, g: 0.53296876, b: 0, a: 0}
---- !u!114 &114695867264112520
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1503070578244124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48cccd1bc36364bb8886f0bf77cd5a13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Dood: {fileID: 0}
-  StatusDisplay: {fileID: 1449682081426380}
-  NeedWater: {fileID: 1277192142011000}
-  StopWater: {fileID: 1203953562968720}
 --- !u!114 &114810439093645480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -404,6 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114829469850528656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -428,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!136 &136715828376633616
 CapsuleCollider:
   m_ObjectHideFlags: 1

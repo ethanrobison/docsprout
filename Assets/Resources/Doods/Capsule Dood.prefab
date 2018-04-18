@@ -28,7 +28,6 @@ GameObject:
   - component: {fileID: 114391939099486882}
   - component: {fileID: 114303103326547288}
   - component: {fileID: 114248184912634556}
-  - component: {fileID: 114443528473269580}
   - component: {fileID: 114624150664311148}
   - component: {fileID: 114101710872388766}
   m_Layer: 9
@@ -272,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114101710872388766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -320,11 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingMeter: 50
-  NeedRange:
-  - 50
-  - 90
-  NeedIncr: 10
-  NeedDecr: 1
+  Range: {x: 40, y: 60, z: 80}
 --- !u!114 &114303103326547288
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -365,21 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114443528473269580
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1200916831908144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48cccd1bc36364bb8886f0bf77cd5a13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Dood: {fileID: 0}
-  StatusDisplay: {fileID: 1297601441143504}
-  NeedWater: {fileID: 1791940661952092}
-  StopWater: {fileID: 1236308624507466}
+  Reverse: 0
 --- !u!114 &114449982717780862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -417,6 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114916873228068666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -428,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!136 &136749030754377152
 CapsuleCollider:
   m_ObjectHideFlags: 1

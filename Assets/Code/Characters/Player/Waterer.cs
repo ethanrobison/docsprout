@@ -1,26 +1,23 @@
-﻿using Code;
-using Code.Characters.Doods.Needs;
-using Code.Doods;
+﻿using Code.Characters.Doods.Needs;
 using Code.Session;
+using Code.Utils;
 using UnityEngine;
 
-public class Waterer : MonoBehaviour {
+namespace Code.Characters.Player
+{
+    public class Waterer : MonoBehaviour
+    {
+        public Transform SpherePos;
+        public float Radius;
 
-	public Transform SpherePos;
-	public float Radius;
+        private void Start () { Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, WaterNearby); }
 
-	void Start ()
-	{
-		Game.Sesh.Input.Monitor.RegisterMapping (ControllerButton.XButton, WaterNearby);
-	}
-
-
-	void WaterNearby ()
-	{
-		Collider [] cols = Physics.OverlapSphere (SpherePos.position, Radius);
-		foreach (Collider col in cols) {
-			var waterable = col.gameObject.GetComponent<Waterable> ();
-			if (waterable != null) { waterable.IncrMeter (); }
-		}
-	}
+        private void WaterNearby () {
+            var cols = Physics.OverlapSphere(SpherePos.position, Radius);
+            foreach (var col in cols) {
+                var waterable = col.gameObject.GetComponent<Waterable>();
+                if (waterable != null) { waterable.IncrMeter(); }
+            }
+        }
+    }
 }
