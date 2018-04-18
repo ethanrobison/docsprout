@@ -14,6 +14,7 @@ namespace Code.Characters.Doods.Needs
 
         private DoodColor _doodColor;
         private StatusDisplay _display;
+        private bool _displaying;
 
         private void Start () {
             Waterable = GetComponent<Waterable>();
@@ -32,11 +33,18 @@ namespace Code.Characters.Doods.Needs
             if (_doodColor) {
                 _doodColor.Happiness = Happiness / MAX_HAPPINESS;
             }
+
+            if (_displaying) {
+                _display.Show(Waterable.Status);
+            }
+            else {
+                _display.Hide();
+            }
         }
 
         // todo if you stand near a dood, their status display won't change
-        public void OnApproach () { _display.Show(Waterable.Status); }
-        public void OnDepart () { _display.Hide(); }
+        public void OnApproach () { _displaying = true; }
+        public void OnDepart () { _displaying = false; }
     }
 
     public class StatusDisplay
