@@ -9,47 +9,17 @@ namespace Code.Characters.Doods
     [RequireComponent(typeof(FlockBehaviour))]
     public class Dood : MonoBehaviour, ISelectable
     {
-        public float StopMovingPeriod = .15f;
         [HideInInspector] public bool IsSelected;
         public DoodComponents Comps { get; private set; }
 
-        private Vector3 _lastPos;
 
         private void Start () { Comps = new DoodComponents(this); }
 
-        private bool _finishedMove, _isTiming;
-
-        public bool MoveTowards (Vector3 pos, float thresh = 10f, float minDist = 3f) {
+        public bool MoveTowards (Vector3 pos, float minDist = 3f) {
             var dist = Vector3.Distance(pos, transform.position);
-            var moveDelta = Vector3.Distance(pos, _lastPos);
-            _lastPos = pos;
             if (dist < minDist) {
                 StopMoving();
-                return false;
-            }
-
-            if (moveDelta < 0.001f) {
-                if (dist < thresh) {
-                    if (_finishedMove) {
-                        StopMoving();
-                        return false;
-                    }
-
-                    if (!_finishedMove && !_isTiming) {
-                        StartCoroutine(StopTimer(dist));
-                    }
-                }
-                else {
-                    if (_isTiming) {
-                        StopCoroutine("StopTimer");
-                        _isTiming = false;
-                    }
-
-                    _finishedMove = false;
-                }
-            }
-            else {
-                StopCoroutine("StopTimer");
+                return true;
             }
 
             var direction = (pos - transform.position).normalized;
@@ -58,15 +28,6 @@ namespace Code.Characters.Doods
             Comps.Flock.SetDir(direction);
             return false;
         }
-
-
-        private IEnumerator StopTimer (float dist) {
-            _isTiming = true;
-            yield return new WaitForSeconds(StopMovingPeriod * dist);
-            _isTiming = false;
-            _finishedMove = true;
-        }
-
 
         public void StopMoving () {
             Comps.Flock.IsFlocking = false;
