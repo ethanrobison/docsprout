@@ -34,7 +34,7 @@ namespace Code.Characters.Doods.AI
             top.AddToEnd(sel);
 
             Root = new Root(dood);
-            Root.SetChild(new Idle(dood));
+            Root.SetChild(top);
         }
 
         private void Update () {
