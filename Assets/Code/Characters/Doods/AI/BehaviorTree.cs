@@ -4,13 +4,12 @@ using UnityEngine;
 
 namespace Code.Characters.Doods.AI
 {
-    [RequireComponent(typeof(Dood))]
     public class BehaviorTree : MonoBehaviour
     {
-        public Root Root { get; private set; }
+        public Root Root;
 
         private void Start () {
-            var dood = GetComponent<Dood>();
+            var dood = GetComponentInParent<Dood>();
             var sel = new Selector(dood);
 
             var close = new PlayerDistance(dood, -1f, 5f);
@@ -26,7 +25,8 @@ namespace Code.Characters.Doods.AI
             sel.AddToEnd(medium);
             sel.AddToEnd(far);
 
-            var water = new NeedLevel<Waterable>(dood, GetComponent<Waterable>());
+            // todo this is shite
+            var water = new NeedLevel<Waterable>(dood, dood.GetComponent<Waterable>());
             water.AddToEnd(new Idle(dood));
 
             var top = new Selector(dood);

@@ -1,4 +1,6 @@
-﻿namespace Code.Characters.Doods.AI
+﻿using UnityEngine;
+
+namespace Code.Characters.Doods.AI
 {
     public enum Status
     {
@@ -16,7 +18,7 @@
         protected readonly Dood Dood;
 
         protected Root Root {
-            get { return Dood.Behavior; }
+            get { return Dood.Comps.Behavior; }
         }
 
         protected BehaviorTreeNode (Dood dood) { Dood = dood; }

@@ -49,7 +49,7 @@ namespace Code.Characters.Doods
                 diff /= diff.sqrMagnitude;
                 temp = diff * RepelWeight;
                 force -= temp;
-                temp = (dood.Character.Velocity - _dood.Character.Velocity) * AlignWeight;
+                temp = (dood.Comps.Character.Velocity - _dood.Comps.Character.Velocity) * AlignWeight;
                 force += temp;
             }
 
@@ -59,7 +59,7 @@ namespace Code.Characters.Doods
             temp = (center - transform.position) * AttractWeight;
             force += temp;
 
-            force -= _dood.Character.Velocity * Damping;
+            force -= _dood.Comps.Character.Velocity * Damping;
 
             return new Vector2(force.x, force.z);
         }

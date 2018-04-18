@@ -1,7 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Code.Characters.Doods.AI;
-using Code.Doods.AI;
-using Code.Session;
+using Code.Characters.Doods.Needs;
 using UnityEngine;
 
 namespace Code.Characters.Doods
@@ -9,27 +10,16 @@ namespace Code.Characters.Doods
     [RequireComponent(typeof(FlockBehaviour))]
     public class Dood : MonoBehaviour, ISelectable
     {
-        public Root Behavior { get; private set; }
-
-        public Character Character;
         public float StopMovingPeriod = .15f;
-        
         [HideInInspector] public bool IsSelected;
-        private DoodColor _doodColor;
+        public DoodComponents Comps { get; private set; }
 
-        private FlockBehaviour _flock;
         private Vector3 _lastPos;
 
-        private void Start () {
-            Character = GetComponent<Character>();
-            _flock = GetComponent<FlockBehaviour>();
-            Behavior = GetComponent<BehaviorTree>().Root;
-            _doodColor = GetComponent<DoodColor>();
-        }
+        private void Start () { Comps = new DoodComponents(this); }
 
 
-        private bool _finishedMove;
-        private bool _isTiming;
+        private bool _finishedMove, _isTiming;
 
         public bool MoveTowards (Vector3 pos, float thresh = 10f, float minDist = 3f) {
             var dist = Vector3.Distance(pos, transform.position);
@@ -65,9 +55,9 @@ namespace Code.Characters.Doods
             }
 
             var direction = (pos - transform.position).normalized;
-            _flock.IsFlocking = true;
-            _flock.AlignWeight = .4f;
-            _flock.SetDir(direction);
+            Comps.Flock.IsFlocking = true;
+            Comps.Flock.AlignWeight = .4f;
+            Comps.Flock.SetDir(direction);
             return false;
         }
 
@@ -81,19 +71,41 @@ namespace Code.Characters.Doods
 
 
         public void StopMoving () {
-            _flock.IsFlocking = false;
-            _flock.SetDir(Vector2.zero);
+            Comps.Flock.IsFlocking = false;
+            Comps.Flock.SetDir(Vector2.zero);
         }
-        
-        
-        void ISelectable.OnSelect() {
+
+
+        //
+        // Selectable interface
+
+        void ISelectable.OnSelect () {
             IsSelected = true;
-            _doodColor.IsHighlighted = true;
+            Comps.Color.IsHighlighted = true;
         }
-        
-        void ISelectable.OnDeselect() {
+
+        void ISelectable.OnDeselect () {
             IsSelected = false;
-            _doodColor.IsHighlighted = false;
+            Comps.Color.IsHighlighted = false;
+        }
+    }
+
+    public class DoodComponents
+    {
+        public Root Behavior { get; private set; }
+        public Character Character { get; private set; }
+        public DoodColor Color { get; private set; }
+        public List<Need> Needs { get; private set; }
+        public FlockBehaviour Flock { get; private set; }
+
+
+        public DoodComponents (Dood dood) {
+            var go = dood.gameObject;
+            Character = go.GetComponent<Character>();
+            Behavior = go.GetComponentInChildren<BehaviorTree>().Root;
+            Color = go.GetComponentInChildren<DoodColor>();
+            Needs = go.GetComponents<Need>().ToList();
+            Flock = go.GetComponent<FlockBehaviour>();
         }
     }
 }
