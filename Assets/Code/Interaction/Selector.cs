@@ -17,7 +17,7 @@ namespace Code.Interaction
 
         public enum SelectionMode
         {
-//            Idle,
+            Idle,
             Selecting,
             Deselecting
         }
@@ -36,9 +36,17 @@ namespace Code.Interaction
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, DecreaseSize);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, IncreaseSize);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton,
-                () => { Mode = SelectionMode.Selecting; });
+                () => {
+                    if (Mode == SelectionMode.Idle) Mode = SelectionMode.Selecting;
+                });
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton,
-                () => { Mode = SelectionMode.Deselecting; });
+                () => {
+                    if (Mode == SelectionMode.Idle) Mode = SelectionMode.Deselecting;
+                });
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton,
+                () => { Mode = SelectionMode.Idle; }, ActionType.onRelease);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton,
+                () => { Mode = SelectionMode.Idle; }, ActionType.onRelease);
             _hits = new RaycastHit[50];
 
             Cursor.GetComponent<Renderer>().enabled = false;
@@ -49,15 +57,17 @@ namespace Code.Interaction
         void Update () {
             if (Game.Sesh.Input.Monitor.LT < 0.1f) {
                 Cursor.GetComponent<Renderer>().enabled = false;
-                Mode = SelectionMode.Selecting;
+                Mode = SelectionMode.Idle;
                 return;
             }
+
 
             Cursor.GetComponent<Renderer>().enabled = true;
             Vector3 camRight = Camera.main.transform.right;
             Vector3 camForward = Vector3.Cross(Camera.main.transform.up, camRight);
             Vector3 move = camRight * Game.Sesh.Input.Monitor.LeftH - camForward * Game.Sesh.Input.Monitor.LeftV;
             AddPos(move * _speed * Time.deltaTime);
+            if (Mode == SelectionMode.Idle) return;
             int n = Physics.SphereCastNonAlloc(_pos, _size, Vector3.down, _hits);
             for (int i = 0; i < n; ++i) {
                 if (!_hits[i].transform.GetComponent<Dood>()) {

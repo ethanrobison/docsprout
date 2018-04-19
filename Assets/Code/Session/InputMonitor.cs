@@ -25,13 +25,13 @@ namespace Code.Session
         public float RightV {
             get { return Input.GetAxisRaw(_rightV); }
         }
-        
+
         public float RT {
-            get { return Input.GetAxisRaw(_RT);}
+            get { return Input.GetAxisRaw(_RT); }
         }
-        
+
         public float LT {
-            get { return Input.GetAxisRaw(_LT);}
+            get { return Input.GetAxisRaw(_LT); }
         }
 
         private string _leftH;
@@ -60,9 +60,17 @@ namespace Code.Session
         private void Update () {
             for (int i = 0, c = _mappings.Count; i < c; i++) {
                 var pair = _mappings[i];
-                if (Input.GetKeyDown(pair.ButtonName)) {
-                    pair.OnPress();
-                    c = _mappings.Count;
+                if (pair.ActionType == ActionType.onPress) {
+                    if (Input.GetKeyDown(pair.ButtonName)) {
+                        pair.OnPress();
+                        c = _mappings.Count;
+                    }
+                }
+                else {
+                    if (Input.GetKeyUp(pair.ButtonName)) {
+                        pair.OnPress();
+                        c = _mappings.Count;
+                    }
                 }
             }
         }
@@ -105,14 +113,15 @@ namespace Code.Session
         //
         // API
 
-        public void RegisterMapping (ControllerButton button, Action onpress) {
+        public void RegisterMapping (ControllerButton button, Action onpress,
+            ActionType actionType = ActionType.onPress) {
             KeyCode buttonname;
             if (!_buttonNames.TryGetValue(button, out buttonname)) {
                 Logging.Error("Missing name for button: " + button);
                 return;
             }
 
-            var pair = new ButtonPair(buttonname, onpress);
+            var pair = new ButtonPair(buttonname, onpress, actionType);
             _mappings.Add(pair);
         }
 
@@ -123,10 +132,12 @@ namespace Code.Session
         {
             public readonly KeyCode ButtonName;
             public readonly Action OnPress;
+            public readonly ActionType ActionType;
 
-            public ButtonPair (KeyCode button, Action action) {
+            public ButtonPair (KeyCode button, Action action, ActionType actionType) {
                 ButtonName = button;
                 OnPress = action;
+                ActionType = actionType;
             }
         }
 
