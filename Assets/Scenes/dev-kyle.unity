@@ -613,6 +613,7 @@ MonoBehaviour:
   minAngle: 15
   minDist: 8
   angleChange: 1
+  stiffness: 15
   mat: {fileID: 2100000, guid: a3cf64e0ce5314a1895d69f60ce37a5e, type: 2}
 --- !u!20 &282840813
 Camera:
@@ -1730,7 +1731,7 @@ MonoBehaviour:
   - 2.5
   - 4
   - 5.5
-  _speed: 8
+  _speed: 6
   Cursor: {fileID: 1614741049}
   minDist: 2
   Cam: {fileID: 282840812}

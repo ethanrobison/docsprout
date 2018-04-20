@@ -1,4 +1,5 @@
-﻿using Code.Characters.Doods;
+﻿using System.Security.Cryptography.X509Certificates;
+using Code.Characters.Doods;
 using Code.Characters.Player;
 using Code.Session;
 using UnityEngine;
@@ -6,7 +7,6 @@ using UnityEngine.Experimental.PlayerLoop;
 
 namespace Code.Interaction
 {
-    [RequireComponent(typeof(Player))]
     public class Selector : MonoBehaviour
     {
         public enum ControlConfiguration
@@ -28,7 +28,7 @@ namespace Code.Interaction
         public GameObject Cursor;
 
         public float minDist = 1f;
-        
+
         public MultiFocusCam Cam;
 
         public enum SelectionMode
@@ -39,7 +39,7 @@ namespace Code.Interaction
             Deselecting
         }
 
-        [HideInInspector]public SelectionMode Mode;
+        [HideInInspector] public SelectionMode Mode;
 
         private float _size {
             get { return _sizes[_sizeInd]; }
@@ -49,28 +49,32 @@ namespace Code.Interaction
         void Start () {
             _pos = new Vector3(0f, 50f, 0f);
             _sizeInd = ((_sizes.Length + 1) >> 1) - 1;
+            _hits = new RaycastHit[50];
             Cursor.transform.localScale = new Vector3(_size * 2f, Cursor.transform.localScale.y, _size * 2f);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, DecreaseSize);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, IncreaseSize);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton,
-                () => {
-                    if (Mode == SelectionMode.Idle) Mode = SelectionMode.Selecting;
-                });
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton,
-                () => {
-                    if (Mode == SelectionMode.Idle) Mode = SelectionMode.Deselecting;
-                });
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton,
-                () => { Mode = SelectionMode.Idle; }, ActionType.onRelease);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton,
-                () => { Mode = SelectionMode.Idle; }, ActionType.onRelease);
-            _hits = new RaycastHit[50];
+            if (Configuration == ControlConfiguration.LeftStick) {
+                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton,
+                    () => {
+                        if (Mode == SelectionMode.Idle) Mode = SelectionMode.Selecting;
+                    });
+                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton,
+                    () => {
+                        if (Mode == SelectionMode.Idle) Mode = SelectionMode.Deselecting;
+                    });
+                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton,
+                    () => { Mode = SelectionMode.Idle; }, ActionType.onRelease);
+                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton,
+                    () => { Mode = SelectionMode.Idle; }, ActionType.onRelease);
+            }
+
             if (Configuration == ControlConfiguration.RightStick) {
                 Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, () => {
                     if (Mode == SelectionMode.Off) {
                         Mode = SelectionMode.Idle;
                         _renderer.enabled = true;
-                        Cursor.transform.position = Camera.main.transform.forward + transform.position;
+                        Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
+                        SetPos(-camForward*minDist);
                         GetComponent<CameraController>().enabled = false;
                         Cam.enabled = true;
                     }
@@ -79,9 +83,10 @@ namespace Code.Interaction
                         _renderer.enabled = false;
                         GetComponent<CameraController>().enabled = true;
                         Cam.enabled = false;
+                        Cam.RelinquishControl(GetComponent<CameraController>());
                     }
                 });
-                
+
                 Cam.enabled = false;
                 GetComponent<CameraController>().enabled = true;
             }
@@ -97,8 +102,13 @@ namespace Code.Interaction
             if (Configuration == ControlConfiguration.LeftStick) {
                 if (Game.Sesh.Input.Monitor.LT < 0.1f) {
                     Cursor.GetComponent<Renderer>().enabled = false;
-                    Mode = SelectionMode.Idle;
+                    Mode = SelectionMode.Off;
                     return;
+                }
+
+                if (Mode == SelectionMode.Off) {
+                    Mode = SelectionMode.Idle;
+                    SetPos(Vector2.zero);
                 }
 
 
@@ -123,32 +133,31 @@ namespace Code.Interaction
                 }
             }
             else {
-                
-
-                if(Mode == SelectionMode.Selecting) {
-                    if(Game.Sesh.Input.Monitor.LT < 0.1f) {
+                if (Mode == SelectionMode.Selecting) {
+                    if (Game.Sesh.Input.Monitor.LT < 0.1f) {
                         Mode = SelectionMode.Idle;
                     }
                 }
                 else if (Mode == SelectionMode.Deselecting) {
-                    if(Game.Sesh.Input.Monitor.RT < 0.1f) {
+                    if (Game.Sesh.Input.Monitor.RT < 0.1f) {
                         Mode = SelectionMode.Idle;
                     }
                 }
-                
-                if(Mode == SelectionMode.Idle) {
-                    if(Game.Sesh.Input.Monitor.LT > 0.1f) {
+
+                if (Mode == SelectionMode.Idle) {
+                    if (Game.Sesh.Input.Monitor.LT > 0.1f) {
                         Mode = SelectionMode.Selecting;
                     }
-                    else if(Game.Sesh.Input.Monitor.RT > 0.1f) {
+                    else if (Game.Sesh.Input.Monitor.RT > 0.1f) {
                         Mode = SelectionMode.Deselecting;
                     }
                     else {
                         return;
                     }
                 }
-                
-                int n = Physics.SphereCastNonAlloc(_pos + Vector3.up*50f, _size, Vector3.down, _hits);
+
+                int n = Physics.SphereCastNonAlloc(_pos + transform.position + Vector3.up * 50f, _size, Vector3.down,
+                    _hits);
                 for (int i = 0; i < n; ++i) {
                     if (!_hits[i].transform.GetComponent<Dood>()) {
                         continue;
@@ -163,8 +172,8 @@ namespace Code.Interaction
                 }
             }
         }
-        
-        void FixedUpdate() {
+
+        void FixedUpdate () {
             if (Mode == SelectionMode.Off) {
                 return;
             }
@@ -173,37 +182,33 @@ namespace Code.Interaction
             Vector3 camForward = Vector3.Cross(Camera.main.transform.up, camRight);
             Vector3 move = camRight * Game.Sesh.Input.Monitor.RightH - camForward * Game.Sesh.Input.Monitor.RightV;
             AddPos(move * _speed * Time.deltaTime);
-            _pos.y = transform.position.y;
-            Vector2 fromPlayer = new Vector2(_pos.x - transform.position.x,
-                _pos.z - transform.position.z);
-                
-            if(fromPlayer.sqrMagnitude < minDist*minDist) {
-                fromPlayer.Normalize();
-                _pos.x =  transform.position.x + fromPlayer.x*minDist;
-                _pos.z =  transform.position.z + fromPlayer.y*minDist;
+            _pos.y = 0f;
+            if (_pos.sqrMagnitude < minDist * minDist) {
+                _pos.Normalize();
+                _pos *= minDist;
             }
         }
 
         public void SetPos (Vector3 pos) {
             _pos = pos;
-            Cursor.transform.position = _pos;
+            Cursor.transform.position = _pos + transform.position;
         }
 
         public void AddPos (Vector3 pos) {
             _pos += pos;
-            Cursor.transform.position = _pos;
+            Cursor.transform.position = _pos + transform.position;
         }
 
         public void SetPos (Vector2 pos) {
             _pos.x = pos.x;
             _pos.z = pos.y;
-            Cursor.transform.position = _pos;
+            Cursor.transform.position = _pos + transform.position;
         }
 
         public void AddPos (Vector2 pos) {
             _pos.x += pos.x;
             _pos.z += pos.y;
-            Cursor.transform.position = _pos;
+            Cursor.transform.position = _pos + transform.position;
         }
 
         void IncreaseSize () {

@@ -47,6 +47,15 @@ namespace Code.Characters.Player
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, _goalPos,
                 stiffness*Time.fixedDeltaTime);
         }
+        
+        public void RelinquishControl(CameraController ctrl) {
+            Vector3 targetDir = target.position - player.position;
+            float targetY = targetDir.y;
+            targetDir.y = 0f;
+            float targetDist = targetDir.magnitude;
+            float yAngle = 90f - (90f - minAngle) * targetDist / (targetDist + angleChange);
+            ctrl.AcceptControl(Quaternion.LookRotation(targetDir), yAngle);
+        }
 
 #if UNITY_EDITOR
         private void OnPostRender () {
@@ -58,8 +67,6 @@ namespace Code.Characters.Player
             GL.Begin(GL.LINES);
             GL.Vertex3(0f, ScreenBorder, 0f);
             GL.Vertex3(1f, ScreenBorder, 0f);
-            GL.Vertex3(0f, 1f - ScreenBorder, 0f);
-            GL.Vertex3(1f, 1f - ScreenBorder, 0f);
             GL.End();
             GL.PopMatrix();
         }

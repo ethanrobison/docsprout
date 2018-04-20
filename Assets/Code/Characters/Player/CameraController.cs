@@ -7,7 +7,7 @@ namespace Code.Characters.Player {
 		public new Camera camera;
 		public Transform target;
 		float camRotY = 30f;
-		float camRotX;
+		Quaternion camRotX;
 
 		public LayerMask obscuresCamera;
 
@@ -34,7 +34,9 @@ namespace Code.Characters.Player {
 		void Start ()
 		{
 			if (target == null) target = transform;
-			Quaternion goalCamRot = target.rotation * Quaternion.AngleAxis (camRotX, Vector3.up);
+			camRotX = Quaternion.identity;
+//			Quaternion goalCamRot = target.rotation * Quaternion.AngleAxis (camRotX, Vector3.up);
+			Quaternion goalCamRot = target.rotation * camRotX;
 			goalCamRot *= Quaternion.AngleAxis (camRotY, Vector3.right);
 
 			RaycastHit hit;
@@ -60,8 +62,8 @@ namespace Code.Characters.Player {
 		public void moveCamera (float x, float y)
 		{
 
-			camRotX += x * xSensitivity;
-			camRotX = camRotX % 360;
+			camRotX *= Quaternion.AngleAxis(x * xSensitivity, Vector3.up);
+//			camRotX = camRotX % 360;
 
 			float dYCam = y;
 			if (!invertY) dYCam *= -1;
@@ -130,7 +132,8 @@ namespace Code.Characters.Player {
 
 		void FixedUpdate ()
 		{
-			Quaternion goalCamRot = target.rotation * Quaternion.AngleAxis (camRotX, Vector3.up);
+//			Quaternion goalCamRot = target.rotation * Quaternion.AngleAxis (camRotX, Vector3.up);
+			Quaternion goalCamRot = target.rotation * camRotX;
 			goalCamRot *= Quaternion.AngleAxis (camRotY, Vector3.right);
 
 			RaycastHit hit;
@@ -147,6 +150,11 @@ namespace Code.Characters.Player {
 
 
 
+		}
+		
+		public void AcceptControl(Quaternion x, float y) {
+			camRotX = x;
+			camRotY = y;
 		}
 	}
 
