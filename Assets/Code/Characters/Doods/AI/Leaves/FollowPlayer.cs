@@ -21,7 +21,7 @@ namespace Code.Characters.Doods.AI
             var dist = Vector3.Distance(Dood.transform.position, _player.transform.position);
             if (dist < _goalDistance) { return Status.Success; }
 
-            Dood.MoveTowards(_player.transform.position);
+            Dood.MoveTowards(_player.transform.position, 5f);
             return Status.Running;
         }
     }

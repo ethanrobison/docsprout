@@ -1,53 +1,57 @@
-﻿using UnityEngine;
+using Code.Characters.Doods;
+using UnityEngine;
 
-namespace Code.Characters.Player {
-	[RequireComponent (typeof (Walk))]
-	[RequireComponent (typeof (CameraController))]
-	public class Player : MonoBehaviour {
-		public enum PlayerState {
-			Walking,
-			Selecting
-		}
+namespace Code.Characters.Player
+{
+    [RequireComponent(typeof(CameraController))]
+    public class Player : MonoBehaviour
+    {
+        public enum PlayerState
+        {
+            Walking,
+            Selecting
+        }
 
-		[HideInInspector] public PlayerState state;
+        [HideInInspector] public PlayerState State;
 
-		Walk _walkComponent;
-		CameraController _camController;
+        CameraController _camController;
+        private Movement _movement;
 
 
-		void Start ()
-		{
-			_walkComponent = GetComponent<Walk> ();
-			_camController = GetComponent<CameraController> ();
+        private void Start () {
+            _camController = GetComponent<CameraController>();
+            _movement = GetComponent<Movement>();
 
-			if (Game.Ctx != null) { Game.Ctx.SetPlayer (this); }
-		}
+            if (Game.Ctx != null) { Game.Ctx.SetPlayer(this); }
+        }
 
-		void Update ()
-		{
-			switch (state) {
-			case PlayerState.Walking:
-				float x = Game.Sesh.Input.Monitor.LeftH;
-				float y = Game.Sesh.Input.Monitor.LeftV;
-				if (x * x + y * y < 0.01 || Game.Sesh.Input.Monitor.LT >= 0.1f) {
-					_walkComponent.SetDir (Vector3.zero);
-					break;
-				}
-				Vector3 forwards = Vector3.Cross (_camController.camera.transform.right, Vector3.up).normalized;
-				Vector2 dir = new Vector2 (x * _camController.camera.transform.right.x + y * forwards.x,
-									   x * _camController.camera.transform.right.z + y * forwards.z);
-				_walkComponent.SetDir (dir);
-				break;
-			}
+        private void Update () {
+            switch (State) {
+                case PlayerState.Walking:
+                    float x = Game.Sesh.Input.Monitor.LeftH;
+                    float y = Game.Sesh.Input.Monitor.LeftV;
+                    if (x * x + y * y < 0.01 || Game.Sesh.Input.Monitor.LT >= 0.1f) {
+                        _movement.SetDirection(Vector3.zero);
+                    }
 
-			float camX = Game.Sesh.Input.Monitor.RightH;
-			float camY = Game.Sesh.Input.Monitor.RightV;
-			if (camX * camX + camY * camY < 0.01) {
-				camX = 0f;
-				camY = 0f;
-			}
-			_camController.moveCamera (camX * Time.deltaTime, camY * Time.deltaTime);
-		}
-	}
+//                    if (Interaction.Selector.Configuration == Selector.ControlConfiguration.LeftStick &&
+//                        Game.Sesh.Input.Monitor.LT > 0.1f) {
+//                        _movement.SetDirection(Vector3.zero);
+//                        break;
+//                    }
+
+                    Vector3 forwards = Vector3.Cross(_camController.camera.transform.right, Vector3.up).normalized;
+                    Vector2 dir = new Vector2(x * _camController.camera.transform.right.x + y * forwards.x,
+                        x * _camController.camera.transform.right.z + y * forwards.z);
+                    _movement.SetDirection(dir);
+                    break;
+            }
+
+            var camX = Game.Sesh.Input.Monitor.RightH;
+            var camY = Game.Sesh.Input.Monitor.RightV;
+            if (camX * camX + camY * camY > 0.01) {
+                _camController.moveCamera(camX * Time.deltaTime, camY * Time.deltaTime);
+            }
+        }
+    }
 }
-

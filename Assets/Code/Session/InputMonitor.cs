@@ -32,13 +32,13 @@ namespace Code.Session
         public float RightV {
             get { return Input.GetAxisRaw(_rightV); }
         }
-        
+
         public float RT {
-            get { return Input.GetAxisRaw(_RT);}
+            get { return Input.GetAxisRaw(_RT); }
         }
-        
+
         public float LT {
-            get { return Input.GetAxisRaw(_LT);}
+            get { return Input.GetAxisRaw(_LT); }
         }
 
         private string _leftH;
@@ -123,7 +123,7 @@ namespace Code.Session
                     throw new ArgumentOutOfRangeException();
             }
         }
-
+        
         //
         // API
 
@@ -144,6 +144,7 @@ namespace Code.Session
         private struct ButtonPair
         {
             public readonly KeyCode ButtonName;
+
             public readonly Action OnPress;
             public readonly PressType PressType;
 
@@ -161,26 +162,26 @@ namespace Code.Session
             //public static readonly Dictionary<ControllerButton, string> WindowsDS4 = new Dictionary<ControllerButton, string> { };
             public static readonly Dictionary<ControllerButton, KeyCode> OSXXBox =
                 new Dictionary<ControllerButton, KeyCode> {
-                    {ControllerButton.AButton, KeyCode.JoystickButton16},
-                    {ControllerButton.BButton, KeyCode.JoystickButton17},
-                    {ControllerButton.XButton, KeyCode.JoystickButton18},
-                    {ControllerButton.YButton, KeyCode.JoystickButton19},
-                    {ControllerButton.RightBumper, KeyCode.JoystickButton14},
-                    {ControllerButton.LeftBumper, KeyCode.JoystickButton13},
-                    {ControllerButton.Start, KeyCode.JoystickButton9},
-                    {ControllerButton.Select, KeyCode.JoystickButton10}
+                    { ControllerButton.AButton, KeyCode.JoystickButton16 },
+                    { ControllerButton.BButton, KeyCode.JoystickButton17 },
+                    { ControllerButton.XButton, KeyCode.JoystickButton18 },
+                    { ControllerButton.YButton, KeyCode.JoystickButton19 },
+                    { ControllerButton.RightBumper, KeyCode.JoystickButton14 },
+                    { ControllerButton.LeftBumper, KeyCode.JoystickButton13 },
+                    { ControllerButton.Start, KeyCode.JoystickButton9 },
+                    { ControllerButton.Select, KeyCode.JoystickButton10 }
                 };
 
             public static readonly Dictionary<ControllerButton, KeyCode> OSXDS4 =
                 new Dictionary<ControllerButton, KeyCode> {
-                    {ControllerButton.AButton, KeyCode.JoystickButton1},
-                    {ControllerButton.BButton, KeyCode.JoystickButton2},
-                    {ControllerButton.XButton, KeyCode.JoystickButton0},
-                    {ControllerButton.YButton, KeyCode.JoystickButton3},
-                    {ControllerButton.RightBumper, KeyCode.JoystickButton5},
-                    {ControllerButton.LeftBumper, KeyCode.JoystickButton4},
-                    {ControllerButton.Start, KeyCode.JoystickButton9},
-                    {ControllerButton.Select, KeyCode.JoystickButton17}
+                    { ControllerButton.AButton, KeyCode.JoystickButton1 },
+                    { ControllerButton.BButton, KeyCode.JoystickButton2 },
+                    { ControllerButton.XButton, KeyCode.JoystickButton0 },
+                    { ControllerButton.YButton, KeyCode.JoystickButton3 },
+                    { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
+                    { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
+                    { ControllerButton.Start, KeyCode.JoystickButton9 },
+                    { ControllerButton.Select, KeyCode.JoystickButton17 }
                 };
         }
     }

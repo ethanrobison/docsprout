@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4894656807555950}
   - component: {fileID: 114917421665822280}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Status
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4537764290872208}
   - component: {fileID: 212277761784275584}
   - component: {fileID: 114864987879363384}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: NeedWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4302253930841170}
   - component: {fileID: 114645911147355172}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Behavior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,13 +68,13 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4449121381222240}
-  - component: {fileID: 114534099253518344}
   - component: {fileID: 114711379555884012}
   - component: {fileID: 114583560899183344}
   - component: {fileID: 114288370104366096}
   - component: {fileID: 136373486336146430}
   - component: {fileID: 54391238931157460}
-  m_Layer: 0
+  - component: {fileID: 114204301368448308}
+  m_Layer: 9
   m_Name: Base Dood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 4238769008418214}
   - component: {fileID: 212316031090017744}
   - component: {fileID: 114196330182940048}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: StopWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1823549557404724}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.225119, y: -0.21999979, z: 16.9}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.10000003, z: 0.10000003}
   m_Children: []
   m_Father: {fileID: 4894656807555950}
@@ -165,7 +165,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1337813837075614}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.225119, y: -0.21999979, z: 16.9}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.10000003, z: 0.10000003}
   m_Children: []
   m_Father: {fileID: 4894656807555950}
@@ -191,7 +191,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1276521123104454}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4537764290872208}
@@ -254,7 +254,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &114196330182940048
 MonoBehaviour:
@@ -268,6 +268,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Reverse: 0
+--- !u!114 &114204301368448308
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1546701687871328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0559f7efc9fc4392bdb3e08b192219ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 4
 --- !u!114 &114288370104366096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -281,24 +293,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingMeter: 50
   Range: {x: 0, y: 0, z: 0}
---- !u!114 &114534099253518344
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1546701687871328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 644cb295d212b4e1f9f69beb3e1b4ebb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Velocity: {x: 0, y: 0, z: 0}
-  IsOnGround: 0
-  CollisionFlags: 0
-  GroundNormal: {x: 0, y: 1, z: 0}
-  GroundLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &114583560899183344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -310,7 +304,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8489f30ab611493e82813840070d4c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StopMovingPeriod: 0.15
   IsSelected: 0
 --- !u!114 &114645911147355172
 MonoBehaviour:
@@ -334,15 +327,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55938a49d9b341f89b8484f50d929ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxSpeed: 5
-  SpeedUpAcceleration: 30
-  SlowDownAcceleration: 40
-  TurningSpeed: 50
-  NeighborhoodRadius: 5
-  Damping: 1
+  NeighborhoodRadius: 4
+  Damping: 2
   AttractWeight: 1
-  RepelWeight: 1
-  AlignWeight: 1
+  RepelWeight: 15
+  AlignWeight: 0.4
   IsFlocking: 1
 --- !u!114 &114864987879363384
 MonoBehaviour:
@@ -394,9 +383,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1.5
+  m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0.6, z: 0}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!212 &212277761784275584
 SpriteRenderer:
   m_ObjectHideFlags: 1
