@@ -68,7 +68,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4449121381222240}
-  - component: {fileID: 114534099253518344}
   - component: {fileID: 114711379555884012}
   - component: {fileID: 114583560899183344}
   - component: {fileID: 114288370104366096}
@@ -294,24 +293,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingMeter: 50
   Range: {x: 0, y: 0, z: 0}
---- !u!114 &114534099253518344
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1546701687871328}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 644cb295d212b4e1f9f69beb3e1b4ebb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Velocity: {x: 0, y: 0, z: 0}
-  IsOnGround: 0
-  CollisionFlags: 0
-  GroundNormal: {x: 0, y: 1, z: 0}
-  GroundLayers:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!114 &114583560899183344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -347,7 +328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NeighborhoodRadius: 4
-  Damping: 0
+  Damping: 2
   AttractWeight: 1
   RepelWeight: 15
   AlignWeight: 0

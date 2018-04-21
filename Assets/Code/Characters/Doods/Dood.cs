@@ -51,22 +51,18 @@ namespace Code.Characters.Doods
 
     public class DoodComponents
     {
-        public Character Character { get; private set; }
         public FlockBehaviour Flock { get; private set; }
+        public Movement Movement { get; private set; }
 
         public DoodColor Color { get; private set; }
         public Root Behavior { get; private set; }
         public Need[] Needs { get; private set; }
 
 
-        private Transform _behavior;
-        private Transform _visuals;
-        private Transform _status;
-
         public DoodComponents (Dood dood) {
             var go = dood.gameObject;
             Flock = go.GetRequiredComponent<FlockBehaviour>();
-            Character = go.GetRequiredComponent<Character>();
+            Movement = go.GetRequiredComponent<Movement>();
 
             Color = go.GetRequiredComponentInChildren<DoodColor>();
             Behavior = go.GetRequiredComponentInChildren<BehaviorTree>().Root;

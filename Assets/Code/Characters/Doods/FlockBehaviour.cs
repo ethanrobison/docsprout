@@ -43,14 +43,14 @@ namespace Code.Characters.Doods
                 ++numNearby;
                 diff /= diff.sqrMagnitude;
                 force -= diff * RepelWeight;
-                force += (dood.Comps.Character.Velocity - _dood.Comps.Character.Velocity) * AlignWeight;
+//                force += (dood.Comps.Character.Velocity - _dood.Comps.Character.Velocity) * AlignWeight;
             }
 
             if (numNearby == 0) { return Vector3.zero; }
 
             center /= numNearby;
             force += (center - transform.position) * AttractWeight;
-            force -= _dood.Comps.Character.Velocity * Damping;
+//            force -= _dood.Comps.Character.Velocity * Damping;
 
             return Vector2.ClampMagnitude(new Vector2(force.x, force.z), MAX_MAGNITUDE);
         }
