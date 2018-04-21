@@ -19,7 +19,6 @@ namespace Code.Characters.Doods
             const float diff = 1.2f;
             for (var i = 0; i < count; i++) {
                 var pos = startpos + new Vector3((i % 5) * diff, 8f, (-i / 5) * diff);
-                Logging.Log(pos.ToString());
                 MakeDood(pos, "Base Dood");
             }
         }
@@ -31,5 +30,15 @@ namespace Code.Characters.Doods
 
             DoodList.Add(dood);
         }
+        
+        
+        public void DeselectAll() {
+            foreach (Dood dood in DoodList) {
+                dood.OnDeselect();
+            }
+        }
+        
+        
+        
     }
 }

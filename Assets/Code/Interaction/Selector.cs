@@ -9,13 +9,6 @@ namespace Code.Interaction
 {
     public class Selector : MonoBehaviour
     {
-        public enum ControlConfiguration
-        {
-            LeftStick,
-            RightStick
-        }
-
-        public static ControlConfiguration Configuration = ControlConfiguration.RightStick;
         [SerializeField] private float[] _sizes;
         private int _sizeInd;
         private RaycastHit[] _hits;
@@ -56,43 +49,30 @@ namespace Code.Interaction
             Cursor.transform.localScale = new Vector3(_size * 2f, Cursor.transform.localScale.y, _size * 2f);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, DecreaseSize);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, IncreaseSize);
-            if (Configuration == ControlConfiguration.LeftStick) {
-                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton,
-                    () => {
-                        if (Mode == SelectionMode.Idle) Mode = SelectionMode.Selecting;
-                    });
-                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton,
-                    () => {
-                        if (Mode == SelectionMode.Idle) Mode = SelectionMode.Deselecting;
-                    });
-                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton,
-                    () => { Mode = SelectionMode.Idle; }, InputMonitor.PressType.ButtonUp);
-                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton,
-                    () => { Mode = SelectionMode.Idle; }, InputMonitor.PressType.ButtonUp);
-            }
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, () => {
+                if (Mode != SelectionMode.Off) Game.Ctx.Doods.DeselectAll();
+            });
 
-            if (Configuration == ControlConfiguration.RightStick) {
-                Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, () => {
-                    if (Mode == SelectionMode.Off) {
-                        Mode = SelectionMode.Idle;
-                        _renderer.enabled = true;
-                        Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
-                        SetPos(-camForward * MinDist);
-                        GetComponent<CameraController>().enabled = false;
-                        Cam.enabled = true;
-                    }
-                    else {
-                        Mode = SelectionMode.Off;
-                        _renderer.enabled = false;
-                        GetComponent<CameraController>().enabled = true;
-                        Cam.enabled = false;
-                        Cam.RelinquishControl(GetComponent<CameraController>());
-                    }
-                });
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, () => {
+                if (Mode == SelectionMode.Off) {
+                    Mode = SelectionMode.Idle;
+                    _renderer.enabled = true;
+                    Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
+                    SetPos(-camForward * MinDist);
+                    GetComponent<CameraController>().enabled = false;
+                    Cam.enabled = true;
+                }
+                else {
+                    Mode = SelectionMode.Off;
+                    _renderer.enabled = false;
+                    GetComponent<CameraController>().enabled = true;
+                    Cam.enabled = false;
+                    Cam.RelinquishControl(GetComponent<CameraController>());
+                }
+            });
 
-                Cam.enabled = false;
-                GetComponent<CameraController>().enabled = true;
-            }
+            Cam.enabled = false;
+            GetComponent<CameraController>().enabled = true;
 
 
             _renderer = Cursor.GetComponent<Renderer>();
@@ -102,76 +82,42 @@ namespace Code.Interaction
 
         // Update is called once per frame
         void Update () {
-            if (Configuration == ControlConfiguration.LeftStick) {
-                if (Game.Sesh.Input.Monitor.LT < 0.1f) {
-                    Cursor.GetComponent<Renderer>().enabled = false;
-                    Mode = SelectionMode.Off;
-                    return;
-                }
-
-                if (Mode == SelectionMode.Off) {
+            if (Mode == SelectionMode.Selecting) {
+                if (Game.Sesh.Input.Monitor.RT < 0.1f) {
                     Mode = SelectionMode.Idle;
-                    SetPos(Vector2.zero);
-                }
-
-
-                _renderer.enabled = true;
-                Vector3 camRight = Camera.main.transform.right;
-                Vector3 camForward = Vector3.Cross(Camera.main.transform.up, camRight);
-                Vector3 move = camRight * Game.Sesh.Input.Monitor.LeftH - camForward * Game.Sesh.Input.Monitor.LeftV;
-                AddPos(move * _maxSpeed * Time.deltaTime);
-                if (Mode == SelectionMode.Idle) return;
-                int n = Physics.SphereCastNonAlloc(_pos, _size, Vector3.down, _hits);
-                for (int i = 0; i < n; ++i) {
-                    if (!_hits[i].transform.GetComponent<Dood>()) {
-                        continue;
-                    }
-
-                    if (Mode == SelectionMode.Selecting) {
-                        _hits[i].transform.GetComponent<ISelectable>().OnSelect();
-                    }
-                    else if (Mode == SelectionMode.Deselecting) {
-                        _hits[i].transform.GetComponent<ISelectable>().OnDeselect();
-                    }
                 }
             }
-            else {
+            else if (Mode == SelectionMode.Deselecting) {
+                if (Game.Sesh.Input.Monitor.LT < 0.1f) {
+                    Mode = SelectionMode.Idle;
+                }
+            }
+
+            if (Mode == SelectionMode.Idle) {
+                if (Game.Sesh.Input.Monitor.RT > 0.1f) {
+                    Mode = SelectionMode.Selecting;
+                }
+                else if (Game.Sesh.Input.Monitor.LT > 0.1f) {
+                    Mode = SelectionMode.Deselecting;
+                }
+                else {
+                    return;
+                }
+            }
+
+            int n = Physics.SphereCastNonAlloc(_pos + transform.position + Vector3.up * 50f, _size, Vector3.down,
+                _hits);
+            for (int i = 0; i < n; ++i) {
+                Dood dood = _hits[i].transform.GetComponent<Dood>();
+                if (!dood) {
+                    continue;
+                }
+
                 if (Mode == SelectionMode.Selecting) {
-                    if (Game.Sesh.Input.Monitor.RT < 0.1f) {
-                        Mode = SelectionMode.Idle;
-                    }
+                    dood.OnSelect();
                 }
                 else if (Mode == SelectionMode.Deselecting) {
-                    if (Game.Sesh.Input.Monitor.LT < 0.1f) {
-                        Mode = SelectionMode.Idle;
-                    }
-                }
-
-                if (Mode == SelectionMode.Idle) {
-                    if (Game.Sesh.Input.Monitor.RT > 0.1f) {
-                        Mode = SelectionMode.Selecting;
-                    }
-                    else if (Game.Sesh.Input.Monitor.LT > 0.1f) {
-                        Mode = SelectionMode.Deselecting;
-                    }
-                    else {
-                        return;
-                    }
-                }
-
-                int n = Physics.SphereCastNonAlloc(_pos + transform.position + Vector3.up * 50f, _size, Vector3.down,
-                    _hits);
-                for (int i = 0; i < n; ++i) {
-                    if (!_hits[i].transform.GetComponent<Dood>()) {
-                        continue;
-                    }
-
-                    if (Mode == SelectionMode.Selecting) {
-                        _hits[i].transform.GetComponent<ISelectable>().OnSelect();
-                    }
-                    else if (Mode == SelectionMode.Deselecting) {
-                        _hits[i].transform.GetComponent<ISelectable>().OnDeselect();
-                    }
+                    dood.OnDeselect();
                 }
             }
         }
