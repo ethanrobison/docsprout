@@ -11,14 +11,14 @@ namespace Code.Characters.Doods
 
         public readonly List<Dood> DoodList = new List<Dood>();
 
-        public void Initialize () { MakeNDoods(50, new Vector3(-10f, 0f, 20f)); }
+        public void Initialize () { MakeNDoods(40, new Vector3(-10f, 0f, 20f)); }
 
         public void ShutDown () { }
 
         private void MakeNDoods (int count, Vector3 startpos) {
             const float diff = 1.2f;
             for (var i = 0; i < count; i++) {
-                var pos = startpos + new Vector3((i % 5) * diff, 8f, -i * diff);
+                var pos = startpos + new Vector3((i % 5) * diff, 8f, (-i / 5) * diff);
                 Logging.Log(pos.ToString());
                 MakeDood(pos, "Base Dood");
             }
