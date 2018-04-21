@@ -7,6 +7,10 @@ namespace Code.Characters.Doods
     {
         public float Speed = 8f;
 
+        public Vector3 Velocity {
+            get { return _rb.velocity; }
+        }
+
         private Rigidbody _rb;
         private Vector3 _direction;
         private const float ACCELERATION = 5f;

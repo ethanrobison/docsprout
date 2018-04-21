@@ -24,7 +24,6 @@ namespace Code.Characters.Doods
 
             var direction = (pos - transform.position).normalized;
             Comps.Flock.IsFlocking = true;
-            Comps.Flock.AlignWeight = .4f;
             Comps.Flock.SetDir(direction);
             return false;
         }

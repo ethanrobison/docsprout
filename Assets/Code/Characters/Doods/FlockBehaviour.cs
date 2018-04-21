@@ -36,21 +36,23 @@ namespace Code.Characters.Doods
 
             foreach (var dood in Game.Ctx.Doods.DoodList) {
                 if (dood == _dood) continue;
+
                 var diff = dood.transform.position - transform.position;
                 if (!(diff.sqrMagnitude < sqrRadius)) { continue; }
 
-                center += dood.transform.position;
                 ++numNearby;
-                diff /= diff.sqrMagnitude;
+
+                center += dood.transform.position;
+                diff.Normalize();
                 force -= diff * RepelWeight;
-//                force += (dood.Comps.Character.Velocity - _dood.Comps.Character.Velocity) * AlignWeight;
+                force += (dood.Comps.Movement.Velocity - _dood.Comps.Movement.Velocity) * AlignWeight;
             }
 
             if (numNearby == 0) { return Vector3.zero; }
 
             center /= numNearby;
             force += (center - transform.position) * AttractWeight;
-//            force -= _dood.Comps.Character.Velocity * Damping;
+            force -= _dood.Comps.Movement.Velocity * Damping;
 
             return Vector2.ClampMagnitude(new Vector2(force.x, force.z), MAX_MAGNITUDE);
         }
