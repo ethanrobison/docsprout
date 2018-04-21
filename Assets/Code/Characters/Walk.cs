@@ -16,6 +16,7 @@ namespace Code.Characters
         public float SpeedUpAcceleration = 30f;
         public float SlowDownAcceleration = 40f;
         public float TurningSpeed = 50f;
+        public float AngularSpeed = 12f;
 
         Character _character;
         bool _isSwitchingDirs;
@@ -23,13 +24,17 @@ namespace Code.Characters
         protected Vector2 WalkingDir { get; private set; }
 
 
-        protected virtual void Start () {
-            _character = GetComponent<Character>();
+        protected virtual void Start () { _character = GetComponent<Character>(); }
+
+        private void Update () {
+            if (WalkingDir.sqrMagnitude < 0.01f) return;
+            Vector3 goalDir = new Vector3(WalkingDir.x, 0f, WalkingDir.y);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(goalDir),
+                AngularSpeed * Time.deltaTime);
         }
 
-        protected void FixedUpdate () {
-            Move();
-        }
+        protected void FixedUpdate () { Move(); }
 
         protected virtual void Move () {
             var goalSpeed = GetGoalSpeed();
@@ -122,12 +127,8 @@ namespace Code.Characters
         // 
         // public-facing stuff
 
-        public void SetDir (Vector2 heading) {
-            WalkingDir = heading;
-        }
+        public void SetDir (Vector2 heading) { WalkingDir = heading; }
 
-        public void SetDir (Vector3 heading) {
-            WalkingDir = new Vector2(heading.x, heading.z);
-        }
+        public void SetDir (Vector3 heading) { WalkingDir = new Vector2(heading.x, heading.z); }
     }
 }

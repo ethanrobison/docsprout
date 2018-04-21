@@ -36,7 +36,7 @@ namespace Code.Characters.Player {
 			if (target == null) target = transform;
 			camRotX = Quaternion.identity;
 //			Quaternion goalCamRot = target.rotation * Quaternion.AngleAxis (camRotX, Vector3.up);
-			Quaternion goalCamRot = target.rotation * camRotX;
+			Quaternion goalCamRot = camRotX;
 			goalCamRot *= Quaternion.AngleAxis (camRotY, Vector3.right);
 
 			RaycastHit hit;
@@ -133,7 +133,7 @@ namespace Code.Characters.Player {
 		void FixedUpdate ()
 		{
 //			Quaternion goalCamRot = target.rotation * Quaternion.AngleAxis (camRotX, Vector3.up);
-			Quaternion goalCamRot = target.rotation * camRotX;
+			Quaternion goalCamRot = camRotX;
 			goalCamRot *= Quaternion.AngleAxis (camRotY, Vector3.right);
 
 			RaycastHit hit;

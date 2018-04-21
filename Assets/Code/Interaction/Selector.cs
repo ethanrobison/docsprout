@@ -21,13 +21,16 @@ namespace Code.Interaction
         private RaycastHit[] _hits;
         private Vector3 _pos;
 
-        [SerializeField] float _speed = 5f;
+        [SerializeField] float _maxSpeed = 8f;
+        [SerializeField] float _minSpeed = 3f;
+        [SerializeField] float _speedConstant = 10f;
 
         Renderer _renderer;
 
         public GameObject Cursor;
 
-        public float minDist = 1f;
+        public float MinDist = 2f;
+        public float MaxDist = 15f;
 
         public MultiFocusCam Cam;
 
@@ -74,7 +77,7 @@ namespace Code.Interaction
                         Mode = SelectionMode.Idle;
                         _renderer.enabled = true;
                         Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
-                        SetPos(-camForward*minDist);
+                        SetPos(-camForward * MinDist);
                         GetComponent<CameraController>().enabled = false;
                         Cam.enabled = true;
                     }
@@ -116,7 +119,7 @@ namespace Code.Interaction
                 Vector3 camRight = Camera.main.transform.right;
                 Vector3 camForward = Vector3.Cross(Camera.main.transform.up, camRight);
                 Vector3 move = camRight * Game.Sesh.Input.Monitor.LeftH - camForward * Game.Sesh.Input.Monitor.LeftV;
-                AddPos(move * _speed * Time.deltaTime);
+                AddPos(move * _maxSpeed * Time.deltaTime);
                 if (Mode == SelectionMode.Idle) return;
                 int n = Physics.SphereCastNonAlloc(_pos, _size, Vector3.down, _hits);
                 for (int i = 0; i < n; ++i) {
@@ -134,21 +137,21 @@ namespace Code.Interaction
             }
             else {
                 if (Mode == SelectionMode.Selecting) {
-                    if (Game.Sesh.Input.Monitor.LT < 0.1f) {
+                    if (Game.Sesh.Input.Monitor.RT < 0.1f) {
                         Mode = SelectionMode.Idle;
                     }
                 }
                 else if (Mode == SelectionMode.Deselecting) {
-                    if (Game.Sesh.Input.Monitor.RT < 0.1f) {
+                    if (Game.Sesh.Input.Monitor.LT < 0.1f) {
                         Mode = SelectionMode.Idle;
                     }
                 }
 
                 if (Mode == SelectionMode.Idle) {
-                    if (Game.Sesh.Input.Monitor.LT > 0.1f) {
+                    if (Game.Sesh.Input.Monitor.RT > 0.1f) {
                         Mode = SelectionMode.Selecting;
                     }
-                    else if (Game.Sesh.Input.Monitor.RT > 0.1f) {
+                    else if (Game.Sesh.Input.Monitor.LT > 0.1f) {
                         Mode = SelectionMode.Deselecting;
                     }
                     else {
@@ -177,15 +180,20 @@ namespace Code.Interaction
             if (Mode == SelectionMode.Off) {
                 return;
             }
-
+            
+            float curSpeed = _pos.magnitude;
+            curSpeed = _minSpeed + (_maxSpeed - _minSpeed) * curSpeed/(curSpeed + _speedConstant);
             Vector3 camRight = Camera.main.transform.right;
             Vector3 camForward = Vector3.Cross(Camera.main.transform.up, camRight);
             Vector3 move = camRight * Game.Sesh.Input.Monitor.RightH - camForward * Game.Sesh.Input.Monitor.RightV;
-            AddPos(move * _speed * Time.deltaTime);
+            AddPos(move * curSpeed * Time.deltaTime);
             _pos.y = 0f;
-            if (_pos.sqrMagnitude < minDist * minDist) {
+            if (_pos.sqrMagnitude < MinDist * MinDist) {
                 _pos.Normalize();
-                _pos *= minDist;
+                _pos *= MinDist;
+            }
+            else {
+                _pos = Vector3.ClampMagnitude(_pos, MaxDist);
             }
         }
 

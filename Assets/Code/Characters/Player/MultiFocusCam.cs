@@ -50,7 +50,6 @@ namespace Code.Characters.Player
         
         public void RelinquishControl(CameraController ctrl) {
             Vector3 targetDir = target.position - player.position;
-            float targetY = targetDir.y;
             targetDir.y = 0f;
             float targetDist = targetDir.magnitude;
             float yAngle = 90f - (90f - minAngle) * targetDist / (targetDist + angleChange);
