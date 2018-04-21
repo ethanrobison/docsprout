@@ -37,12 +37,12 @@ namespace Code.Characters.Doods
         //
         // Selectable interface
 
-        void ISelectable.OnSelect () {
+        public void OnSelect () {
             IsSelected = true;
             Comps.Color.IsHighlighted = true;
         }
 
-        void ISelectable.OnDeselect () {
+        public void OnDeselect () {
             IsSelected = false;
             Comps.Color.IsHighlighted = false;
         }
