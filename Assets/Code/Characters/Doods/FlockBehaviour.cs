@@ -1,9 +1,8 @@
-﻿using Code.Doods;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Characters.Doods
 {
-    public class FlockBehaviour : Walk
+    public class FlockBehaviour : MonoBehaviour
     {
         public float NeighborhoodRadius = 5f;
         public float Damping = 1f;
@@ -11,34 +10,30 @@ namespace Code.Characters.Doods
         public float RepelWeight = 1f;
         public float AlignWeight = 1f;
 
-        [HideInInspector] public bool IsFlocking = true;
+        [HideInInspector] public bool IsFlocking;
 
+        private Vector2 _walkingDir;
         private Dood _dood;
 
-        protected override void Start () {
-            base.Start();
-            _dood = GetComponent<Dood>();
+
+        private void Start () { _dood = GetComponent<Dood>(); }
+
+        private void FixedUpdate () { Move(); }
+
+        private void Move () {
+            var result = _walkingDir.magnitude < 0.01f // todo should I be a constant or don't I care
+                ? Vector2.zero
+                : _walkingDir + (IsFlocking ? CalculateForce() : Vector2.zero);
+            _dood.Comps.Movement.SetDirection(result);
         }
 
-        protected override void Move () {
-            var dir = WalkingDir;
-            if (IsFlocking) {
-                var force = CalculateForce() * Time.fixedDeltaTime;
-                SetDir(force + dir);
-            }
-
-            base.Move();
-            if (IsFlocking) {
-                SetDir(dir);
-            }
-        }
+        private const float MAX_MAGNITUDE = 0.5f;
 
         private Vector2 CalculateForce () {
-            var center = Vector3.zero;
+            Vector3 center = Vector3.zero, force = Vector3.zero;
             var numNearby = 0;
-            var force = Vector3.zero;
             var sqrRadius = NeighborhoodRadius * NeighborhoodRadius;
-            Vector3 temp;
+
             foreach (var dood in Game.Ctx.Doods.DoodList) {
                 if (dood == _dood) continue;
                 var diff = dood.transform.position - transform.position;
@@ -47,21 +42,24 @@ namespace Code.Characters.Doods
                 center += dood.transform.position;
                 ++numNearby;
                 diff /= diff.sqrMagnitude;
-                temp = diff * RepelWeight;
-                force -= temp;
-                temp = (dood.Comps.Character.Velocity - _dood.Comps.Character.Velocity) * AlignWeight;
-                force += temp;
+                force -= diff * RepelWeight;
+                force += (dood.Comps.Character.Velocity - _dood.Comps.Character.Velocity) * AlignWeight;
             }
 
             if (numNearby == 0) { return Vector3.zero; }
 
             center /= numNearby;
-            temp = (center - transform.position) * AttractWeight;
-            force += temp;
-
+            force += (center - transform.position) * AttractWeight;
             force -= _dood.Comps.Character.Velocity * Damping;
 
-            return new Vector2(force.x, force.z);
+            return Vector2.ClampMagnitude(new Vector2(force.x, force.z), MAX_MAGNITUDE);
         }
+
+        // 
+        // public-facing stuff
+
+        public void SetDir (Vector2 heading) { _walkingDir = heading; }
+
+        public void SetDir (Vector3 heading) { _walkingDir = new Vector2(heading.x, heading.z); }
     }
 }
