@@ -1,4 +1,4 @@
-﻿using Code.Characters.Doods;
+using Code.Characters.Doods;
 using UnityEngine;
 
 namespace Code.Characters.Player
@@ -12,7 +12,7 @@ namespace Code.Characters.Player
             Selecting
         }
 
-        [HideInInspector] public PlayerState state;
+        [HideInInspector] public PlayerState State;
 
         CameraController _camController;
         private Movement _movement;
@@ -25,15 +25,20 @@ namespace Code.Characters.Player
             if (Game.Ctx != null) { Game.Ctx.SetPlayer(this); }
         }
 
-        void Update () {
-            switch (state) {
+        private void Update () {
+            switch (State) {
                 case PlayerState.Walking:
                     float x = Game.Sesh.Input.Monitor.LeftH;
                     float y = Game.Sesh.Input.Monitor.LeftV;
                     if (x * x + y * y < 0.01 || Game.Sesh.Input.Monitor.LT >= 0.1f) {
                         _movement.SetDirection(Vector3.zero);
-                        break;
                     }
+
+//                    if (Interaction.Selector.Configuration == Selector.ControlConfiguration.LeftStick &&
+//                        Game.Sesh.Input.Monitor.LT > 0.1f) {
+//                        _movement.SetDirection(Vector3.zero);
+//                        break;
+//                    }
 
                     Vector3 forwards = Vector3.Cross(_camController.camera.transform.right, Vector3.up).normalized;
                     Vector2 dir = new Vector2(x * _camController.camera.transform.right.x + y * forwards.x,
