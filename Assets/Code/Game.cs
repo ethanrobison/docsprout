@@ -6,20 +6,28 @@ namespace Code
 {
     public class Game : MonoBehaviour
     {
+        public bool TestScene;
+
         public static GameContext Ctx;
         public static GameSession Sesh;
         public static GameObject GO;
 
         private void Awake () {
+            if (GO != null) { // I already exist; destroy me
+                Destroy(gameObject);
+                return;
+            }
+
             GO = gameObject;
 
-            // todo I am a singleton; if I already exist, kill the Buddha
             DontDestroyOnLoad(gameObject); // Please keep me kthxbai.
             DontDestroyOnLoad(UIUtils.GetCanvas().gameObject);
             DontDestroyOnLoad(GameObject.Find("EventSystem")); // hard-coding is best coding
 
             Sesh = new GameSession();
             Sesh.Initialize();
+            
+            if (TestScene) { Game.Sesh.StartTestGame(); }
         }
 
         public static void SetContext (GameSession sesh, GameContext ctx) {

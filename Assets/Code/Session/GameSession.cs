@@ -32,6 +32,16 @@
             Input.OnGameStart();
             Prefs.OnGameStart();
         }
+
+        public void StartTestGame () {
+            var ctx = new GameContext();
+            Game.SetContext(this, ctx);
+
+            ctx.StartGame(0, true);
+
+            Input.OnGameStart();
+            Prefs.OnGameStart();
+        }
     }
 
     public interface ISessionManager
