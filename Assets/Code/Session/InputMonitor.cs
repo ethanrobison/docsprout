@@ -123,7 +123,7 @@ namespace Code.Session
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
         //
         // API
 
