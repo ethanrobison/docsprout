@@ -1,6 +1,5 @@
 ﻿using Code.Characters.Doods;
 using Code.Characters.Player;
-using Code.Doods;
 using Code.UI;
 using UnityEngine.SceneManagement;
 
