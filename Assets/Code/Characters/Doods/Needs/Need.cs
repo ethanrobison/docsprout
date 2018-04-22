@@ -4,12 +4,11 @@ namespace Code.Characters.Doods.Needs
 {
     public abstract class Need : MonoBehaviour
     {
-        public Vector3 Range;
         private const float INCREASE = 40f;
 
         private const float DECAY = 5f;
-//        public float NeedIncr; // give need
-//        public float NeedDecr; // neglect need
+
+        public Vector3 Range;
 
         public int Status {
             get { return _values.Status; }
@@ -18,13 +17,12 @@ namespace Code.Characters.Doods.Needs
         private NeedValues _values;
 
 
-        protected void Start () { _values = new NeedValues(Range.x, Range.z); }
+        private void Start () { _values = new NeedValues(Range.x, Range.z); }
+        private void Update () { IncreaseNeed(Time.deltaTime); }
 
-        public void IncrMeter () { _values.ChangeValue(INCREASE); }
+        public void Satisfy () { _values.ChangeValue(INCREASE); }
 
-        private void DecrMeter (float time) { _values.ChangeValue(-time * DECAY); }
-
-        protected void Update () { DecrMeter(Time.deltaTime); }
+        private void IncreaseNeed (float time) { _values.ChangeValue(-time * DECAY); }
     }
 
     public struct NeedValues
