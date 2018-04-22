@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Code.Doods;
-using Code.Utils;
 using UnityEngine;
 
 namespace Code.Characters.Doods
@@ -30,15 +28,12 @@ namespace Code.Characters.Doods
 
             DoodList.Add(dood);
         }
-        
-        
-        public void DeselectAll() {
-            foreach (Dood dood in DoodList) {
+
+
+        public void DeselectAll () {
+            foreach (var dood in DoodList) {
                 dood.OnDeselect();
             }
         }
-        
-        
-        
     }
 }
