@@ -59,7 +59,13 @@ namespace Code.Characters.Doods
 
         public DoodColor Color { get; private set; }
         public Root Behavior { get; private set; }
+
         public DoodStatus Status { get; private set; }
+
+        public Need[] Needs { get; private set; }
+        
+        public Animations Animations { get; private set; }
+
 
 
         public DoodComponents (Dood dood) {
@@ -69,7 +75,13 @@ namespace Code.Characters.Doods
 
             Color = go.GetRequiredComponentInChildren<DoodColor>();
             Behavior = go.GetRequiredComponentInChildren<BehaviorTree>().Root;
+
             Status = go.GetRequiredComponentInChildren<DoodStatus>();
+
+            Needs = go.GetRequiredComponents<Need>();
+
+            Animations = go.GetRequiredComponent<Animations>();
+
         }
     }
 }
