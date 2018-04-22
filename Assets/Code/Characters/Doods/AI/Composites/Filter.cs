@@ -1,7 +1,4 @@
-using Code.Characters.Doods;
-using Code.Characters.Doods.AI;
-
-namespace Code.Doods.AI
+namespace Code.Characters.Doods.AI
 {
     /// <summary>
     /// Adds preconditions to an ordinary sequence.
@@ -27,6 +24,14 @@ namespace Code.Doods.AI
     //		return base.Update ();
     //	}
     //}
+    public abstract class FilterSelector : Selector
+    {
+        protected FilterSelector (Dood dood) : base(dood) { }
+        protected abstract bool Precondition ();
+
+        protected override Status Update () { return !Precondition() ? Status.Failure : base.Update(); }
+    }
+
     public abstract class FilterSequence : Sequence
     {
         protected FilterSequence (Dood dood) : base(dood) { }
