@@ -14,27 +14,27 @@ namespace Code.Characters.Doods
             get { return _rb.velocity; }
         }
 
-        private Rigidbody _rb;
-        private Vector3 _direction;
+        protected Rigidbody _rb;
+        protected Vector3 _direction;
 
-        private void Start () { _rb = gameObject.GetRequiredComponent<Rigidbody>(); }
+        protected virtual void Start () { _rb = gameObject.GetRequiredComponent<Rigidbody>(); }
 
-        private void FixedUpdate () {
+        protected virtual void FixedUpdate () {
             Move();
-            FixRotation();
+            FixRotation(Time.fixedDeltaTime);
         }
 
-        private void Move () {
+        protected virtual void Move () {
             var vel = _rb.velocity;
             var goal = _direction * Speed;
             var error = new Vector3(goal.x - vel.x, 0f, goal.z - vel.z);
             _rb.AddForce(ACCELERATION * error);
         }
 
-        private void FixRotation () {
+        private void FixRotation (float dT) {
             if (_direction.sqrMagnitude < 0.01f) { return; }
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), 0.1f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), 12f*dT);
         }
 
         public void SetDirection (Vector2 direction) { SetDirection(new Vector3(direction.x, 0f, direction.y)); }

@@ -59,7 +59,7 @@
 		
 		
 		Pass {
-		    Tags { "LightMode" = "Always" }
+//		    Tags { "LightMode" = "Always" }
             Cull Front
             
 //            ZWrite on
@@ -101,6 +101,7 @@
 
             half4 frag(v2f i) : SV_TARGET
             {
+                clip(_HighlightSize - .01);
                 UNITY_SETUP_INSTANCE_ID(i);
                 return UNITY_ACCESS_INSTANCED_PROP(Props, _HighlightColor);
             }
