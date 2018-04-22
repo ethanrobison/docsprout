@@ -8,12 +8,12 @@ public class Animations : MonoBehaviour
 {
 
 	private Rigidbody _rb;
-	private Animator _anim;
+	public Animator _anim;
 	
 	// Use this for initialization
 	void Start () {
 		_rb = GetComponent<Rigidbody>();
-		_anim = GetComponent<Animator>();
+		//_anim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
