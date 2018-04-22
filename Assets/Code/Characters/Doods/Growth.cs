@@ -14,6 +14,7 @@ namespace Code.Characters.Doods
         public Mesh Next;
         private DoodStage _next;
         public ParticleSystem GrowthParticles;
+        private AudioSource _pop;
 
 
         private DoodStatus _status;
@@ -23,11 +24,14 @@ namespace Code.Characters.Doods
         // Use this for initialization
         void Start () {
             _status = gameObject.GetRequiredComponent<DoodStatus>();
-            _filter = transform.FindChild("Plant").gameObject.GetRequiredComponent<MeshFilter>();
+            GameObject plant = transform.FindChild("Plant").gameObject;
+            _filter = plant.GetRequiredComponent<MeshFilter>();
+            _pop = plant.GetRequiredComponent<AudioSource>();
 
-            _next = new DoodStage();
-            _next.PlantMesh = Next;
-            _next.NextStage = null;
+            _next = new DoodStage {
+                PlantMesh = Next,
+                NextStage = null
+            };
         }
 
         // Update is called once per frame
@@ -46,6 +50,7 @@ namespace Code.Characters.Doods
             GrowthParticles.Play();
             yield return new WaitForSeconds(1f);
             _filter.mesh = plant;
+            _pop.Play();
         }
     }
 
