@@ -1,15 +1,13 @@
-﻿using Code.Utils;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Characters.Doods.Needs
 {
     public abstract class Need : MonoBehaviour
     {
-        public float StartingMeter = 50f;
         public Vector3 Range;
         private const float INCREASE = 40f;
 
-        private const float DECAY = 10f;
+        private const float DECAY = 5f;
 //        public float NeedIncr; // give need
 //        public float NeedDecr; // neglect need
 
@@ -20,7 +18,7 @@ namespace Code.Characters.Doods.Needs
         private NeedValues _values;
 
 
-        protected void Start () { _values = new NeedValues(Range.x, Range.y, Range.z); }
+        protected void Start () { _values = new NeedValues(Range.x, Range.z); }
 
         public void IncrMeter () { _values.ChangeValue(INCREASE); }
 
@@ -32,26 +30,24 @@ namespace Code.Characters.Doods.Needs
     public struct NeedValues
     {
         private const float MAX = 100f;
-        private readonly float _bottom, _center, _top;
-        public float Value;
+        private readonly float _bottom, _top;
+        private float _value;
 
-        public NeedValues (float bottom, float center, float top) {
+        public NeedValues (float bottom, float top) {
             _bottom = bottom;
-            _center = center;
             _top = top;
-            Value = 50f;
+            _value = 50f;
         }
 
         public void ChangeValue (float delta) {
-            var result = Value + delta;
-            Value = Mathf.Clamp(result, 0f, MAX);
+            var result = _value + delta;
+            _value = Mathf.Clamp(result, 0f, MAX);
         }
 
         public int Status {
             get {
-                return
-                    Value < _bottom ? -1 :
-                    Value > _top ? 1 :
+                return _value < _bottom ? -1 :
+                    _value > _top ? 1 :
                     0;
             }
         }

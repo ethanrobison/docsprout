@@ -10,37 +10,31 @@ namespace Code.Characters.Doods.Needs
         private const float MAX_HAPPINESS = 100f;
         private const float MAGNITUDE = 5f;
 
-        public float Happiness;
-        public Waterable Waterable;
+        [Range(0f, 100f)] public float Happiness;
 
         private DoodColor _doodColor;
+        private Waterable _waterable;
         private StatusDisplay _display;
         private bool _displaying;
 
         private void Start () {
-            var dood = GetComponentInParent<Dood>();
-            Logging.Assert(dood != null, "Missing dood!");
-
-            Waterable = GetComponentInParent<Waterable>();
-
+            var dood = gameObject.GetRequiredComponentInParent<Dood>();
             _doodColor = dood.Comps.Color;
+            _waterable = gameObject.GetRequiredComponentInParent<Waterable>();
             _display = new StatusDisplay(gameObject);
         }
 
-        // todo calculate needs by iterating over needs list
-        private void CalculateHappiness () {
-            var delta = (Waterable.Status == 0 ? -1f : 1f) * MAGNITUDE * Time.deltaTime;
-            Happiness = Mathf.Clamp(Happiness + delta, 0f, MAX_HAPPINESS);
+        private float CalculateHappiness () {
+            var delta = (_waterable.Status == 0 ? 5f : -1f) * MAGNITUDE * Time.deltaTime;
+            return Mathf.Clamp(Happiness + delta, 0f, MAX_HAPPINESS);
         }
 
         private void Update () {
-            CalculateHappiness();
-            if (_doodColor) {
-                _doodColor.Happiness = Happiness / MAX_HAPPINESS;
-            }
+            Happiness = CalculateHappiness();
+            _doodColor.Happiness = Happiness / MAX_HAPPINESS;
 
             if (_displaying) {
-                _display.Show(Waterable.Status);
+                _display.Show(_waterable.Status);
             }
             else {
                 _display.Hide();
@@ -51,6 +45,7 @@ namespace Code.Characters.Doods.Needs
         public void OnApproach () { _displaying = true; }
         public void OnDepart () { _displaying = false; }
     }
+
 
     public class StatusDisplay
     {
