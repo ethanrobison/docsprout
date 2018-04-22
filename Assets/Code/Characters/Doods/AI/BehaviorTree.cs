@@ -27,7 +27,9 @@ namespace Code.Characters.Doods.AI
 
             // todo this is shite
             var water = new NeedLevel<Waterable>(dood, dood.GetComponent<Waterable>());
-            water.AddToEnd(new Idle(dood));
+            var wateradvertiser = new AdvertiserNear(dood, NeedType.Water);
+            wateradvertiser.AddToEnd(new InteractWithAdvertiser(dood, NeedType.Water));
+            water.AddToEnd(wateradvertiser);
 
             var top = new Selector(dood);
             top.AddToEnd(water);

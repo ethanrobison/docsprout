@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using Code.Characters.Doods.AI;
 using Code.Characters.Doods.Needs;
+using Code.Interaction;
 using Code.Utils;
 using UnityEngine;
 
 namespace Code.Characters.Doods
 {
     [RequireComponent(typeof(FlockBehaviour))]
-    public class Dood : MonoBehaviour, ISelectable
+    public class Dood : MonoBehaviour, ISelectable, IApproachable
     {
         [HideInInspector] public bool IsSelected;
         public DoodComponents Comps { get; private set; }
@@ -46,6 +47,9 @@ namespace Code.Characters.Doods
             IsSelected = false;
             Comps.Color.IsHighlighted = false;
         }
+
+        public void OnApproach () { Comps.Status.OnApproach(); }
+        public void OnDepart () { Comps.Status.OnDepart(); }
     }
 
     public class DoodComponents
@@ -55,7 +59,7 @@ namespace Code.Characters.Doods
 
         public DoodColor Color { get; private set; }
         public Root Behavior { get; private set; }
-        public Need[] Needs { get; private set; }
+        public DoodStatus Status { get; private set; }
 
 
         public DoodComponents (Dood dood) {
@@ -65,7 +69,7 @@ namespace Code.Characters.Doods
 
             Color = go.GetRequiredComponentInChildren<DoodColor>();
             Behavior = go.GetRequiredComponentInChildren<BehaviorTree>().Root;
-            Needs = go.GetRequiredComponents<Need>();
+            Status = go.GetRequiredComponentInChildren<DoodStatus>();
         }
     }
 }

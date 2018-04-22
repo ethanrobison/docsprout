@@ -1,9 +1,8 @@
-using Code.Doods.AI;
 using UnityEngine;
 
 namespace Code.Characters.Doods.AI
 {
-    public class PlayerDistance : FilterSequence
+    public class PlayerDistance : FilterSelector
     {
         private readonly float _minThresh;
         private readonly float _maxThresh;
