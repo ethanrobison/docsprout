@@ -42,12 +42,12 @@ namespace Code.Characters.Doods.Needs
             Happiness = CalculateHappiness();
             _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;
 
-            if (_displaying) {
-                _display.Show(_waterable.Status);
-            }
-            else {
-                _display.Hide();
-            }
+//            if (_displaying) {
+            _display.Show(_waterable.Status);
+//            }
+//            else {
+//                _display.Hide();
+//            }
         }
 
         private float CalculateHappiness () {

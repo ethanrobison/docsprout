@@ -11,13 +11,13 @@ namespace Code.Characters.Doods
         public float Speed = 8f;
 
         public Vector3 Velocity {
-            get { return _rb.velocity; }
+            get { return Rb.velocity; }
         }
 
-        protected Rigidbody _rb;
-        protected Vector3 _direction;
+        protected Rigidbody Rb;
+        protected Vector3 Direction;
 
-        protected virtual void Start () { _rb = gameObject.GetRequiredComponent<Rigidbody>(); }
+        protected virtual void Start () { Rb = gameObject.GetRequiredComponent<Rigidbody>(); }
 
         protected virtual void FixedUpdate () {
             Move();
@@ -25,19 +25,19 @@ namespace Code.Characters.Doods
         }
 
         protected virtual void Move () {
-            var vel = _rb.velocity;
-            var goal = _direction * Speed;
+            var vel = Rb.velocity;
+            var goal = Direction * Speed;
             var error = new Vector3(goal.x - vel.x, 0f, goal.z - vel.z);
-            _rb.AddForce(ACCELERATION * error);
+            Rb.AddForce(ACCELERATION * error);
         }
 
-        private void FixRotation (float dT) {
-            if (_direction.sqrMagnitude < 0.01f) { return; }
+        private void FixRotation (float dt) {
+            if (Direction.sqrMagnitude < 0.01f) { return; }
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), 12f*dT);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Direction), 12f * dt);
         }
 
         public void SetDirection (Vector2 direction) { SetDirection(new Vector3(direction.x, 0f, direction.y)); }
-        public void SetDirection (Vector3 direction) { _direction = direction; }
+        public void SetDirection (Vector3 direction) { Direction = direction; }
     }
 }
