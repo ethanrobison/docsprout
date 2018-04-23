@@ -23,7 +23,7 @@ namespace Code.Characters.Doods
 
         // Use this for initialization
         void Start () {
-            _status = gameObject.GetRequiredComponent<DoodStatus>();
+            _status = gameObject.GetRequiredComponentInChildren<DoodStatus>();
             GameObject plant = transform.Find("Plant").gameObject;
             _filter = plant.GetRequiredComponent<MeshFilter>();
             _pop = plant.GetRequiredComponent<AudioSource>();
@@ -37,8 +37,8 @@ namespace Code.Characters.Doods
         // Update is called once per frame
         void Update () {
             if (_next == null) return;
-//            GrowthValue += Mathf.Max(0f, _status.Happiness - 50f) * GrowthRate * Time.deltaTime;
-            GrowthValue += GrowthRate * Time.deltaTime;
+            GrowthValue += Mathf.Max(0f, (_status.Happiness - 50f)/100f) * GrowthRate * Time.deltaTime;
+//            GrowthValue += GrowthRate * Time.deltaTime;
             if (GrowthValue >= GrowAt) {
                 GrowthValue = 0f;
                 StartCoroutine(ChangePlant(_next.PlantMesh));
