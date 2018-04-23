@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Code.Characters.Doods.AI;
+﻿using Code.Characters.Doods.AI;
 using Code.Characters.Doods.Needs;
 using Code.Interaction;
 using Code.Utils;
@@ -63,9 +62,8 @@ namespace Code.Characters.Doods
         public DoodStatus Status { get; private set; }
 
         public Need[] Needs { get; private set; }
-        
-        public Animations Animations { get; private set; }
 
+        public Animations Animations { get; private set; }
 
 
         public DoodComponents (Dood dood) {
@@ -81,7 +79,6 @@ namespace Code.Characters.Doods
             Needs = go.GetRequiredComponents<Need>();
 
             Animations = go.GetRequiredComponent<Animations>();
-
         }
     }
 }
