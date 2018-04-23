@@ -377,7 +377,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1930480925226762}
-  m_Mesh: {fileID: 4300000, guid: 2abd2e505cd3a4b2faebb34d6bb71069, type: 3}
+  m_Mesh: {fileID: 4300000, guid: b9669030fecf243ee877d9c614fb6265, type: 3}
 --- !u!54 &54299278331138480
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -554,7 +554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _color: {r: 1, g: 0.8932361, b: 0.15566039, a: 0}
   _happiness: 0
-  _texture: {fileID: 0}
+  _texture: {fileID: 2800000, guid: 395af8633f3b34a128c9d8625e699ba1, type: 3}
   _highlightColor: {r: 0.17243624, g: 1, b: 0, a: 0}
 --- !u!114 &114370383534430040
 MonoBehaviour:

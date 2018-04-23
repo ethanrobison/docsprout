@@ -865,20 +865,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1285556298477364, guid: 03274bf213da747fe96044cc861df4f0, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114324437592013024, guid: 03274bf213da747fe96044cc861df4f0,
-        type: 2}
-      propertyPath: _texture
-      value: 
-      objectReference: {fileID: 2800000, guid: cfb285629a6f54a4cb5f285e16f175eb, type: 3}
-    - target: {fileID: 33867121044861396, guid: 03274bf213da747fe96044cc861df4f0,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 4300000, guid: b9669030fecf243ee877d9c614fb6265, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 03274bf213da747fe96044cc861df4f0, type: 2}
   m_IsPrefabParent: 0
