@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Characters.Player;
+using Code.Environment;
 using Code.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ namespace Code.Session.MainMenu
 
         public OptionType Option;
 
-        MenuInfo _state;
+        private MenuInfo _state;
 
         private void Start () {
             MakeState();
@@ -36,7 +37,7 @@ namespace Code.Session.MainMenu
             });
         }
 
-        void MakeState () {
+        private void MakeState () {
             switch (Option) {
                 case OptionType.StartGame:
                     _state = new StartState(gameObject);
@@ -63,13 +64,13 @@ namespace Code.Session.MainMenu
         private void OnTriggerEnter (Collider other) {
             if (other.gameObject.GetComponent<Player>() == null) { return; }
 
-            _state.Active = true;
+            _state.SetState(true);
         }
 
         private void OnTriggerExit (Collider other) {
             if (other.gameObject.GetComponent<Player>() == null) { return; }
 
-            _state.Active = false;
+            _state.SetState(false);
         }
 
 
@@ -78,24 +79,20 @@ namespace Code.Session.MainMenu
 
         private abstract class MenuInfo
         {
+            public bool Active { get; private set; }
+
             protected int CurrentOption;
 
             protected readonly Text InfoText;
             protected readonly List<MenuOption> Options = new List<MenuOption>();
 
-            private readonly GameObject _active;
-
-            public bool Active {
-                get { return _active != null && _active.activeInHierarchy; }
-                set { _active.SetActive(value); }
-            }
+            private readonly SineWiggle _wiggle;
 
             protected MenuInfo (GameObject parent, OptionType option) {
-                var parent1 = parent;
-                _active = parent1.transform.Find("Active").gameObject;
-                Active = false;
+                var active = parent.transform.Find("Active").gameObject;
+                _wiggle = active.GetRequiredComponentInChildren<SineWiggle>();
 
-                InfoText = UIUtils.FindUICompOfType<Text>(parent1.transform, "Info/Text");
+                InfoText = UIUtils.FindUICompOfType<Text>(parent.transform, "Info/Text");
                 InfoText.text = option.ToString();
             }
 
@@ -111,7 +108,15 @@ namespace Code.Session.MainMenu
                 if (CurrentOption > max - 1) { CurrentOption -= max; }
             }
 
-            public void Reset () { SetText(); }
+            public void SetState (bool active) {
+                Active = active;
+                _wiggle.Magnitude = active ? 10f : 0f;
+            }
+
+            public void Reset () {
+                SetState(false);
+                SetText();
+            }
         }
 
         private struct MenuOption
