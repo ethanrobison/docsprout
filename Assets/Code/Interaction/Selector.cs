@@ -25,7 +25,8 @@ namespace Code.Interaction
         public float MinDist = 2f;
         public float MaxDist = 15f;
 
-        public MultiFocusCam Cam;
+        public MultiFocusCam MFCam;
+        public CameraController CamCtrl;
 
         public enum SelectionMode
         {
@@ -59,20 +60,20 @@ namespace Code.Interaction
                     _renderer.enabled = true;
                     Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
                     SetPos(-camForward * MinDist);
-                    GetComponent<CameraController>().enabled = false;
-                    Cam.enabled = true;
+                    CamCtrl.enabled = false;
+                    MFCam.enabled = true;
                 }
                 else {
                     Mode = SelectionMode.Off;
                     _renderer.enabled = false;
-                    GetComponent<CameraController>().enabled = true;
-                    Cam.enabled = false;
-                    Cam.RelinquishControl(GetComponent<CameraController>());
+                    CamCtrl.enabled = true;
+                    MFCam.enabled = false;
+                    MFCam.RelinquishControl(CamCtrl);
                 }
             });
 
-            Cam.enabled = false;
-            GetComponent<CameraController>().enabled = true;
+            MFCam.enabled = false;
+            CamCtrl.enabled = true;
 
 
             _renderer = Cursor.GetComponent<Renderer>();
@@ -82,6 +83,7 @@ namespace Code.Interaction
 
         // Update is called once per frame
         void Update () {
+            if(Mode == SelectionMode.Off) return;
             if (Mode == SelectionMode.Selecting) {
                 if (Game.Sesh.Input.Monitor.RT < 0.1f) {
                     Mode = SelectionMode.Idle;

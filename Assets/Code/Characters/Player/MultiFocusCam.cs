@@ -17,10 +17,6 @@ namespace Code.Characters.Player
         Quaternion _goalRot;
         Vector3 _goalPos;
 
-#if UNITY_EDITOR
-        public Material mat;
-#endif
-
         // Update is called once per frame
         void FixedUpdate () {
             Vector3 targetDir = target.position - player.position;
@@ -55,20 +51,5 @@ namespace Code.Characters.Player
             float yAngle = 90f - (90f - minAngle) * targetDist / (targetDist + angleChange);
             ctrl.AcceptControl(Quaternion.LookRotation(targetDir), yAngle);
         }
-
-#if UNITY_EDITOR
-        private void OnPostRender () {
-            GL.PushMatrix();
-            GL.LoadIdentity();
-            GL.LoadOrtho();
-            mat.SetPass(0);
-            mat.SetColor("_Color", Color.magenta);
-            GL.Begin(GL.LINES);
-            GL.Vertex3(0f, ScreenBorder, 0f);
-            GL.Vertex3(1f, ScreenBorder, 0f);
-            GL.End();
-            GL.PopMatrix();
-        }
-#endif
     }
 }

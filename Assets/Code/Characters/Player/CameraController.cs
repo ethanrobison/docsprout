@@ -79,7 +79,7 @@ namespace Code.Characters.Player {
 		void Update ()
 		{
 			float goalDist = followDistance;
-			int n = Physics.OverlapSphereNonAlloc (target.position, CollisionRadius, _overlaps);
+			int n = Physics.OverlapSphereNonAlloc (target.position, CollisionRadius, _overlaps, CameraZoomZone);
 			for (int i = 0; i < n; ++i) {
 				CameraZoomZone ccz = _overlaps [i].gameObject.GetComponent<CameraZoomZone> ();
 				if(ccz) {
