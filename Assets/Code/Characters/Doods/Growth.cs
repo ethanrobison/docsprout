@@ -10,21 +10,19 @@ namespace Code.Characters.Doods
     {
         public float GrowthRate = 10f;
         public float GrowAt = 100f;
-        public float GrowthValue = 0f;
+        public float GrowthValue;
         public Mesh Next;
-        private DoodStage _next;
         public ParticleSystem GrowthParticles;
-        private AudioSource _pop;
 
-
+        private DoodStage _next;
         private DoodStatus _status;
 
+        private AudioSource _pop;
         private MeshFilter _filter;
 
-        // Use this for initialization
-        void Start () {
+        private void Start () {
             _status = gameObject.GetRequiredComponentInChildren<DoodStatus>();
-            GameObject plant = transform.Find("Dood").Find("Capsule Dood").Find("Plant").gameObject;
+            var plant = transform.Find("Dood/Capsule Dood/Plant").gameObject;
             _filter = plant.GetRequiredComponent<MeshFilter>();
             _pop = plant.GetRequiredComponent<AudioSource>();
 
@@ -34,16 +32,16 @@ namespace Code.Characters.Doods
             };
         }
 
-        // Update is called once per frame
-        void Update () {
-            if (_next == null) return;
-            GrowthValue += Mathf.Max(0f, (_status.Happiness - 50f)/100f) * GrowthRate * Time.deltaTime;
-//            GrowthValue += GrowthRate * Time.deltaTime;
-            if (GrowthValue >= GrowAt) {
-                GrowthValue = 0f;
-                StartCoroutine(ChangePlant(_next.PlantMesh));
-                _next = _next.NextStage;
-            }
+        private void Update () {
+            if (_next == null) { enabled = false; } // turn me off
+
+            GrowthValue += Mathf.Max(0f, (_status.Happiness - 50f) / 100f) * GrowthRate * Time.deltaTime;
+
+            if (GrowthValue < GrowAt) { return; }
+
+            GrowthValue = 0f;
+            StartCoroutine(ChangePlant(_next.PlantMesh));
+            _next = _next.NextStage;
         }
 
         private IEnumerator ChangePlant (Mesh plant) {
@@ -54,7 +52,6 @@ namespace Code.Characters.Doods
         }
     }
 
-//    [Serializable]
     public class DoodStage
     {
         public DoodStage NextStage;
