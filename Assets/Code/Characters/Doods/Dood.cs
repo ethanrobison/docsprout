@@ -61,8 +61,6 @@ namespace Code.Characters.Doods
 
         public DoodStatus Status { get; private set; }
 
-        public Need[] Needs { get; private set; }
-
         public Animations Animations { get; private set; }
 
 
@@ -75,8 +73,6 @@ namespace Code.Characters.Doods
             Behavior = go.GetRequiredComponentInChildren<BehaviorTree>().Root;
 
             Status = go.GetRequiredComponentInChildren<DoodStatus>();
-
-            Needs = go.GetRequiredComponents<Need>();
 
             Animations = go.GetRequiredComponent<Animations>();
         }
