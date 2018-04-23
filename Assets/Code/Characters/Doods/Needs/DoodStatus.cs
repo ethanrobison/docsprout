@@ -60,8 +60,8 @@ namespace Code.Characters.Doods.Needs
 
         public Advertiser GetAdvertiserOfType (NeedType type) { return _advertisers.First(a => a.Satisfies() == type); }
 
-        public void OnApproach () { _displaying = true; }
-        public void OnDepart () { _displaying = false; }
+        public void OnApproach () { }
+        public void OnDepart () { }
 
         public void AdvertiseTo (Advertiser advertiser) {
             _advertisers.Add(advertiser);

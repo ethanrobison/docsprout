@@ -15,7 +15,7 @@ namespace Code.Characters.Doods.AI
             var close = new PlayerDistance(dood, -1f, 5f);
             close.AddToEnd(new Idle(dood));
 
-            var medium = new PlayerDistance(dood, 5f, 20f);
+            var medium = new SelectedFilter(dood);
             medium.AddToEnd(new FollowPlayer(dood));
 
             var far = new PlayerDistance(dood, 20f, float.PositiveInfinity);
