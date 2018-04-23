@@ -1,5 +1,4 @@
 ﻿using Code.Utils;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Code.Characters.Doods
