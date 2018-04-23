@@ -22,7 +22,6 @@ namespace Code.Environment
             _rot2 = Bone2.localRotation;
         }
 
-        // Update is called once per frame
         private void Update () {
             _time1 += Time.deltaTime / Period1 + 0.01f;
             _time1 %= 1f;
