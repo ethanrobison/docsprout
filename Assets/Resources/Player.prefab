@@ -61,7 +61,6 @@ GameObject:
   - component: {fileID: 114157338634451026}
   - component: {fileID: 114195883025543934}
   - component: {fileID: 114092569214295398}
-  - component: {fileID: 114340361001218626}
   - component: {fileID: 114556084374671864}
   m_Layer: 0
   m_Name: Player
@@ -305,19 +304,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   State: 0
---- !u!114 &114340361001218626
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1648072005316490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31b926eec6ef416dbd4e92dd6da02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpherePos: {fileID: 4044994274156972}
-  Radius: 2
 --- !u!114 &114556084374671864
 MonoBehaviour:
   m_ObjectHideFlags: 1
