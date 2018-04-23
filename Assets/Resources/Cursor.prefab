@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4287947174873668}
   - component: {fileID: 33166350529721746}
   - component: {fileID: 23815940655237976}
-  - component: {fileID: 114813596144719272}
   m_Layer: 0
   m_Name: Cursor
   m_TagString: Untagged
@@ -35,7 +34,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1553811715754188}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4.620177, y: 2.036562, z: 2.1778457}
   m_LocalScale: {x: 1, y: 100, z: 1}
   m_Children: []
@@ -84,25 +83,3 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1553811715754188}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114813596144719272
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1553811715754188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582ee2671fd894bab8d540c66b6bff1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sizes:
-  - 0.5
-  - 1.5
-  - 2.5
-  - 4
-  - 5.5
-  _speed: 8
-  Cursor: {fileID: 1553811715754188}
-  Player: {fileID: 0}
-  minDist: 1
-  Mode: 0
