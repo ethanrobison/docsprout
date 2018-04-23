@@ -24,7 +24,7 @@ namespace Code.Characters.Doods
         // Use this for initialization
         void Start () {
             _status = gameObject.GetRequiredComponentInChildren<DoodStatus>();
-            GameObject plant = transform.Find("Plant").gameObject;
+            GameObject plant = transform.Find("Dood").Find("Capsule Dood").Find("Plant").gameObject;
             _filter = plant.GetRequiredComponent<MeshFilter>();
             _pop = plant.GetRequiredComponent<AudioSource>();
 
