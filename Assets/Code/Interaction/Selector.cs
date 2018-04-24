@@ -27,16 +27,14 @@ namespace Code.Interaction
         public float MinDist = 2f;
         public float MaxDist = 15f;
 
-        private MultiFocusCam MultiFocusCamera;
-        private CameraController CameraController;
-
+        private MultiFocusCam _multiFocusCamera;
+        private CameraController _cameraController;
         private SelectionMode _mode;
 
         [SerializeField] private float[] _sizes;
         private int _sizeInd;
         private RaycastHit[] _hits;
         private Vector3 _pos;
-
 
         private Renderer _renderer;
 
@@ -45,8 +43,8 @@ namespace Code.Interaction
         }
 
         private void Start () {
-            MultiFocusCamera = gameObject.GetRequiredComponent<MultiFocusCam>();
-            CameraController = gameObject.GetRequiredComponent<CameraController>();
+            _multiFocusCamera = gameObject.GetRequiredComponent<MultiFocusCam>();
+            _cameraController = gameObject.GetRequiredComponent<CameraController>();
 
             _pos = new Vector3(0f, 50f, 0f);
             _sizeInd = ((_sizes.Length + 1) >> 1) - 1;
@@ -64,25 +62,23 @@ namespace Code.Interaction
                     _renderer.enabled = true;
                     Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
                     SetPos(-camForward * MinDist);
-                    CameraController.enabled = false;
-                    MultiFocusCamera.enabled = true;
+                    _cameraController.enabled = false;
+                    _multiFocusCamera.enabled = true;
                 }
                 else {
                     _mode = SelectionMode.Off;
                     _renderer.enabled = false;
-                    CameraController.enabled = true;
-                    MultiFocusCamera.enabled = false;
-                    MultiFocusCamera.RelinquishControl(CameraController);
+                    _cameraController.enabled = true;
+                    _multiFocusCamera.enabled = false;
+                    _multiFocusCamera.RelinquishControl(_cameraController);
                 }
             });
 
-            MultiFocusCamera.enabled = false;
-            CameraController.enabled = true;
-
+            _multiFocusCamera.enabled = false;
+            _cameraController.enabled = true;
 
             _renderer = Cursor.GetComponent<Renderer>();
             _renderer.enabled = false;
-//            _pos = new Vector3(0f, 100f, 0f);
         }
 
         private void Update () {
@@ -170,12 +166,12 @@ namespace Code.Interaction
             Cursor.transform.position = _pos + transform.position;
         }
 
-        void IncreaseSize () {
+        private void IncreaseSize () {
             _sizeInd = Mathf.Min(_sizeInd + 1, _sizes.Length - 1);
             Cursor.transform.localScale = new Vector3(Size * 2f, Cursor.transform.localScale.y, Size * 2f);
         }
 
-        void DecreaseSize () {
+        private void DecreaseSize () {
             _sizeInd = Mathf.Max(_sizeInd - 1, 0);
             Cursor.transform.localScale = new Vector3(Size * 2f, Cursor.transform.localScale.y, Size * 2f);
         }
