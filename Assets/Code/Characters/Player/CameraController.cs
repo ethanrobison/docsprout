@@ -35,7 +35,7 @@ namespace Code.Characters.Player
             _target = transform;
 
             var goalrotation = _camRotX * Quaternion.AngleAxis(_camRotY, Vector3.right);
-            var goaldistance = CalculateCameraDistance(-(goalrotation * Vector3.forward));
+            var goaldistance = CalculateCameraDistance(goalrotation * Vector3.back);
             var goalposition = _target.position - goalrotation * Vector3.forward * goaldistance;
 
             Camera.transform.position = goalposition;
@@ -43,59 +43,8 @@ namespace Code.Characters.Player
         }
 
         private void Update () {
-            float goalDist = FOLLOW_DISTANCE;
-            int n = Physics.OverlapSphereNonAlloc(_target.position, COLLISION_RADIUS, _overlaps, CameraZoomZone);
-            for (int i = 0; i < n; ++i) {
-                CameraZoomZone ccz = _overlaps[i].gameObject.GetComponent<CameraZoomZone>();
-                if (ccz != null) {
-                    goalDist = Mathf.Min(ccz.CamDist, goalDist);
-                }
-            }
-
-            if (_camDist < goalDist) {
-                _camDist = Mathf.Min(_camDist + ZOOM_ZONE_SPEED * Time.deltaTime, goalDist);
-            }
-
-            if (_camDist > goalDist) {
-                _camDist = Mathf.Max(_camDist - ZOOM_ZONE_SPEED * Time.deltaTime, goalDist);
-            }
-
-            ScreenDoorTransparency sdt = null;
-            float dist = 0f;
-            n = Physics.OverlapSphereNonAlloc(Camera.transform.position, COLLISION_RADIUS, _overlaps);
-            for (int i = 0; i < n; ++i) {
-                sdt = _overlaps[i].gameObject.GetComponent<ScreenDoorTransparency>();
-                if (sdt != null) {
-                    dist = 0f;
-                    break;
-                }
-            }
-
-            if (sdt == null) {
-#if UNITY_EDITOR
-                Debug.DrawLine(Camera.transform.position, Camera.transform.position +
-                                                          Camera.transform.forward *
-                                                          Vector3.Distance(Camera.transform.position,
-                                                              _target.position));
-#endif
-                n = Physics.RaycastNonAlloc(Camera.transform.position, Camera.transform.forward, _alphaHits,
-                    Vector3.Distance(Camera.transform.position, _target.position), ~ObscuresCamera.value,
-                    QueryTriggerInteraction.Ignore);
-
-                for (int i = 0; i < n; ++i) {
-                    sdt = _alphaHits[i].collider.gameObject.GetComponent<ScreenDoorTransparency>();
-                    if (sdt != null) {
-                        dist = _alphaHits[i].distance;
-                        break;
-                    }
-                }
-            }
-
-            if (_lastSet != null) { _lastSet.Alpha = 1f; }
-
-            if (sdt != null) { sdt.Alpha = dist / (ALPHA_SLOPE + 0.0001f); }
-
-            _lastSet = sdt;
+            HandleZoomZones();
+            HandleScreenDoors();
         }
 
         private void FixedUpdate () {
@@ -111,7 +60,57 @@ namespace Code.Characters.Player
                 Quaternion.Slerp(Camera.transform.rotation, goalrotation, STIFFNESS * Time.fixedDeltaTime);
         }
 
-        // calculates the maximum distance between the player and the camera, accounting for obstacles between them
+
+        private void HandleZoomZones () {
+            float goalDist = FOLLOW_DISTANCE;
+
+            int count = Physics.OverlapSphereNonAlloc(_target.position, COLLISION_RADIUS, _overlaps, CameraZoomZone);
+            for (int i = 0; i < count; ++i) {
+                var zoomzone = _overlaps[i].gameObject.GetComponent<CameraZoomZone>();
+                if (zoomzone != null) { goalDist = Mathf.Min(zoomzone.CamDist, goalDist); }
+            }
+
+            _camDist = Mathf.Lerp(_camDist, goalDist, ZOOM_ZONE_SPEED * Time.deltaTime);
+        }
+
+        private void HandleScreenDoors () {
+            var dist = 0f;
+            ScreenDoorTransparency sdt = null;
+            int count;
+            count = Physics.OverlapSphereNonAlloc(Camera.transform.position, COLLISION_RADIUS, _overlaps);
+            for (int i = 0; i < count; ++i) {
+                sdt = _overlaps[i].gameObject.GetComponent<ScreenDoorTransparency>();
+                if (sdt != null) { break; }
+            }
+
+            if (sdt == null) {
+#if UNITY_EDITOR
+                Debug.DrawLine(Camera.transform.position, Camera.transform.position +
+                                                          Camera.transform.forward *
+                                                          Vector3.Distance(Camera.transform.position,
+                                                              _target.position));
+#endif
+                count = Physics.RaycastNonAlloc(Camera.transform.position, Camera.transform.forward, _alphaHits,
+                    Vector3.Distance(Camera.transform.position, _target.position), ~ObscuresCamera.value,
+                    QueryTriggerInteraction.Ignore);
+
+                for (int i = 0; i < count; ++i) {
+                    sdt = _alphaHits[i].collider.gameObject.GetComponent<ScreenDoorTransparency>();
+                    if (sdt == null) { continue; }
+
+                    dist = _alphaHits[i].distance;
+                    break;
+                }
+            }
+
+            if (_lastSet != null) { _lastSet.Alpha = 1f; }
+
+            if (sdt != null) { sdt.Alpha = dist / (ALPHA_SLOPE + 0.0001f); }
+
+            _lastSet = sdt;
+        }
+
+        // calculates the maximum allowed distance between the player and the camera, accounting for obstacles between them
         private float CalculateCameraDistance (Vector3 direction) {
             RaycastHit hit;
             return Physics.SphereCast(_target.position, COLLISION_RADIUS, direction, out hit,
