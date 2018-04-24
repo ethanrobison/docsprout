@@ -5,10 +5,8 @@ namespace Code.Characters.Player
 {
     public class CameraController : MonoBehaviour
     {
-        private const float X_SENSITIVITY = 100f;
-        private const float Y_SENSITIVITY = 50f;
-        private const float MIN_Y_ANGLE = -20f;
-        private const float MAX_Y_ANGLE = 50f;
+        private const float X_SENSITIVITY = 100f, Y_SENSITIVITY = 50f;
+        private const float MIN_Y_ANGLE = -20f, MAX_Y_ANGLE = 50f;
 
         private const float ZOOM_ZONE_SPEED = 2f;
         private const float FOLLOW_DISTANCE = 16f;
@@ -23,34 +21,25 @@ namespace Code.Characters.Player
         public LayerMask CameraZoomZone;
 
         private Transform _target;
+
+        private Quaternion _camRotX = Quaternion.identity;
         private float _camRotY = 30f;
-        private Quaternion _camRotX;
+        private float _camDist = FOLLOW_DISTANCE;
+
         private ScreenDoorTransparency _lastSet;
-        private float _camDist;
         private readonly RaycastHit[] _alphaHits = new RaycastHit[8];
         private readonly Collider[] _overlaps = new Collider[4];
 
 
         private void Start () {
             _target = transform;
-            _camRotX = Quaternion.identity;
-            Quaternion goalCamRot = _camRotX;
-            goalCamRot *= Quaternion.AngleAxis(_camRotY, Vector3.right);
 
-            RaycastHit hit;
-            float camDist = FOLLOW_DISTANCE;
-            if (Physics.SphereCast(_target.position, .5f, -(goalCamRot * Vector3.forward), out hit,
-                FOLLOW_DISTANCE - .5f,
-                ObscuresCamera)) {
-                camDist = hit.distance;
-            }
+            var goalrotation = _camRotX * Quaternion.AngleAxis(_camRotY, Vector3.right);
+            var goaldistance = CalculateCameraDistance(-(goalrotation * Vector3.forward));
+            var goalposition = _target.position - goalrotation * Vector3.forward * goaldistance;
 
-            Vector3 goalCamPos = _target.position - goalCamRot * Vector3.forward * camDist;
-
-            Camera.transform.position = goalCamPos;
-            Camera.transform.rotation = goalCamRot;
-
-            _camDist = FOLLOW_DISTANCE;
+            Camera.transform.position = goalposition;
+            Camera.transform.rotation = goalrotation;
         }
 
         private void Update () {
@@ -58,7 +47,7 @@ namespace Code.Characters.Player
             int n = Physics.OverlapSphereNonAlloc(_target.position, COLLISION_RADIUS, _overlaps, CameraZoomZone);
             for (int i = 0; i < n; ++i) {
                 CameraZoomZone ccz = _overlaps[i].gameObject.GetComponent<CameraZoomZone>();
-                if (ccz) {
+                if (ccz != null) {
                     goalDist = Mathf.Min(ccz.CamDist, goalDist);
                 }
             }
@@ -75,7 +64,8 @@ namespace Code.Characters.Player
             float dist = 0f;
             n = Physics.OverlapSphereNonAlloc(Camera.transform.position, COLLISION_RADIUS, _overlaps);
             for (int i = 0; i < n; ++i) {
-                if (sdt = _overlaps[i].gameObject.GetComponent<ScreenDoorTransparency>()) {
+                sdt = _overlaps[i].gameObject.GetComponent<ScreenDoorTransparency>();
+                if (sdt != null) {
                     dist = 0f;
                     break;
                 }
@@ -93,20 +83,17 @@ namespace Code.Characters.Player
                     QueryTriggerInteraction.Ignore);
 
                 for (int i = 0; i < n; ++i) {
-                    if (sdt = _alphaHits[i].collider.gameObject.GetComponent<ScreenDoorTransparency>()) {
+                    sdt = _alphaHits[i].collider.gameObject.GetComponent<ScreenDoorTransparency>();
+                    if (sdt != null) {
                         dist = _alphaHits[i].distance;
                         break;
                     }
                 }
             }
 
-            if (_lastSet) {
-                _lastSet.Alpha = 1f;
-            }
+            if (_lastSet != null) { _lastSet.Alpha = 1f; }
 
-            if (sdt) {
-                sdt.Alpha = dist / (ALPHA_SLOPE + 0.0001f);
-            }
+            if (sdt != null) { sdt.Alpha = dist / (ALPHA_SLOPE + 0.0001f); }
 
             _lastSet = sdt;
         }
