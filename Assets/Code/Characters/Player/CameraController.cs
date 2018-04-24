@@ -62,7 +62,7 @@ namespace Code.Characters.Player
 
 
         private void HandleZoomZones () {
-            float goalDist = FOLLOW_DISTANCE;
+            var goalDist = FOLLOW_DISTANCE;
 
             int count = Physics.OverlapSphereNonAlloc(_target.position, COLLISION_RADIUS, _overlaps, CameraZoomZone);
             for (int i = 0; i < count; ++i) {
@@ -74,38 +74,23 @@ namespace Code.Characters.Player
         }
 
         private void HandleScreenDoors () {
-            var dist = 0f;
+            var count = Physics.RaycastNonAlloc(Camera.transform.position, Camera.transform.forward, _alphaHits,
+                Vector3.Distance(Camera.transform.position, _target.position), ~ObscuresCamera.value,
+                QueryTriggerInteraction.Ignore);
+
             ScreenDoorTransparency sdt = null;
-            int count;
-            count = Physics.OverlapSphereNonAlloc(Camera.transform.position, COLLISION_RADIUS, _overlaps);
+            var dist = 0f;
             for (int i = 0; i < count; ++i) {
-                sdt = _overlaps[i].gameObject.GetComponent<ScreenDoorTransparency>();
-                if (sdt != null) { break; }
-            }
+                sdt = _alphaHits[i].collider.gameObject.GetComponent<ScreenDoorTransparency>();
+                if (sdt == null) { continue; }
 
-            if (sdt == null) {
-#if UNITY_EDITOR
-                Debug.DrawLine(Camera.transform.position, Camera.transform.position +
-                                                          Camera.transform.forward *
-                                                          Vector3.Distance(Camera.transform.position,
-                                                              _target.position));
-#endif
-                count = Physics.RaycastNonAlloc(Camera.transform.position, Camera.transform.forward, _alphaHits,
-                    Vector3.Distance(Camera.transform.position, _target.position), ~ObscuresCamera.value,
-                    QueryTriggerInteraction.Ignore);
-
-                for (int i = 0; i < count; ++i) {
-                    sdt = _alphaHits[i].collider.gameObject.GetComponent<ScreenDoorTransparency>();
-                    if (sdt == null) { continue; }
-
-                    dist = _alphaHits[i].distance;
-                    break;
-                }
+                dist = _alphaHits[i].distance;
+                break;
             }
 
             if (_lastSet != null) { _lastSet.Alpha = 1f; }
 
-            if (sdt != null) { sdt.Alpha = dist / (ALPHA_SLOPE + 0.0001f); }
+            if (sdt != null) { sdt.Alpha = dist / ALPHA_SLOPE; }
 
             _lastSet = sdt;
         }
