@@ -5,72 +5,70 @@ namespace Code.Characters.Player
 {
     public class CameraController : MonoBehaviour
     {
-        public new Camera camera;
-        public Transform target;
-        float camRotY = 30f;
-        Quaternion camRotX;
+        public Camera Camera;
+        float _camRotY = 30f;
+        Quaternion _camRotX;
 
-        public LayerMask obscuresCamera;
+        public LayerMask ObscuresCamera;
 
         public LayerMask CameraZoomZone;
         public float ZoomZoneSpeed = 2f;
-
-        public float xSensitivity = 100f;
-        public float ySensitivity = 50f;
-        public float followDistance = 16f;
-        public float minYAngle = -20f;
-        public float maxYAngle = 50f;
-        public bool invertY;
-        public float stiffness = 25f;
+        public float XSensitivity = 100f;
+        public float YSensitivity = 50f;
+        public float FollowDistance = 16f;
+        public float MinYAngle = -20f;
+        public float MaxYAngle = 50f;
+        public bool InvertY;
+        public float Stiffness = 25f;
         public float AlphaSlope = 5f;
-
         public float CollisionRadius;
 
-        ScreenDoorTransparency lastSet;
-        float _camDist;
-        RaycastHit[] _alphaHits;
-        Collider[] _overlaps;
+        public Transform Target;
+        private ScreenDoorTransparency _lastSet;
+        private float _camDist;
+        private RaycastHit[] _alphaHits;
+        private Collider[] _overlaps;
 
         private void Start () {
-            if (target == null) target = transform;
-            camRotX = Quaternion.identity;
-            Quaternion goalCamRot = camRotX;
-            goalCamRot *= Quaternion.AngleAxis(camRotY, Vector3.right);
+            if (Target == null) Target = transform;
+            _camRotX = Quaternion.identity;
+            Quaternion goalCamRot = _camRotX;
+            goalCamRot *= Quaternion.AngleAxis(_camRotY, Vector3.right);
 
             RaycastHit hit;
-            float camDist = followDistance;
-            if (Physics.SphereCast(target.position, .5f, -(goalCamRot * Vector3.forward), out hit, followDistance - .5f,
-                obscuresCamera)) {
+            float camDist = FollowDistance;
+            if (Physics.SphereCast(Target.position, .5f, -(goalCamRot * Vector3.forward), out hit, FollowDistance - .5f,
+                ObscuresCamera)) {
                 camDist = hit.distance;
             }
 
-            Vector3 goalCamPos = target.position - goalCamRot * Vector3.forward * camDist;
+            Vector3 goalCamPos = Target.position - goalCamRot * Vector3.forward * camDist;
 
 
-            camera.transform.position = goalCamPos;
-            camera.transform.rotation = goalCamRot;
+            Camera.transform.position = goalCamPos;
+            Camera.transform.rotation = goalCamRot;
 
             _alphaHits = new RaycastHit [8];
             _overlaps = new Collider [4];
 
-            _camDist = followDistance;
+            _camDist = FollowDistance;
         }
 
         public void MoveCamera (float x, float y) {
-            camRotX *= Quaternion.AngleAxis(x * xSensitivity, Vector3.up);
+            _camRotX *= Quaternion.AngleAxis(x * XSensitivity, Vector3.up);
 
             float dYCam = y;
-            if (!invertY) dYCam *= -1;
+            if (!InvertY) dYCam *= -1;
 
-            camRotY += dYCam * ySensitivity;
+            _camRotY += dYCam * YSensitivity;
 
-            camRotY = Mathf.Clamp(camRotY, minYAngle, maxYAngle);
+            _camRotY = Mathf.Clamp(_camRotY, MinYAngle, MaxYAngle);
         }
 
 
         private void Update () {
-            float goalDist = followDistance;
-            int n = Physics.OverlapSphereNonAlloc(target.position, CollisionRadius, _overlaps, CameraZoomZone);
+            float goalDist = FollowDistance;
+            int n = Physics.OverlapSphereNonAlloc(Target.position, CollisionRadius, _overlaps, CameraZoomZone);
             for (int i = 0; i < n; ++i) {
                 CameraZoomZone ccz = _overlaps[i].gameObject.GetComponent<CameraZoomZone>();
                 if (ccz) {
@@ -88,7 +86,7 @@ namespace Code.Characters.Player
 
             ScreenDoorTransparency sdt = null;
             float dist = 0f;
-            n = Physics.OverlapSphereNonAlloc(camera.transform.position, CollisionRadius, _overlaps);
+            n = Physics.OverlapSphereNonAlloc(Camera.transform.position, CollisionRadius, _overlaps);
             for (int i = 0; i < n; ++i) {
                 if (sdt = _overlaps[i].gameObject.GetComponent<ScreenDoorTransparency>()) {
                     dist = 0f;
@@ -98,12 +96,12 @@ namespace Code.Characters.Player
 
             if (sdt == null) {
 #if UNITY_EDITOR
-                Debug.DrawLine(camera.transform.position, camera.transform.position +
-                                                          camera.transform.forward *
-                                                          Vector3.Distance(camera.transform.position, target.position));
+                Debug.DrawLine(Camera.transform.position, Camera.transform.position +
+                                                          Camera.transform.forward *
+                                                          Vector3.Distance(Camera.transform.position, Target.position));
 #endif
-                n = Physics.RaycastNonAlloc(camera.transform.position, camera.transform.forward, _alphaHits,
-                    Vector3.Distance(camera.transform.position, target.position), ~obscuresCamera.value,
+                n = Physics.RaycastNonAlloc(Camera.transform.position, Camera.transform.forward, _alphaHits,
+                    Vector3.Distance(Camera.transform.position, Target.position), ~ObscuresCamera.value,
                     QueryTriggerInteraction.Ignore);
 
                 for (int i = 0; i < n; ++i) {
@@ -114,40 +112,40 @@ namespace Code.Characters.Player
                 }
             }
 
-            if (lastSet) {
-                lastSet.Alpha = 1f;
+            if (_lastSet) {
+                _lastSet.Alpha = 1f;
             }
 
             if (sdt) {
                 sdt.Alpha = dist / (AlphaSlope + 0.0001f);
             }
 
-            lastSet = sdt;
+            _lastSet = sdt;
         }
 
         private void FixedUpdate () {
-            Quaternion goalCamRot = camRotX;
-            goalCamRot *= Quaternion.AngleAxis(camRotY, Vector3.right);
+            Quaternion goalCamRot = _camRotX;
+            goalCamRot *= Quaternion.AngleAxis(_camRotY, Vector3.right);
 
             RaycastHit hit;
             float camDist = _camDist;
-            if (Physics.SphereCast(target.position, CollisionRadius, -(goalCamRot * Vector3.forward), out hit,
-                camDist - CollisionRadius, obscuresCamera, QueryTriggerInteraction.Ignore)) {
+            if (Physics.SphereCast(Target.position, CollisionRadius, -(goalCamRot * Vector3.forward), out hit,
+                camDist - CollisionRadius, ObscuresCamera, QueryTriggerInteraction.Ignore)) {
                 camDist = hit.distance;
             }
 
-            Vector3 goalCamPos = target.position - goalCamRot * Vector3.forward * camDist;
+            Vector3 goalCamPos = Target.position - goalCamRot * Vector3.forward * camDist;
 
 
-            camera.transform.position =
-                Vector3.Lerp(camera.transform.position, goalCamPos, stiffness * Time.fixedDeltaTime);
-            camera.transform.rotation =
-                Quaternion.Slerp(camera.transform.rotation, goalCamRot, stiffness * Time.fixedDeltaTime);
+            Camera.transform.position =
+                Vector3.Lerp(Camera.transform.position, goalCamPos, Stiffness * Time.fixedDeltaTime);
+            Camera.transform.rotation =
+                Quaternion.Slerp(Camera.transform.rotation, goalCamRot, Stiffness * Time.fixedDeltaTime);
         }
 
         public void AcceptControl (Quaternion x, float y) {
-            camRotX = x;
-            camRotY = y;
+            _camRotX = x;
+            _camRotY = y;
         }
     }
 }

@@ -40,9 +40,9 @@ namespace Code.Characters.Player
 //                        break;
 //                    }
 
-                    Vector3 forwards = Vector3.Cross(_camController.camera.transform.right, Vector3.up).normalized;
-                    Vector2 dir = new Vector2(x * _camController.camera.transform.right.x + y * forwards.x,
-                        x * _camController.camera.transform.right.z + y * forwards.z);
+                    Vector3 forwards = Vector3.Cross(_camController.Camera.transform.right, Vector3.up).normalized;
+                    Vector2 dir = new Vector2(x * _camController.Camera.transform.right.x + y * forwards.x,
+                        x * _camController.Camera.transform.right.z + y * forwards.z);
                     _movement.SetDirection(dir);
                     break;
             }
