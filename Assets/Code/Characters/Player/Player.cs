@@ -50,7 +50,7 @@ namespace Code.Characters.Player
             var camX = Game.Sesh.Input.Monitor.RightH;
             var camY = Game.Sesh.Input.Monitor.RightV;
             if (camX * camX + camY * camY > 0.01) {
-                _camController.moveCamera(camX * Time.deltaTime, camY * Time.deltaTime);
+                _camController.MoveCamera(camX * Time.deltaTime, camY * Time.deltaTime);
             }
         }
     }
