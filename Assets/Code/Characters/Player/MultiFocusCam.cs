@@ -28,6 +28,7 @@ namespace Code.Characters.Player
             Vector4 playerPos = Player.position;
             playerPos.w = 1f;
             playerPos = Camera.main.worldToCameraMatrix * playerPos;
+            playerPos.y /= (1f - ScreenBorder);
             float camDist = -1.2f * playerPos.y / Mathf.Tan(Mathf.Deg2Rad * Camera.main.fieldOfView / 2f);
             camDist = Mathf.Max(MIN_DIST, camDist);
             targetDir.y = targetY;

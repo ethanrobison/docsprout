@@ -2,6 +2,7 @@
 using Code.Characters.Doods;
 using Code.Characters.Player;
 using Code.Session;
+using Code.Utils;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 
@@ -9,26 +10,7 @@ namespace Code.Interaction
 {
     public class Selector : MonoBehaviour
     {
-        [SerializeField] private float[] _sizes;
-        private int _sizeInd;
-        private RaycastHit[] _hits;
-        private Vector3 _pos;
-
-        [SerializeField] float _maxSpeed = 8f;
-        [SerializeField] float _minSpeed = 3f;
-        [SerializeField] float _speedConstant = 10f;
-
-        Renderer _renderer;
-
-        public GameObject Cursor;
-
-        public float MinDist = 2f;
-        public float MaxDist = 15f;
-
-        public MultiFocusCam MFCam;
-        public CameraController CamCtrl;
-
-        public enum SelectionMode
+        private enum SelectionMode
         {
             Off,
             Idle,
@@ -36,44 +18,66 @@ namespace Code.Interaction
             Deselecting
         }
 
-        [HideInInspector] public SelectionMode Mode;
+        private const float MAX_SPEED = 8f;
+        private const float MIN_SPEED = 3f;
+        private const float SPEED_CONSTANT = 10f;
 
-        private float _size {
+        public GameObject Cursor;
+
+        public float MinDist = 2f;
+        public float MaxDist = 15f;
+
+        private MultiFocusCam MultiFocusCamera;
+        private CameraController CameraController;
+
+        private SelectionMode _mode;
+
+        [SerializeField] private float[] _sizes;
+        private int _sizeInd;
+        private RaycastHit[] _hits;
+        private Vector3 _pos;
+
+
+        private Renderer _renderer;
+
+        private float Size {
             get { return _sizes[_sizeInd]; }
         }
 
-        // Use this for initialization
-        void Start () {
+        private void Start () {
+            MultiFocusCamera = gameObject.GetRequiredComponent<MultiFocusCam>();
+            CameraController = gameObject.GetRequiredComponent<CameraController>();
+
             _pos = new Vector3(0f, 50f, 0f);
             _sizeInd = ((_sizes.Length + 1) >> 1) - 1;
             _hits = new RaycastHit[50];
-            Cursor.transform.localScale = new Vector3(_size * 2f, Cursor.transform.localScale.y, _size * 2f);
+            Cursor.transform.localScale = new Vector3(Size * 2f, Cursor.transform.localScale.y, Size * 2f);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, DecreaseSize);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, IncreaseSize);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, () => {
-                if (Mode != SelectionMode.Off) Game.Ctx.Doods.DeselectAll();
+                if (_mode != SelectionMode.Off) Game.Ctx.Doods.DeselectAll();
             });
 
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, () => {
-                if (Mode == SelectionMode.Off) {
-                    Mode = SelectionMode.Idle;
+                if (_mode == SelectionMode.Off) {
+                    _mode = SelectionMode.Idle;
                     _renderer.enabled = true;
                     Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
                     SetPos(-camForward * MinDist);
-                    CamCtrl.enabled = false;
-                    MFCam.enabled = true;
+                    CameraController.enabled = false;
+                    MultiFocusCamera.enabled = true;
                 }
                 else {
-                    Mode = SelectionMode.Off;
+                    _mode = SelectionMode.Off;
                     _renderer.enabled = false;
-                    CamCtrl.enabled = true;
-                    MFCam.enabled = false;
-                    MFCam.RelinquishControl(CamCtrl);
+                    CameraController.enabled = true;
+                    MultiFocusCamera.enabled = false;
+                    MultiFocusCamera.RelinquishControl(CameraController);
                 }
             });
 
-            MFCam.enabled = false;
-            CamCtrl.enabled = true;
+            MultiFocusCamera.enabled = false;
+            CameraController.enabled = true;
 
 
             _renderer = Cursor.GetComponent<Renderer>();
@@ -81,33 +85,32 @@ namespace Code.Interaction
 //            _pos = new Vector3(0f, 100f, 0f);
         }
 
-        // Update is called once per frame
-        void Update () {
-            if(Mode == SelectionMode.Off) return;
-            if (Mode == SelectionMode.Selecting) {
+        private void Update () {
+            if (_mode == SelectionMode.Off) return;
+            if (_mode == SelectionMode.Selecting) {
                 if (Game.Sesh.Input.Monitor.RT < 0.1f) {
-                    Mode = SelectionMode.Idle;
+                    _mode = SelectionMode.Idle;
                 }
             }
-            else if (Mode == SelectionMode.Deselecting) {
+            else if (_mode == SelectionMode.Deselecting) {
                 if (Game.Sesh.Input.Monitor.LT < 0.1f) {
-                    Mode = SelectionMode.Idle;
+                    _mode = SelectionMode.Idle;
                 }
             }
 
-            if (Mode == SelectionMode.Idle) {
+            if (_mode == SelectionMode.Idle) {
                 if (Game.Sesh.Input.Monitor.RT > 0.1f) {
-                    Mode = SelectionMode.Selecting;
+                    _mode = SelectionMode.Selecting;
                 }
                 else if (Game.Sesh.Input.Monitor.LT > 0.1f) {
-                    Mode = SelectionMode.Deselecting;
+                    _mode = SelectionMode.Deselecting;
                 }
                 else {
                     return;
                 }
             }
 
-            int n = Physics.SphereCastNonAlloc(_pos + transform.position + Vector3.up * 50f, _size, Vector3.down,
+            int n = Physics.SphereCastNonAlloc(_pos + transform.position + Vector3.up * 50f, Size, Vector3.down,
                 _hits);
             for (int i = 0; i < n; ++i) {
                 Dood dood = _hits[i].transform.GetComponent<Dood>();
@@ -115,22 +118,22 @@ namespace Code.Interaction
                     continue;
                 }
 
-                if (Mode == SelectionMode.Selecting) {
+                if (_mode == SelectionMode.Selecting) {
                     dood.OnSelect();
                 }
-                else if (Mode == SelectionMode.Deselecting) {
+                else if (_mode == SelectionMode.Deselecting) {
                     dood.OnDeselect();
                 }
             }
         }
 
-        void FixedUpdate () {
-            if (Mode == SelectionMode.Off) {
+        private void FixedUpdate () {
+            if (_mode == SelectionMode.Off) {
                 return;
             }
 
             float curSpeed = _pos.magnitude;
-            curSpeed = _minSpeed + (_maxSpeed - _minSpeed) * curSpeed / (curSpeed + _speedConstant);
+            curSpeed = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * curSpeed / (curSpeed + SPEED_CONSTANT);
             Vector3 camRight = Camera.main.transform.right;
             Vector3 camForward = Vector3.Cross(Camera.main.transform.up, camRight);
             Vector3 move = camRight * Game.Sesh.Input.Monitor.RightH - camForward * Game.Sesh.Input.Monitor.RightV;
@@ -169,12 +172,12 @@ namespace Code.Interaction
 
         void IncreaseSize () {
             _sizeInd = Mathf.Min(_sizeInd + 1, _sizes.Length - 1);
-            Cursor.transform.localScale = new Vector3(_size * 2f, Cursor.transform.localScale.y, _size * 2f);
+            Cursor.transform.localScale = new Vector3(Size * 2f, Cursor.transform.localScale.y, Size * 2f);
         }
 
         void DecreaseSize () {
             _sizeInd = Mathf.Max(_sizeInd - 1, 0);
-            Cursor.transform.localScale = new Vector3(_size * 2f, Cursor.transform.localScale.y, _size * 2f);
+            Cursor.transform.localScale = new Vector3(Size * 2f, Cursor.transform.localScale.y, Size * 2f);
         }
     }
 }
