@@ -27,8 +27,9 @@ namespace Code.Characters.Player
         private Quaternion _camRotX;
         private ScreenDoorTransparency _lastSet;
         private float _camDist;
-        private RaycastHit[] _alphaHits;
-        private Collider[] _overlaps;
+        private readonly RaycastHit[] _alphaHits = new RaycastHit[8];
+        private readonly Collider[] _overlaps = new Collider[4];
+
 
         private void Start () {
             _target = transform;
@@ -46,27 +47,11 @@ namespace Code.Characters.Player
 
             Vector3 goalCamPos = _target.position - goalCamRot * Vector3.forward * camDist;
 
-
             Camera.transform.position = goalCamPos;
             Camera.transform.rotation = goalCamRot;
 
-            _alphaHits = new RaycastHit [8];
-            _overlaps = new Collider [4];
-
             _camDist = FOLLOW_DISTANCE;
         }
-
-        public void MoveCamera (float x, float y) {
-            _camRotX *= Quaternion.AngleAxis(x * X_SENSITIVITY, Vector3.up);
-
-            float dYCam = y;
-            if (!InvertY) dYCam *= -1;
-
-            _camRotY += dYCam * Y_SENSITIVITY;
-
-            _camRotY = Mathf.Clamp(_camRotY, MIN_Y_ANGLE, MAX_Y_ANGLE);
-        }
-
 
         private void Update () {
             float goalDist = FOLLOW_DISTANCE;
@@ -127,23 +112,39 @@ namespace Code.Characters.Player
         }
 
         private void FixedUpdate () {
-            Quaternion goalCamRot = _camRotX;
-            goalCamRot *= Quaternion.AngleAxis(_camRotY, Vector3.right);
+            var goalrotation = _camRotX * Quaternion.AngleAxis(_camRotY, Vector3.right);
+            var goaldirection = goalrotation * Vector3.forward;
 
-            RaycastHit hit;
-            float camDist = _camDist;
-            if (Physics.SphereCast(_target.position, COLLISION_RADIUS, -(goalCamRot * Vector3.forward), out hit,
-                camDist - COLLISION_RADIUS, ObscuresCamera, QueryTriggerInteraction.Ignore)) {
-                camDist = hit.distance;
-            }
-
-            Vector3 goalCamPos = _target.position - goalCamRot * Vector3.forward * camDist;
-
+            var cappeddistance = CalculateCameraDistance(-goaldirection);
+            var goalposition = _target.position - goaldirection * cappeddistance;
 
             Camera.transform.position =
-                Vector3.Lerp(Camera.transform.position, goalCamPos, STIFFNESS * Time.fixedDeltaTime);
+                Vector3.Lerp(Camera.transform.position, goalposition, STIFFNESS * Time.fixedDeltaTime);
             Camera.transform.rotation =
-                Quaternion.Slerp(Camera.transform.rotation, goalCamRot, STIFFNESS * Time.fixedDeltaTime);
+                Quaternion.Slerp(Camera.transform.rotation, goalrotation, STIFFNESS * Time.fixedDeltaTime);
+        }
+
+        // calculates the maximum distance between the player and the camera, accounting for obstacles between them
+        private float CalculateCameraDistance (Vector3 direction) {
+            RaycastHit hit;
+            return Physics.SphereCast(_target.position, COLLISION_RADIUS, direction, out hit,
+                _camDist - COLLISION_RADIUS, ObscuresCamera, QueryTriggerInteraction.Ignore)
+                ? hit.distance
+                : _camDist;
+        }
+
+        //
+        // public api
+
+        public void MoveCamera (float x, float y) {
+            _camRotX *= Quaternion.AngleAxis(x * X_SENSITIVITY, Vector3.up);
+
+            float dYCam = y;
+            if (!InvertY) dYCam *= -1;
+
+            _camRotY += dYCam * Y_SENSITIVITY;
+
+            _camRotY = Mathf.Clamp(_camRotY, MIN_Y_ANGLE, MAX_Y_ANGLE);
         }
 
         public void AcceptControl (Quaternion x, float y) {
