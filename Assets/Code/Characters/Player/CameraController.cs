@@ -9,7 +9,7 @@ namespace Code.Characters.Player
         private const float MIN_Y_ANGLE = -20f, MAX_Y_ANGLE = 50f;
 
         private const float ZOOM_ZONE_SPEED = 2f;
-        private const float FOLLOW_DISTANCE = 16f;
+        private const float FOLLOW_DISTANCE = 12f;
         private const float STIFFNESS = 25f;
         private const float COLLISION_RADIUS = 0.25f;
         private const float ALPHA_SLOPE = 25f;
@@ -110,10 +110,7 @@ namespace Code.Characters.Player
         public void MoveCamera (float x, float y) {
             _camRotX *= Quaternion.AngleAxis(x * X_SENSITIVITY, Vector3.up);
 
-            float dYCam = y;
-            if (!InvertY) dYCam *= -1;
-
-            _camRotY += dYCam * Y_SENSITIVITY;
+            _camRotY += y * (InvertY ? 1f : -1f) * Y_SENSITIVITY;
 
             _camRotY = Mathf.Clamp(_camRotY, MIN_Y_ANGLE, MAX_Y_ANGLE);
         }
