@@ -1088,9 +1088,44 @@ Prefab:
       propertyPath: AlphaSlope
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 114183955086372836, guid: c2731e6701c0f4bf496aa4df96bfb79b,
+        type: 2}
+      propertyPath: Target
+      value: 
+      objectReference: {fileID: 1182342654}
+    - target: {fileID: 114183955086372836, guid: c2731e6701c0f4bf496aa4df96bfb79b,
+        type: 2}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1182342655}
+    - target: {fileID: 114183955086372836, guid: c2731e6701c0f4bf496aa4df96bfb79b,
+        type: 2}
+      propertyPath: MinAngle
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114183955086372836, guid: c2731e6701c0f4bf496aa4df96bfb79b,
+        type: 2}
+      propertyPath: MinDist
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114183955086372836, guid: c2731e6701c0f4bf496aa4df96bfb79b,
+        type: 2}
+      propertyPath: AngleChange
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c2731e6701c0f4bf496aa4df96bfb79b, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1182342654 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4417549731253214, guid: c2731e6701c0f4bf496aa4df96bfb79b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1182342653}
+--- !u!4 &1182342655 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4044994274156972, guid: c2731e6701c0f4bf496aa4df96bfb79b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1182342653}
 --- !u!1 &1214392504
 GameObject:
   m_ObjectHideFlags: 0

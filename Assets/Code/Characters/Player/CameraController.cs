@@ -15,10 +15,10 @@ namespace Code.Characters.Player
         private const float ALPHA_SLOPE = 25f;
 
 
-        public Camera Camera;
-        public LayerMask ObscuresCamera;
         public bool InvertY;
+        public LayerMask ObscuresCamera;
         public LayerMask CameraZoomZone;
+        public Camera Camera { get; private set; }
 
         private Transform _target;
 
@@ -33,6 +33,7 @@ namespace Code.Characters.Player
 
         private void Start () {
             _target = transform;
+            Camera = Camera.main;
 
             var goalrotation = _camRotX * Quaternion.AngleAxis(_camRotY, Vector3.right);
             var goaldistance = CalculateCameraDistance(goalrotation * Vector3.back);
@@ -115,7 +116,7 @@ namespace Code.Characters.Player
             _camRotY = Mathf.Clamp(_camRotY, MIN_Y_ANGLE, MAX_Y_ANGLE);
         }
 
-        public void AcceptControl (Quaternion x, float y) {
+        public void OnAcceptControl (Quaternion x, float y) {
             _camRotX = x;
             _camRotY = y;
         }
