@@ -3,6 +3,7 @@ using Code.Characters.Doods;
 using Code.Characters.Player;
 using Code.Session;
 using Code.Utils;
+using UnityEditor;
 using UnityEngine;
 
 namespace Code.Interaction
@@ -12,6 +13,7 @@ namespace Code.Interaction
         private enum SelectionMode
         {
             Off,
+            Idle,
             Selecting,
             Deselecting
         }
@@ -62,23 +64,37 @@ namespace Code.Interaction
         }
 
         private void Update () {
-            if (_mode == SelectionMode.Off) {
-                if (Game.Sesh.Input.Monitor.Rt == PressType.ButtonUp) {
-                    TransitionToMode(SelectionMode.Selecting);
-                }
-                else if (Game.Sesh.Input.Monitor.Lt == PressType.ButtonUp) {
-                    TransitionToMode(SelectionMode.Deselecting);
-                }
-
-                return;
-            }
-
-            var selecting = _mode == SelectionMode.Selecting && Game.Sesh.Input.Monitor.Rt == PressType.Hold;
-            var deselecting = _mode == SelectionMode.Deselecting && Game.Sesh.Input.Monitor.Lt == PressType.Hold;
-
-            if (!selecting && !deselecting) { return; }
+            CalculateMode();
+            Logging.Log(_mode.ToString());
+            if (_mode == SelectionMode.Off || _mode == SelectionMode.Idle) { return; }
 
             CastAtPosition(_pos + transform.position + Vector3.up * 50f, Size, _mode);
+        }
+
+        private void CalculateMode () {
+            var rt = Game.Sesh.Input.Monitor.Rt;
+            var lt = Game.Sesh.Input.Monitor.Lt;
+            switch (_mode) {
+                case SelectionMode.Off:
+                    if (rt == PressType.ButtonUp || lt == PressType.ButtonUp) { TransitionToMode(SelectionMode.Idle); }
+
+                    break;
+                case SelectionMode.Idle:
+                    if (rt == PressType.Hold) { _mode = SelectionMode.Selecting; }
+                    else if (lt == PressType.Hold) { _mode = SelectionMode.Deselecting; }
+
+                    break;
+                case SelectionMode.Selecting:
+                    if (rt == PressType.ButtonUp) { _mode = SelectionMode.Idle; }
+
+                    break;
+                case SelectionMode.Deselecting:
+                    if (lt == PressType.ButtonUp) { _mode = SelectionMode.Idle; }
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void FixedUpdate () {
@@ -136,6 +152,7 @@ namespace Code.Interaction
                     break;
                 case SelectionMode.Selecting:
                 case SelectionMode.Deselecting:
+                case SelectionMode.Idle:
                     _renderer.enabled = true;
                     Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
                     SetPos(-camForward * MIN_DIST);
