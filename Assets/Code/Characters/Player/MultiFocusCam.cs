@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.Utils;
+using UnityEngine;
 
 namespace Code.Characters.Player
 {
@@ -7,49 +8,51 @@ namespace Code.Characters.Player
         private const float MIN_ANGLE = 15f;
         private const float MIN_DIST = 5f;
         private const float ANGLE_CHANGE = 1f;
-        private const float STIFFNESS = 15f;
+        private const float STIFFNESS = 5f;
+        private const float SCREEN_BORDER = 0.1f;
 
-        public float ScreenBorder;
-        public Transform Target;
-        public Transform Player;
+        private Transform _target;
+        private Transform _player;
 
-        private Quaternion _goalRot;
-        private Vector3 _goalPos;
+        private void Start () {
+            _player = transform;
+            _target = transform.Find("Cursor");
+            Logging.Assert(_target != null, "Missing cursor!");
+        }
 
         private void FixedUpdate () {
-            Vector3 targetDir = Target.position - Player.position;
-            float targetY = targetDir.y;
-            targetDir.y = 0f;
-            float targetDist = targetDir.magnitude;
-            float yAngle = 90f - (90f - MIN_ANGLE) * targetDist / (targetDist + ANGLE_CHANGE);
-            _goalRot = Quaternion.LookRotation(targetDir) *
-                       Quaternion.AngleAxis(yAngle, Vector3.right);
+            var targetDir = _target.position - _player.position;
+            var yAngle = CalculateYAngle(targetDir);
 
-            Vector4 playerPos = Player.position;
+            Vector4 playerPos = _player.position;
             playerPos.w = 1f;
             playerPos = Camera.main.worldToCameraMatrix * playerPos;
-            playerPos.y /= (1f - ScreenBorder);
-            float camDist = -1.2f * playerPos.y / Mathf.Tan(Mathf.Deg2Rad * Camera.main.fieldOfView / 2f);
+            playerPos.y /= (1f - SCREEN_BORDER);
+
+            var camDist = -1.2f * playerPos.y / Mathf.Tan(Mathf.Deg2Rad * Camera.main.fieldOfView / 2f);
             camDist = Mathf.Max(MIN_DIST, camDist);
-            targetDir.y = targetY;
             camDist += Vector3.Dot(Camera.main.transform.forward, targetDir);
 
-            _goalPos = Target.position - camDist * Camera.main.transform.forward;
-
-            Camera.main.transform.rotation = Quaternion.Slerp(Camera.main.transform.rotation, _goalRot,
+            var goalrotation = Quaternion.LookRotation(targetDir) * Quaternion.AngleAxis(yAngle, Vector3.right);
+            Camera.main.transform.rotation = Quaternion.Slerp(Camera.main.transform.rotation, goalrotation,
                 STIFFNESS * Time.fixedDeltaTime);
 
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, _goalPos,
+            var goalposition = _target.position - camDist * Camera.main.transform.forward;
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, goalposition,
                 STIFFNESS * Time.fixedDeltaTime);
         }
 
 
         public void RelinquishControl (CameraController ctrl) {
-            Vector3 targetDir = Target.position - Player.position;
-            targetDir.y = 0f;
-            float targetDist = targetDir.magnitude;
-            float yAngle = 90f - (90f - MIN_ANGLE) * targetDist / (targetDist + ANGLE_CHANGE);
+            var targetDir = _target.position - _player.position;
+            var yAngle = CalculateYAngle(targetDir);
             ctrl.OnAcceptControl(Quaternion.LookRotation(targetDir), yAngle);
+        }
+
+        private static float CalculateYAngle (Vector3 direction) {
+            direction.y = 0;
+            var distance = direction.magnitude;
+            return 90f - (90f - MIN_ANGLE) * distance / (distance + ANGLE_CHANGE);
         }
     }
 }
