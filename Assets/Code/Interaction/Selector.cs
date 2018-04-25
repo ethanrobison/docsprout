@@ -63,19 +63,20 @@ namespace Code.Interaction
 
         private void Update () {
             if (_mode == SelectionMode.Off) {
-                if (Game.Sesh.Input.Monitor.RT > 0.1f) {
+                if (Game.Sesh.Input.Monitor.Rt == PressType.ButtonUp) {
                     TransitionToMode(SelectionMode.Selecting);
                 }
-                else if (Game.Sesh.Input.Monitor.LT > 0.1f) {
+                else if (Game.Sesh.Input.Monitor.Lt == PressType.ButtonUp) {
                     TransitionToMode(SelectionMode.Deselecting);
                 }
 
                 return;
             }
 
-            var inelegible = !(_mode == SelectionMode.Selecting && Game.Sesh.Input.Monitor.RT > 0.1f ||
-                               _mode == SelectionMode.Deselecting && Game.Sesh.Input.Monitor.LT > 0.1f);
-            if (inelegible) { return; }
+            var selecting = _mode == SelectionMode.Selecting && Game.Sesh.Input.Monitor.Rt == PressType.Hold;
+            var deselecting = _mode == SelectionMode.Deselecting && Game.Sesh.Input.Monitor.Lt == PressType.Hold;
+
+            if (!selecting && !deselecting) { return; }
 
             CastAtPosition(_pos + transform.position + Vector3.up * 50f, Size, _mode);
         }
@@ -156,7 +157,7 @@ namespace Code.Interaction
             }
         }
 
-        private void HandleDood (ISelectable dood, SelectionMode mode) {
+        private static void HandleDood (ISelectable dood, SelectionMode mode) {
             if (mode == SelectionMode.Selecting) { dood.OnSelect(); }
             else if (mode == SelectionMode.Deselecting) { dood.OnDeselect(); }
         }
