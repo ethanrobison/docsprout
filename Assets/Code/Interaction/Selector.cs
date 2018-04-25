@@ -3,7 +3,6 @@ using Code.Characters.Doods;
 using Code.Characters.Player;
 using Code.Session;
 using Code.Utils;
-using UnityEditor;
 using UnityEngine;
 
 namespace Code.Interaction
@@ -58,14 +57,11 @@ namespace Code.Interaction
             Cursor.transform.localScale = new Vector3(Size * 2f, Cursor.transform.localScale.y, Size * 2f);
 
             // todo a more graceful way to check if the game has started
-            if (Game.Ctx != null) {
-                RegisterMappings();
-            }
+            if (Game.Ctx != null) { RegisterMappings(); }
         }
 
         private void Update () {
             CalculateMode();
-            Logging.Log(_mode.ToString());
             if (_mode == SelectionMode.Off || _mode == SelectionMode.Idle) { return; }
 
             CastAtPosition(_pos + transform.position + Vector3.up * 50f, Size, _mode);
@@ -118,13 +114,10 @@ namespace Code.Interaction
 
 
         private void RegisterMappings () {
-            // B Button to DeselectAll
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, OnBPress);
 
-            // Y Button to PikminWhistle
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, PikminWhistle);
 
-            // bumbers to change size
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => { ChangeSize(-1); });
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => { ChangeSize(1); });
         }
@@ -186,18 +179,6 @@ namespace Code.Interaction
 
         private void AddPos (Vector3 pos) {
             _pos += pos;
-            Cursor.transform.position = _pos + transform.position;
-        }
-
-        public void SetPos (Vector2 pos) {
-            _pos.x = pos.x;
-            _pos.z = pos.y;
-            Cursor.transform.position = _pos + transform.position;
-        }
-
-        public void AddPos (Vector2 pos) {
-            _pos.x += pos.x;
-            _pos.z += pos.y;
             Cursor.transform.position = _pos + transform.position;
         }
 
