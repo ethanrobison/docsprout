@@ -12,7 +12,6 @@ namespace Code.Interaction
         private enum SelectionMode
         {
             Off,
-            Idle,
             Selecting,
             Deselecting
         }
@@ -22,6 +21,7 @@ namespace Code.Interaction
         private const float MIN_DIST = 2f;
         private const float MAX_DIST = 15f;
         private const float SPEED_CONSTANT = 10f;
+        private const float WHISTLE_RADIUS = 5f;
 
         public GameObject Cursor;
 
@@ -77,17 +77,7 @@ namespace Code.Interaction
                                _mode == SelectionMode.Deselecting && Game.Sesh.Input.Monitor.LT > 0.1f);
             if (inelegible) { return; }
 
-            int n = Physics.SphereCastNonAlloc(_pos + transform.position + Vector3.up * 50f, Size, Vector3.down,
-                _hits);
-            for (int i = 0; i < n; ++i) {
-                var dood = _hits[i].transform.GetComponent<Dood>();
-                if (dood != null) { HandleDood(dood); }
-            }
-        }
-
-        private void HandleDood (ISelectable dood) {
-            if (_mode == SelectionMode.Selecting) { dood.OnSelect(); }
-            else if (_mode == SelectionMode.Deselecting) { dood.OnDeselect(); }
+            CastAtPosition(_pos + transform.position + Vector3.up * 50f, Size, _mode);
         }
 
         private void FixedUpdate () {
@@ -109,21 +99,21 @@ namespace Code.Interaction
             }
         }
 
+
         private void RegisterMappings () {
             // B Button to DeselectAll
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, OnBPress);
 
             // Y Button to PikminWhistle
-//            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, () => {
-//                TransitionToMode(_mode == SelectionMode.Off ? SelectionMode.Idle : SelectionMode.Off);
-//            });
-
-            // RT, RT to select
-            // LT, LT to deselect
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, PikminWhistle);
 
             // bumbers to change size
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => { ChangeSize(-1); });
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => { ChangeSize(1); });
+        }
+
+        private void PikminWhistle () {
+            CastAtPosition(transform.position + Vector3.up * 50f, WHISTLE_RADIUS, SelectionMode.Selecting);
         }
 
         private void OnBPress () {
@@ -156,6 +146,19 @@ namespace Code.Interaction
             }
 
             _mode = mode;
+        }
+
+        private void CastAtPosition (Vector3 position, float size, SelectionMode mode) {
+            var n = Physics.SphereCastNonAlloc(position, size, Vector3.down, _hits);
+            for (var i = 0; i < n; ++i) {
+                var dood = _hits[i].transform.GetComponent<Dood>();
+                if (dood != null) { HandleDood(dood, mode); }
+            }
+        }
+
+        private void HandleDood (ISelectable dood, SelectionMode mode) {
+            if (mode == SelectionMode.Selecting) { dood.OnSelect(); }
+            else if (mode == SelectionMode.Deselecting) { dood.OnDeselect(); }
         }
 
         private void SetPos (Vector3 pos) {
