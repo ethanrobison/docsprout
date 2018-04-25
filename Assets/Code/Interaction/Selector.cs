@@ -17,15 +17,11 @@ namespace Code.Interaction
             Deselecting
         }
 
-        private const float MAX_SPEED = 8f;
-        private const float MIN_SPEED = 3f;
-        private const float MIN_DIST = 2f;
-        private const float MAX_DIST = 15f;
-        private const float SPEED_CONSTANT = 10f;
+        private const float MIN_SPEED = 8f, MAX_SPEED = 14f, SPEED_CONSTANT = 10f;
+        private const float MIN_DIST = 2f, MAX_DIST = 15f;
         private const float WHISTLE_RADIUS = 5f;
 
         public GameObject Cursor;
-
 
         private readonly float[] _sizes = { 0.5f, 1.5f, 2.5f, 4f, 5.5f };
         private readonly RaycastHit[] _hits = new RaycastHit[50];
@@ -60,6 +56,14 @@ namespace Code.Interaction
             if (Game.Ctx != null) { RegisterMappings(); }
         }
 
+        private void RegisterMappings () {
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, OnBPress);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, PikminWhistle);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => { ChangeSize(-1); });
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => { ChangeSize(1); });
+        }
+
+
         private void Update () {
             CalculateMode();
             if (_mode == SelectionMode.Off || _mode == SelectionMode.Idle) { return; }
@@ -68,8 +72,7 @@ namespace Code.Interaction
         }
 
         private void CalculateMode () {
-            var rt = Game.Sesh.Input.Monitor.Rt;
-            var lt = Game.Sesh.Input.Monitor.Lt;
+            PressType rt = Game.Sesh.Input.Monitor.Rt, lt = Game.Sesh.Input.Monitor.Lt;
             switch (_mode) {
                 case SelectionMode.Off:
                     if (rt == PressType.ButtonUp || lt == PressType.ButtonUp) { TransitionToMode(SelectionMode.Idle); }
@@ -88,38 +91,33 @@ namespace Code.Interaction
                     if (lt == PressType.ButtonUp) { _mode = SelectionMode.Idle; }
 
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                default: throw new ArgumentOutOfRangeException();
             }
         }
+
 
         private void FixedUpdate () {
             if (_mode == SelectionMode.Off) { return; }
 
-            float curSpeed = _pos.magnitude;
-            curSpeed = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * curSpeed / (curSpeed + SPEED_CONSTANT);
-            Vector3 camRight = Camera.main.transform.right;
-            Vector3 camForward = Vector3.Cross(Camera.main.transform.up, camRight);
-            Vector3 move = camRight * Game.Sesh.Input.Monitor.RightH - camForward * Game.Sesh.Input.Monitor.RightV;
-            AddPos(move * curSpeed * Time.deltaTime);
-            _pos.y = 0f;
-            if (_pos.sqrMagnitude < MIN_DIST * MIN_DIST) {
-                _pos.Normalize();
-                _pos *= MIN_DIST;
-            }
-            else {
-                _pos = Vector3.ClampMagnitude(_pos, MAX_DIST);
-            }
+            MoveCamera();
+            ClampPosition();
         }
 
+        private void MoveCamera () {
+            var speed = _pos.magnitude;
+            speed = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * speed / (speed + SPEED_CONSTANT);
 
-        private void RegisterMappings () {
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, OnBPress);
+            var camright = Camera.main.transform.right;
+            var camforward = Vector3.Cross(Camera.main.transform.up, camright);
+            var move = camright * Game.Sesh.Input.Monitor.RightH - camforward * Game.Sesh.Input.Monitor.RightV;
 
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, PikminWhistle);
+            MoveCursorPosition(move * speed * Time.deltaTime);
+        }
 
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => { ChangeSize(-1); });
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => { ChangeSize(1); });
+        private void ClampPosition () {
+            _pos = _pos.sqrMagnitude < MIN_DIST * MIN_DIST
+                ? _pos.normalized * MIN_DIST
+                : Vector3.ClampMagnitude(_pos, MAX_DIST);
         }
 
         private void PikminWhistle () {
@@ -127,12 +125,8 @@ namespace Code.Interaction
         }
 
         private void OnBPress () {
-            if (_mode == SelectionMode.Off) {
-                Game.Ctx.Doods.DeselectAll();
-            }
-            else {
-                TransitionToMode(SelectionMode.Off);
-            }
+            if (_mode == SelectionMode.Off) { Game.Ctx.Doods.DeselectAll(); }
+            else { TransitionToMode(SelectionMode.Off); }
         }
 
         private void TransitionToMode (SelectionMode mode) {
@@ -147,13 +141,12 @@ namespace Code.Interaction
                 case SelectionMode.Deselecting:
                 case SelectionMode.Idle:
                     _renderer.enabled = true;
-                    Vector3 camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
-                    SetPos(-camForward * MIN_DIST);
+                    var camForward = Vector3.Cross(Camera.main.transform.up, Camera.main.transform.right);
+                    SetCursorPosition(-camForward * MIN_DIST);
                     _cameraController.enabled = false;
                     _multiFocusCamera.enabled = true;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException("mode", mode, null);
+                default: throw new ArgumentOutOfRangeException("mode", mode, null);
             }
 
             _mode = mode;
@@ -172,13 +165,14 @@ namespace Code.Interaction
             else if (mode == SelectionMode.Deselecting) { dood.OnDeselect(); }
         }
 
-        private void SetPos (Vector3 pos) {
+        private void SetCursorPosition (Vector3 pos) {
             _pos = pos;
             Cursor.transform.position = _pos + transform.position;
         }
 
-        private void AddPos (Vector3 pos) {
+        private void MoveCursorPosition (Vector3 pos) {
             _pos += pos;
+            _pos.y = 0f;
             Cursor.transform.position = _pos + transform.position;
         }
 
