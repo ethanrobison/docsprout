@@ -6,6 +6,7 @@ namespace Code.Characters.Doods
     public class Movement : MonoBehaviour
     {
         private const float ACCELERATION = 5f;
+        private const float ROTATION_SPEED = 5f;
 
         public float Speed = 8f;
 
@@ -20,7 +21,7 @@ namespace Code.Characters.Doods
 
         protected virtual void FixedUpdate () {
             Move();
-            FixRotation(Time.fixedDeltaTime);
+            FixRotation();
         }
 
         protected virtual void Move () {
@@ -30,10 +31,13 @@ namespace Code.Characters.Doods
             Rb.AddForce(ACCELERATION * error);
         }
 
-        private void FixRotation (float dt) {
+        private void FixRotation () {
             if (Direction.sqrMagnitude < 0.01f) { return; }
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Direction), 12f * dt);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(Direction),
+                ROTATION_SPEED * Time.fixedDeltaTime);
         }
 
         public void SetDirection (Vector2 direction) { SetDirection(new Vector3(direction.x, 0f, direction.y)); }

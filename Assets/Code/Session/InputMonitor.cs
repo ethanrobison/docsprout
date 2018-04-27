@@ -8,15 +8,16 @@ namespace Code.Session
     /// <summary>
     /// Unwieldy class for checking for button presses. I am sorry about all of the hard-coding.
     /// </summary>
+    public enum PressType
+    {
+        None,
+        ButtonDown,
+        ButtonUp,
+        Hold
+    }
+
     public class InputMonitor : MonoBehaviour, ISessionManager
     {
-        public enum PressType
-        {
-            ButtonDown,
-            ButtonUp,
-            Hold
-        }
-
         public float LeftH {
             get { return Input.GetAxisRaw(_leftH); }
         }
@@ -33,20 +34,16 @@ namespace Code.Session
             get { return Input.GetAxisRaw(_rightV); }
         }
 
-        public float RT {
-            get { return Input.GetAxisRaw(_RT); }
-        }
+        public PressType Rt { get; private set; }
 
-        public float LT {
-            get { return Input.GetAxisRaw(_LT); }
-        }
+        public PressType Lt { get; private set; }
 
         private string _leftH;
         private string _leftV;
         private string _rightH;
         private string _rightV;
-        private string _RT = "RT";
-        private string _LT = "LT";
+        private const string RT = "RT";
+        private const string LT = "LT";
 
         private Dictionary<ControllerButton, KeyCode> _buttonNames;
         private readonly List<ButtonPair> _mappings = new List<ButtonPair>();
@@ -85,6 +82,8 @@ namespace Code.Session
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            SetTriggers();
         }
 
 
@@ -110,7 +109,7 @@ namespace Code.Session
 
             switch (Game.Sesh.Input.Platform) {
                 case Platform.OSX:
-                    _buttonNames = xbox ? ButtonMappings.OSXXBox : ButtonMappings.OSXDS4;
+                    _buttonNames = xbox ? ButtonMappings.OsxXBox : ButtonMappings.Osxds4;
                     break;
                 case Platform.Windows:
                     break;
@@ -122,6 +121,35 @@ namespace Code.Session
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private bool _ltDown, _rtDown;
+
+        // we hide the nastiness here so that we have better APIs elsewhere
+        private void SetTriggers () {
+            var pressedRight = Input.GetAxisRaw(RT) > 0.1f;
+            if (pressedRight && _rtDown) { Rt = PressType.Hold; }
+            else if (pressedRight && !_rtDown) {
+                Rt = PressType.ButtonDown;
+                _rtDown = true;
+            }
+            else if (_rtDown) {
+                Rt = PressType.ButtonUp;
+                _rtDown = false;
+            }
+            else { Rt = PressType.None; }
+
+            var pressedLeft = Input.GetAxisRaw(LT) > 0.1f;
+            if (pressedLeft && _ltDown) { Lt = PressType.Hold; }
+            else if (pressedLeft && !_ltDown) {
+                Lt = PressType.ButtonDown;
+                _ltDown = true;
+            }
+            else if (_ltDown) {
+                Lt = PressType.ButtonUp;
+                _ltDown = false;
+            }
+            else { Lt = PressType.None; }
         }
 
         //
@@ -160,7 +188,7 @@ namespace Code.Session
         {
             //public static readonly Dictionary<ControllerButton, string> WindowsXBox = new Dictionary<ControllerButton, string> { };
             //public static readonly Dictionary<ControllerButton, string> WindowsDS4 = new Dictionary<ControllerButton, string> { };
-            public static readonly Dictionary<ControllerButton, KeyCode> OSXXBox =
+            public static readonly Dictionary<ControllerButton, KeyCode> OsxXBox =
                 new Dictionary<ControllerButton, KeyCode> {
                     { ControllerButton.AButton, KeyCode.JoystickButton16 },
                     { ControllerButton.BButton, KeyCode.JoystickButton17 },
@@ -172,7 +200,7 @@ namespace Code.Session
                     { ControllerButton.Select, KeyCode.JoystickButton10 }
                 };
 
-            public static readonly Dictionary<ControllerButton, KeyCode> OSXDS4 =
+            public static readonly Dictionary<ControllerButton, KeyCode> Osxds4 =
                 new Dictionary<ControllerButton, KeyCode> {
                     { ControllerButton.AButton, KeyCode.JoystickButton1 },
                     { ControllerButton.BButton, KeyCode.JoystickButton2 },
