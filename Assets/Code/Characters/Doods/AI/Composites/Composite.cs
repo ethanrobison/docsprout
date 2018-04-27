@@ -10,12 +10,7 @@ namespace Code.Characters.Doods.AI
 
         public void AddToEnd (BehaviorTreeNode node) { Children.Add(node); }
 
-        // HACK ummm???
-        public void AddToFront (BehaviorTreeNode node) {
-            Children.Reverse();
-            Children.Add(node);
-            Children.Reverse();
-        }
+        public void AddToFront (BehaviorTreeNode node) { Children.Insert(0, node); }
     }
 
 

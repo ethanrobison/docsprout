@@ -31,12 +31,23 @@ namespace Code.Characters.Doods.AI
             wateradvertiser.AddToEnd(new InteractWithAdvertiser(dood, NeedType.Water));
             water.AddToEnd(wateradvertiser);
 
-            var top = new Selector(dood);
-            top.AddToEnd(water);
-            top.AddToEnd(sel);
+            var passive = new Sequence(dood);
+            var waterAlwaysSucceed = new AlwaysSucceed(dood);
+            waterAlwaysSucceed.SetChild(water);
+
+            passive.AddToEnd(waterAlwaysSucceed);
+
+            var active = new Selector(dood);
+            active.AddToEnd(water);
+            active.AddToEnd(sel);
+
+            var activeAlwaysSucceed = new AlwaysSucceed(dood);
+            activeAlwaysSucceed.SetChild(active);
+
+            passive.AddToEnd(activeAlwaysSucceed);
 
             Root = new Root(dood);
-            Root.SetChild(top);
+            Root.SetChild(passive);
         }
 
         private void Update () {
