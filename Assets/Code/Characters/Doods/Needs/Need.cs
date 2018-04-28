@@ -2,13 +2,15 @@
 
 namespace Code.Characters.Doods.Needs
 {
-    public abstract class Need : MonoBehaviour
+    public class Need : MonoBehaviour
     {
         private const float INCREASE = 40f;
 
         private const float DECAY = 5f;
 
         public Vector3 Range;
+        
+        public NeedType Type;
 
         public int Status {
             get { return _values.Status; }

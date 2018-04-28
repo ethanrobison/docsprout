@@ -13,29 +13,35 @@ namespace Code.Characters.Doods.Needs
     {
         None,
         Water,
+
 //        Sun,
 //        Food,
-//        Fun,
+        Fun,
     }
 
 
-    public class DoodStatus : MonoBehaviour, IApproachable, IAdvertisable
+    public class DoodStatus : MonoBehaviour, IApproachable, IAdvertisable, ISatisfiable
     {
         private const float MAX_HAPPINESS = 100f, MAGNITUDE = 5f;
         [Range(0f, 100f)] public float Happiness;
 
         private Dood _dood;
-        private Waterable _waterable;
+        private Need _waterable;
         private StatusDisplay _display;
 
         private bool _displaying;
 
         public SmallSet Advertised = new SmallSet();
+        public SmallSet Satisfiable = new SmallSet();
         private readonly List<Advertiser> _advertisers = new List<Advertiser>();
+        private readonly List<Satisfier> _satisfiers = new List<Satisfier>();
+        
+        private Need[] _needs;
 
         private void Start () {
             _dood = gameObject.GetRequiredComponentInParent<Dood>();
-            _waterable = gameObject.GetRequiredComponentInParent<Waterable>();
+            _needs = GetComponents<Need>();
+            _waterable = GetNeedOfType(NeedType.Water);
             _display = new StatusDisplay(gameObject);
         }
 
@@ -60,6 +66,9 @@ namespace Code.Characters.Doods.Needs
         // interfaces
 
         public Advertiser GetAdvertiserOfType (NeedType type) { return _advertisers.First(a => a.Satisfies() == type); }
+        public Satisfier GetSatisfierOfType (NeedType type) { return _satisfiers.First(a => a.Satisfies() == type); }
+        
+        public Need GetNeedOfType(NeedType type) { return _needs.FirstOrDefault(need => need.Type == type); }
 
         public void OnApproach () { }
         public void OnDepart () { }
@@ -76,6 +85,20 @@ namespace Code.Characters.Doods.Needs
 
             var c = _advertisers.Count(a => a.Satisfies() == type);
             if (c == 0) { Advertised.Remove((ushort) type); }
+        }
+        
+        public void AllowSatisfaction(Satisfier satisfier) {
+            _satisfiers.Add(satisfier);
+            Satisfiable.Add((ushort)satisfier.Satisfies());
+        }
+        
+        public void ForbidSatisfaction(Satisfier satisfier) {
+            var type = satisfier.Satisfies();
+            var success = _satisfiers.Remove(satisfier);
+            Logging.Assert(success, "Tried to remove advertiser from list but was missing.");
+
+            var c = _satisfiers.Count(a => a.Satisfies() == type);
+            if (c == 0) { Satisfiable.Remove((ushort) type); }
         }
     }
 }

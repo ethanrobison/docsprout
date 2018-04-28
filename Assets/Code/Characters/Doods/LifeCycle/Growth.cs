@@ -19,7 +19,7 @@ namespace Code.Characters.Doods.LifeCycle
 
         private void Start () {
             _particle = transform.Find("Particle System").GetComponent<ParticleSystem>();
-            _status = gameObject.GetRequiredComponent<Dood>().Comps.Status;
+            _status = transform.Find("Status").gameObject.GetRequiredComponent<DoodStatus>();
 
             var plant = transform.Find("Dood/Capsule Dood/Plant").gameObject;
             _filter = plant.GetRequiredComponent<MeshFilter>();
