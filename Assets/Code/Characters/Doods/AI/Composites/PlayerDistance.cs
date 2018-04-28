@@ -16,7 +16,8 @@ namespace Code.Characters.Doods.AI
         }
 
         protected override bool Precondition () {
-            var dist = Vector3.Distance(Dood.transform.position, _player.transform.position);
+//            var dist = Vector3.Distance(Dood.transform.position, _player.transform.position);
+            var dist = Vector3.Distance(Dood.transform.position, Game.Ctx.Player.transform.position);
             return _minThresh < dist && dist < _maxThresh;
         }
     }

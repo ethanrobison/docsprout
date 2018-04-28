@@ -1,17 +1,18 @@
-﻿using Code.Characters.Doods.Needs;
+﻿using System;
+using Code.Characters.Doods.Needs;
 using Code.Environment.Advertising;
 
 namespace Code.Characters.Doods.AI
 {
-    public class NeedLevel<TNeed> : FilterSelector where TNeed : Need
+    public class NeedLevel : FilterSelector
     {
-        private readonly TNeed _need;
+        private readonly Need _need;
 
-        public NeedLevel (Dood dood, TNeed need) : base(dood) { _need = need; }
+        public NeedLevel (Dood dood, Need need) : base(dood) { _need = need; }
         protected override bool Precondition () { return _need.Status < 0; }
     }
 
-    public class AdvertiserNear : FilterSequence
+    public class AdvertiserNear : FilterSelector
     {
         private readonly ushort _type;
 
@@ -20,22 +21,29 @@ namespace Code.Characters.Doods.AI
         protected override bool Precondition () { return Dood.Comps.Status.Advertised.Contains(_type); }
     }
 
-    public class InteractWithAdvertiser : BehaviorTreeNode
+    public class NeedSatisfiable : FilterSelector
+    {
+        private readonly ushort _type;
+        public NeedSatisfiable (Dood dood, NeedType type) : base(dood) { _type = (ushort) type; }
+
+        protected override bool Precondition () { return Dood.Comps.Status.Satisfiable.Contains(_type); }
+    }
+
+    public class InteractWithSatisfier : BehaviorTreeNode
     {
         private readonly NeedType _type;
-        private Advertiser _advertiser;
+        private Satisfier _satisfier;
 
-        public InteractWithAdvertiser (Dood dood, NeedType type) : base(dood) { _type = type; }
+        public InteractWithSatisfier (Dood dood, NeedType type) : base(dood) { _type = type; }
 
         public override void OnInitialize () {
             base.OnInitialize();
-            _advertiser = Dood.Comps.Status.GetAdvertiserOfType(_type);
+            _satisfier = Dood.Comps.Status.GetSatisfierOfType(_type);
         }
 
         protected override Status Update () {
-            if (_advertiser == null) { return Status.Failure; }
-
-            _advertiser.InteractWith(Dood.Comps.Status);
+            if (_satisfier == null) { return Status.Failure; }
+            _satisfier.InteractWith(Dood);
             return Status.Success;
         }
     }

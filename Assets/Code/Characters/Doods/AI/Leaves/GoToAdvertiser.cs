@@ -1,10 +1,22 @@
 ﻿using Code.Characters.Doods.Needs;
+using Code.Environment.Advertising;
+using UnityEngine;
 
 namespace Code.Characters.Doods.AI
 {
-    public class GoToAdvertiser<TNeed> : BehaviorTreeNode where TNeed : Need
+    public class GoToAdvertiser : BehaviorTreeNode
     {
-        public GoToAdvertiser (Dood dood) : base(dood) { }
-        protected override Status Update () { return Status.Failure; }
+        private readonly ushort _type;
+        public GoToAdvertiser (Dood dood, NeedType type) : base(dood) { _type = (ushort) type; }
+
+        public override void OnTerminate (Status result) {
+            base.OnTerminate(result);
+            Dood.StopMoving();
+        }
+
+        protected override Status Update () {
+            var goal = Dood.Comps.Status.GetAdvertiserOfType((NeedType) _type);
+            return Dood.MoveTowards(goal.transform.position, 0f) ? Status.Success : Status.Running;
+        }
     }
 }

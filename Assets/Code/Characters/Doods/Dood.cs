@@ -63,7 +63,6 @@ namespace Code.Characters.Doods
 
         public Animations Animations { get; private set; }
 
-
         public DoodComponents (Dood dood) {
             var go = dood.gameObject;
             Flock = go.GetRequiredComponent<FlockBehaviour>();

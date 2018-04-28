@@ -1,9 +1,10 @@
-﻿using Code.Characters.Doods.Needs;
+﻿using Code.Characters.Doods;
+using Code.Characters.Doods.Needs;
 using UnityEngine;
 
 namespace Code.Environment.Advertising
 {
-    public abstract class Advertiser : MonoBehaviour
+    public class Advertiser : MonoBehaviour
     {
         private void OnTriggerEnter (Collider other) {
             var advertisable = other.GetComponentInChildren<IAdvertisable>();
@@ -14,9 +15,12 @@ namespace Code.Environment.Advertising
             var advertisable = other.GetComponentInChildren<IAdvertisable>();
             if (advertisable != null) { advertisable.StopAdvertising(this); }
         }
-
-        public abstract void InteractWith (IAdvertisable user);
-        public abstract NeedType Satisfies ();
+        
+        [SerializeField] private NeedType _satisfies;
+        
+        public NeedType Satisfies() {
+            return _satisfies;
+        }
     }
 
     public interface IAdvertisable
