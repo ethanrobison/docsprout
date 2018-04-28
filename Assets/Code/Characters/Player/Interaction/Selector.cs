@@ -1,6 +1,5 @@
 ﻿using Code.Characters.Doods;
 using Code.Session;
-using Code.Utils;
 using UnityEngine;
 
 namespace Code.Characters.Player.Interaction
@@ -12,18 +11,19 @@ namespace Code.Characters.Player.Interaction
         private readonly RaycastHit[] _hits = new RaycastHit[50];
 
         private Renderer _renderer;
-        private Vector3 _pos = new Vector3(0f, 50f, 0f);
+        private Transform _cursor;
 
         private void Start () {
-//            _renderer = Cursor.GetRequiredComponent<Renderer>();
-//            _renderer.enabled = false;
+            _cursor = transform.Find("Cursor");
             // todo a more graceful way to check if the game has started
             if (Game.Ctx != null) { RegisterMappings(); }
         }
 
         private void RegisterMappings () {
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, OnBPress);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, () => { _chargingWhistle = true; });
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, () => {
+                SetWhistlingState(true);
+            });
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.YButton, PikminWhistle, PressType.ButtonUp);
         }
 
@@ -31,18 +31,36 @@ namespace Code.Characters.Player.Interaction
         private float _whistleRadius = MIN_RADIUS;
 
         private void Update () {
-            if (_chargingWhistle) {
-                _whistleRadius = Mathf.Min(_whistleRadius + CHARGING_RATE * Time.deltaTime, MAX_RADIUS);
-            }
+            if (!_chargingWhistle) { return; }
+
+            _whistleRadius = Mathf.Min(_whistleRadius + CHARGING_RATE * Time.deltaTime, MAX_RADIUS);
+            SetCursorScale();
+        }
+
+        private void SetWhistlingState (bool state) {
+            if (!state) { _whistleRadius = MIN_RADIUS; }
+
+            SetCursorScale();
+            _chargingWhistle = state;
+            _cursor.gameObject.SetActive(state);
+        }
+
+        private void SetCursorScale () {
+            var size = _whistleRadius * 2f;
+            _cursor.localScale = new Vector3(size, size / 1.5f, size);
         }
 
         private void PikminWhistle () {
+            if (!_chargingWhistle) { return; }
+
             CastAtPosition(transform.position + Vector3.up * 50f, _whistleRadius);
-            _chargingWhistle = false;
-            _whistleRadius = MIN_RADIUS;
+            SetWhistlingState(false);
         }
 
-        private static void OnBPress () { Game.Ctx.Doods.DeselectAll(); }
+        private void OnBPress () {
+            if (_chargingWhistle) { SetWhistlingState(false); }
+            else { Game.Ctx.Doods.DeselectAll(); }
+        }
 
         private void CastAtPosition (Vector3 position, float size) {
             var n = Physics.SphereCastNonAlloc(position, size, Vector3.down, _hits);
