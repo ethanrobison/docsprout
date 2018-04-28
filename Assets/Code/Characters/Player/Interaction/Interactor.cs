@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.Environment;
+using UnityEngine;
 
 namespace Code.Characters.Player.Interaction
 {

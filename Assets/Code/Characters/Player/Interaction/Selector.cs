@@ -8,7 +8,7 @@ namespace Code.Characters.Player.Interaction
     {
         private const float MIN_RADIUS = 5f, MAX_RADIUS = 10F, CHARGING_RATE = 3F;
 
-        private readonly RaycastHit[] _hits = new RaycastHit[50];
+        private readonly RaycastHit[] _hits = new RaycastHit[128];
 
         private Renderer _renderer;
         private Transform _cursor;

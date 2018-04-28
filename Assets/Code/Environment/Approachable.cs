@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Characters.Player.Interaction
+namespace Code.Environment
 {
     public class Approachable : MonoBehaviour, IApproachable
     {
