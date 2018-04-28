@@ -11,23 +11,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1648072005316490}
   m_IsPrefabParent: 1
---- !u!1 &1221633387410596
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4417549731253214}
-  - component: {fileID: 33516027713254070}
-  - component: {fileID: 23508205398515746}
-  m_Layer: 0
-  m_Name: Cursor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1308315648667254
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +61,6 @@ GameObject:
   - component: {fileID: 114195883025543934}
   - component: {fileID: 114092569214295398}
   - component: {fileID: 114556084374671864}
-  - component: {fileID: 114183955086372836}
   - component: {fileID: 114398156653296562}
   - component: {fileID: 114035396579318830}
   m_Layer: 0
@@ -100,7 +82,6 @@ Transform:
   m_Children:
   - {fileID: 4399200575516396}
   - {fileID: 4997325214212884}
-  - {fileID: 4417549731253214}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -116,19 +97,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4044994274156972}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4417549731253214
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1221633387410596}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.620177, y: 2.036562, z: 2.1778457}
-  m_LocalScale: {x: 1, y: 100, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4044994274156972}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4997325214212884
 Transform:
@@ -248,41 +216,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!23 &23508205398515746
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1221633387410596}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 2100000, guid: e580e1241f631476096a1d69f6b0636a, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!33 &33100606112047018
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -304,13 +237,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1308315648667254}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!33 &33516027713254070
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1221633387410596}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!54 &54895156538490122
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -359,17 +285,6 @@ MonoBehaviour:
   CameraZoomZone:
     serializedVersion: 2
     m_Bits: 8192
---- !u!114 &114183955086372836
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1648072005316490}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fce00c7e83ff14be68c13e6c5ec24715, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114195883025543934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -393,7 +308,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582ee2671fd894bab8d540c66b6bff1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cursor: {fileID: 1221633387410596}
 --- !u!114 &114556084374671864
 MonoBehaviour:
   m_ObjectHideFlags: 1
