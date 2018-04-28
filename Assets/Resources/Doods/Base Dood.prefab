@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4727145136590464}
   - component: {fileID: 212765876536400746}
-  - component: {fileID: 114442551460958880}
+  - component: {fileID: 114892485965968294}
   m_Layer: 9
   m_Name: StopWater
   m_TagString: Untagged
@@ -71,7 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4591602088621070}
   - component: {fileID: 212274459902346948}
-  - component: {fileID: 114510305402875604}
+  - component: {fileID: 114807024168734280}
   m_Layer: 9
   m_Name: NeedWater
   m_TagString: Untagged
@@ -585,30 +585,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Happiness: 75
---- !u!114 &114442551460958880
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1019957205931608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Reverse: 0
---- !u!114 &114510305402875604
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1228632026125168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04f33017b71ed44a6814f7d05e7bdb75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Reverse: 0
 --- !u!114 &114708388832633160
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -633,6 +609,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 4
+--- !u!114 &114807024168734280
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1228632026125168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953b3a8c106864f278520c7c64d9d43c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Reverse: 0
+--- !u!114 &114892485965968294
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1019957205931608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953b3a8c106864f278520c7c64d9d43c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Reverse: 0
 --- !u!114 &114939799520153144
 MonoBehaviour:
   m_ObjectHideFlags: 1
