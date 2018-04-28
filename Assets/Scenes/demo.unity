@@ -427,10 +427,6 @@ Prefab:
       propertyPath: m_Name
       value: Shower NW
       objectReference: {fileID: 0}
-    - target: {fileID: 1626686333586956, guid: 0b97afae74f874c4188d21c0d5e2f0e8, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b97afae74f874c4188d21c0d5e2f0e8, type: 2}
   m_IsPrefabParent: 0

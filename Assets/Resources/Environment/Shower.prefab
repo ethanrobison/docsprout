@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 198983985527081400}
   - component: {fileID: 135603996298582846}
   - component: {fileID: 114359195554090708}
+  - component: {fileID: 114730379872588330}
   m_Layer: 12
   m_Name: Shower
   m_TagString: Untagged
@@ -75,6 +76,7 @@ GameObject:
   - component: {fileID: 4459750362092598}
   - component: {fileID: 33092502362084000}
   - component: {fileID: 23798434804534998}
+  - component: {fileID: 65466937063747416}
   m_Layer: 12
   m_Name: Top
   m_TagString: Untagged
@@ -152,7 +154,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 155f8943bd4d14b41988bc2f54c58690, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -187,7 +189,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 155f8943bd4d14b41988bc2f54c58690, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -221,6 +223,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1858972010407064}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &65466937063747416
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1871378524384630}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 2, z: 1.0000004}
+  m_Center: {x: -0.00000017881393, y: 0, z: 0.0000001490116}
 --- !u!114 &114359195554090708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -244,6 +258,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8120a632533854fa09f24df8996b4be3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114730379872588330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1626686333586956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2ee44594275464799a07abaf0d335b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alpha: 1
 --- !u!135 &135036368497136330
 SphereCollider:
   m_ObjectHideFlags: 1
