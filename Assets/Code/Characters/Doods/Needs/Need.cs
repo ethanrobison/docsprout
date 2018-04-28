@@ -4,12 +4,9 @@ namespace Code.Characters.Doods.Needs
 {
     public class Need : MonoBehaviour
     {
-        private const float INCREASE = 40f;
-
-        private const float DECAY = 5f;
+        private const float INCREASE = 40f, DECAY = 5f;
 
         public Vector3 Range;
-        
         public NeedType Type;
 
         public int Status {

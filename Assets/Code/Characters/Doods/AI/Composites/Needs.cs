@@ -1,5 +1,4 @@
-﻿using System;
-using Code.Characters.Doods.Needs;
+﻿using Code.Characters.Doods.Needs;
 using Code.Environment.Advertising;
 
 namespace Code.Characters.Doods.AI
@@ -12,6 +11,7 @@ namespace Code.Characters.Doods.AI
         protected override bool Precondition () { return _need.Status < 0; }
     }
 
+
     public class AdvertiserNear : FilterSelector
     {
         private readonly ushort _type;
@@ -21,6 +21,7 @@ namespace Code.Characters.Doods.AI
         protected override bool Precondition () { return Dood.Comps.Status.Advertised.Contains(_type); }
     }
 
+
     public class NeedSatisfiable : FilterSelector
     {
         private readonly ushort _type;
@@ -28,6 +29,7 @@ namespace Code.Characters.Doods.AI
 
         protected override bool Precondition () { return Dood.Comps.Status.Satisfiable.Contains(_type); }
     }
+
 
     public class InteractWithSatisfier : BehaviorTreeNode
     {
@@ -43,6 +45,7 @@ namespace Code.Characters.Doods.AI
 
         protected override Status Update () {
             if (_satisfier == null) { return Status.Failure; }
+
             _satisfier.InteractWith(Dood);
             return Status.Success;
         }

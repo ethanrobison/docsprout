@@ -15,7 +15,6 @@ namespace Code.Environment
             _time = Random.value;
             _rot = Bone.localRotation;
 
-            // check period
             if (Period < 0.01f) { Period = 0.01f; }
         }
 

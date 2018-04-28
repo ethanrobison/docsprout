@@ -11,7 +11,6 @@ namespace Code.Environment.Advertising
         private void Start () { _rig = transform.parent.GetComponent<Rigidbody>(); }
 
         public override void InteractWith (Dood dood) {
-            
             _rig.AddForce(dood.transform.TransformVector(AppliedForce), ForceMode.VelocityChange);
         }
 

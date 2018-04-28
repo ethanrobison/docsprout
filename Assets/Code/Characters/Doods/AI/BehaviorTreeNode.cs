@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Code.Characters.Doods.AI
+﻿namespace Code.Characters.Doods.AI
 {
     public enum Status
     {
@@ -13,7 +11,7 @@ namespace Code.Characters.Doods.AI
 
     public abstract class BehaviorTreeNode
     {
-        Status _status;
+        private Status _status;
 
         protected readonly Dood Dood;
 

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Code.Characters.Doods;
+﻿using Code.Characters.Doods;
 using Code.Characters.Doods.Needs;
 using UnityEngine;
 

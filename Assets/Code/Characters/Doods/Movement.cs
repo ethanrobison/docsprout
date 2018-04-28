@@ -5,8 +5,7 @@ namespace Code.Characters.Doods
 {
     public class Movement : MonoBehaviour
     {
-        private const float ACCELERATION = 5f;
-        private const float ROTATION_SPEED = 5f;
+        private const float ACCELERATION = 5f, ROTATION_SPEED = 5f;
 
         public float Speed = 8f;
 

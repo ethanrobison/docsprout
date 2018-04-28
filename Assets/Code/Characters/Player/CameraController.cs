@@ -65,7 +65,7 @@ namespace Code.Characters.Player
         private void HandleZoomZones () {
             var goalDist = FOLLOW_DISTANCE;
 
-            int count = Physics.OverlapSphereNonAlloc(_target.position, COLLISION_RADIUS, _overlaps, CameraZoomZone);
+            var count = Physics.OverlapSphereNonAlloc(_target.position, COLLISION_RADIUS, _overlaps, CameraZoomZone);
             for (int i = 0; i < count; ++i) {
                 var zoomzone = _overlaps[i].gameObject.GetComponent<CameraZoomZone>();
                 if (zoomzone != null) { goalDist = Mathf.Min(zoomzone.CamDist, goalDist); }
@@ -114,11 +114,6 @@ namespace Code.Characters.Player
             _camRotY += y * (InvertY ? 1f : -1f) * Y_SENSITIVITY;
 
             _camRotY = Mathf.Clamp(_camRotY, MIN_Y_ANGLE, MAX_Y_ANGLE);
-        }
-
-        public void OnAcceptControl (Quaternion x, float y) {
-            _camRotX = x;
-            _camRotY = y;
         }
     }
 }

@@ -39,6 +39,7 @@ namespace Code.Characters.Doods.AI
         }
     }
 
+
     public class Sequence : Composite
     {
         private int _current;

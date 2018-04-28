@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Code.Characters.Player.Interaction;
 using Code.Environment;
 using Code.Environment.Advertising;
 using Code.Utils;
@@ -24,6 +22,8 @@ namespace Code.Characters.Doods.Needs
     {
         private const float MAX_HAPPINESS = 100f, MAGNITUDE = 5f;
         [Range(0f, 100f)] public float Happiness;
+        public SmallSet Advertised { get; private set; }
+        public SmallSet Satisfiable { get; private set; }
 
         private Dood _dood;
         private Need _waterable;
@@ -31,14 +31,15 @@ namespace Code.Characters.Doods.Needs
 
         private bool _displaying;
 
-        public SmallSet Advertised = new SmallSet();
-        public SmallSet Satisfiable = new SmallSet();
         private readonly List<Advertiser> _advertisers = new List<Advertiser>();
         private readonly List<Satisfier> _satisfiers = new List<Satisfier>();
-        
+
         private Need[] _needs;
 
         private void Start () {
+            Advertised = new SmallSet();
+            Satisfiable = new SmallSet();
+
             _dood = gameObject.GetRequiredComponentInParent<Dood>();
             _needs = GetComponents<Need>();
             _waterable = GetNeedOfType(NeedType.Water);
@@ -49,12 +50,7 @@ namespace Code.Characters.Doods.Needs
             Happiness = CalculateHappiness();
             _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;
 
-//            if (_displaying) {
             _display.Show(_waterable.Status);
-//            }
-//            else {
-//                _display.Hide();
-//            }
         }
 
         private float CalculateHappiness () {
@@ -67,8 +63,8 @@ namespace Code.Characters.Doods.Needs
 
         public Advertiser GetAdvertiserOfType (NeedType type) { return _advertisers.First(a => a.Satisfies() == type); }
         public Satisfier GetSatisfierOfType (NeedType type) { return _satisfiers.First(a => a.Satisfies() == type); }
-        
-        public Need GetNeedOfType(NeedType type) { return _needs.FirstOrDefault(need => need.Type == type); }
+
+        public Need GetNeedOfType (NeedType type) { return _needs.FirstOrDefault(need => need.Type == type); }
 
         public void OnApproach () { }
         public void OnDepart () { }
@@ -86,13 +82,13 @@ namespace Code.Characters.Doods.Needs
             var c = _advertisers.Count(a => a.Satisfies() == type);
             if (c == 0) { Advertised.Remove((ushort) type); }
         }
-        
-        public void AllowSatisfaction(Satisfier satisfier) {
+
+        public void AllowSatisfaction (Satisfier satisfier) {
             _satisfiers.Add(satisfier);
-            Satisfiable.Add((ushort)satisfier.Satisfies());
+            Satisfiable.Add((ushort) satisfier.Satisfies());
         }
-        
-        public void ForbidSatisfaction(Satisfier satisfier) {
+
+        public void ForbidSatisfaction (Satisfier satisfier) {
             var type = satisfier.Satisfies();
             var success = _satisfiers.Remove(satisfier);
             Logging.Assert(success, "Tried to remove advertiser from list but was missing.");

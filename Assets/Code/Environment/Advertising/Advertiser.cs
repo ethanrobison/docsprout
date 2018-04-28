@@ -1,5 +1,4 @@
-﻿using Code.Characters.Doods;
-using Code.Characters.Doods.Needs;
+﻿using Code.Characters.Doods.Needs;
 using UnityEngine;
 
 namespace Code.Environment.Advertising
@@ -15,12 +14,10 @@ namespace Code.Environment.Advertising
             var advertisable = other.GetComponentInChildren<IAdvertisable>();
             if (advertisable != null) { advertisable.StopAdvertising(this); }
         }
-        
+
         [SerializeField] private NeedType _satisfies;
-        
-        public NeedType Satisfies() {
-            return _satisfies;
-        }
+
+        public NeedType Satisfies () { return _satisfies; }
     }
 
     public interface IAdvertisable

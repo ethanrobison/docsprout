@@ -1,6 +1,4 @@
 ﻿using Code.Characters.Doods.Needs;
-using Code.Environment.Advertising;
-using UnityEngine;
 
 namespace Code.Characters.Doods.AI
 {
@@ -16,7 +14,7 @@ namespace Code.Characters.Doods.AI
 
         protected override Status Update () {
             var goal = Dood.Comps.Status.GetAdvertiserOfType((NeedType) _type);
-            return Dood.MoveTowards(goal.transform.position, 0f) ? Status.Success : Status.Running;
+            return Dood.MoveTowards(goal.transform.position, 0.1f) ? Status.Success : Status.Running;
         }
     }
 }

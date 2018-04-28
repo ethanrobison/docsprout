@@ -2,6 +2,7 @@
 
 namespace Code.Environment
 {
+    /// <inheritdoc />
     /// <summary>
     /// Make sure the sprite is facing the camera.
     /// </summary>

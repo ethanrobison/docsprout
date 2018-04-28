@@ -6,15 +6,7 @@ namespace Code.Characters.Player
     [RequireComponent(typeof(CameraController))]
     public class Player : MonoBehaviour
     {
-        public enum PlayerState
-        {
-            Walking,
-            Selecting
-        }
-
-        [HideInInspector] public PlayerState State;
-
-        CameraController _camController;
+        private CameraController _camController;
         private Movement _movement;
 
 
@@ -26,26 +18,16 @@ namespace Code.Characters.Player
         }
 
         private void Update () {
-            switch (State) {
-                case PlayerState.Walking:
-                    float x = Game.Sesh.Input.Monitor.LeftH;
-                    float y = Game.Sesh.Input.Monitor.LeftV;
-                    if (x * x + y * y < 0.01) {
-                        _movement.SetDirection(Vector3.zero);
-                    }
-
-//                    if (Interaction.Selector.Configuration == Selector.ControlConfiguration.LeftStick &&
-//                        Game.Sesh.Input.Monitor.LT > 0.1f) {
-//                        _movement.SetDirection(Vector3.zero);
-//                        break;
-//                    }
-
-                    Vector3 forwards = Vector3.Cross(_camController.Camera.transform.right, Vector3.up).normalized;
-                    Vector2 dir = new Vector2(x * _camController.Camera.transform.right.x + y * forwards.x,
-                        x * _camController.Camera.transform.right.z + y * forwards.z);
-                    _movement.SetDirection(dir);
-                    break;
+            var x = Game.Sesh.Input.Monitor.LeftH;
+            var y = Game.Sesh.Input.Monitor.LeftV;
+            if (x * x + y * y < 0.01) {
+                _movement.SetDirection(Vector3.zero);
             }
+
+            var forwards = Vector3.Cross(_camController.Camera.transform.right, Vector3.up).normalized;
+            var dir = new Vector2(x * _camController.Camera.transform.right.x + y * forwards.x,
+                x * _camController.Camera.transform.right.z + y * forwards.z);
+            _movement.SetDirection(dir);
 
             var camX = Game.Sesh.Input.Monitor.RightH;
             var camY = Game.Sesh.Input.Monitor.RightV;

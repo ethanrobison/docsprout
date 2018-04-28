@@ -42,12 +42,6 @@ namespace Code.Session
         Start,
         Select,
     }
-    
-    public enum ActionType
-    {
-        onPress,
-        onRelease
-    }
 
     public class InputManager : ISessionManager
     {

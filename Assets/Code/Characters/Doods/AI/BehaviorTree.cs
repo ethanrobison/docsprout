@@ -22,16 +22,15 @@ namespace Code.Characters.Doods.AI
             var close = new PlayerDistance(dood, -1f, 5f);
             close.AddToEnd(new Idle(dood));
 
-            var medium = new SelectedFilter(dood);
-            medium.AddToEnd(new FollowPlayer(dood));
+            var selected = new SelectedFilter(dood);
+            selected.AddToEnd(new FollowPlayer(dood));
 
             var far = new PlayerDistance(dood, 20f, float.PositiveInfinity);
             far.AddToEnd(new Wander(dood));
-            
-            
+
 
             AddActiveNode(dood, close);
-            AddActiveNode(dood, medium);
+            AddActiveNode(dood, selected);
 
             AddPassiveNeed(dood, NeedType.Water);
             AddActiveNeed(dood, NeedType.Fun);

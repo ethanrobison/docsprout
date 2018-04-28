@@ -4,19 +4,14 @@ namespace Code.Characters.Doods.AI
 {
     public class PlayerDistance : FilterSelector
     {
-        private readonly float _minThresh;
-        private readonly float _maxThresh;
-        private readonly Player.Player _player;
+        private readonly float _minThresh, _maxThresh;
 
         public PlayerDistance (Dood dood, float minimum, float maximum) : base(dood) {
-            var ctx = Game.Ctx;
-            _player = ctx.Player;
             _minThresh = minimum;
             _maxThresh = maximum;
         }
 
         protected override bool Precondition () {
-//            var dist = Vector3.Distance(Dood.transform.position, _player.transform.position);
             var dist = Vector3.Distance(Dood.transform.position, Game.Ctx.Player.transform.position);
             return _minThresh < dist && dist < _maxThresh;
         }

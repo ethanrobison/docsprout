@@ -25,7 +25,7 @@ namespace Code.Session
 
     public class UISettings : ISessionManager
     {
-        public readonly List<float> UIScalingList = new List<float> {0.5f, 0.75f, 1f, 1.5f, 2f};
+        public readonly List<float> UIScalingList = new List<float> { 0.5f, 0.75f, 1f, 1.5f, 2f };
 
         public void Initialize () { }
 

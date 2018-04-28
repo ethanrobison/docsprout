@@ -1,6 +1,5 @@
 ﻿using Code.Characters.Doods.AI;
 using Code.Characters.Doods.Needs;
-using Code.Characters.Player.Interaction;
 using Code.Environment;
 using Code.Utils;
 using UnityEngine;
@@ -56,12 +55,10 @@ namespace Code.Characters.Doods
     {
         public FlockBehaviour Flock { get; private set; }
         public Movement Movement { get; private set; }
-
-        public DoodColor Color { get; private set; }
         public Root Behavior { get; private set; }
-
         public DoodStatus Status { get; private set; }
 
+        public DoodColor Color { get; private set; }
         public Animations Animations { get; private set; }
 
         public DoodComponents (Dood dood) {
