@@ -67,20 +67,29 @@ namespace Code.Session
                 var pair = _mappings[i];
                 switch (pair.PressType) {
                     case PressType.ButtonDown:
-                        if (Input.GetKeyDown(pair.ButtonName)) { pair.OnPress(); }
+                        if (Input.GetKeyDown(pair.ButtonName)) {
+                            pair.OnPress();
+                        }
 
                         break;
                     case PressType.ButtonUp:
-                        if (Input.GetKeyUp(pair.ButtonName)) { pair.OnPress(); }
+                        if (Input.GetKeyUp(pair.ButtonName)) {
+                            pair.OnPress();
+                        }
 
                         break;
                     case PressType.Hold:
-                        if (Input.GetKey(pair.ButtonName)) { pair.OnPress(); }
+                        if (Input.GetKey(pair.ButtonName)) {
+                            pair.OnPress();
+                        }
 
                         break;
+                    case PressType.None:
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
+                c = _mappings.Count;
             }
 
             SetTriggers();
