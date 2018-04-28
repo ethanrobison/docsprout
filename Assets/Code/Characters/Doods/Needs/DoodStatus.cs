@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Code.Characters.Player.Interaction;
 using Code.Environment.Advertising;
-using Code.Interaction;
 using Code.Utils;
 using UnityEngine;
 

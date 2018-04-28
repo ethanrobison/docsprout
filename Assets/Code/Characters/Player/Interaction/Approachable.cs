@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Code.Interaction
+namespace Code.Characters.Player.Interaction
 {
     public class Approachable : MonoBehaviour, IApproachable
     {
