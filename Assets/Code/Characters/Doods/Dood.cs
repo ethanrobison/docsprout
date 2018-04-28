@@ -1,6 +1,6 @@
 ﻿using Code.Characters.Doods.AI;
 using Code.Characters.Doods.Needs;
-using Code.Interaction;
+using Code.Characters.Player.Interaction;
 using Code.Utils;
 using UnityEngine;
 
