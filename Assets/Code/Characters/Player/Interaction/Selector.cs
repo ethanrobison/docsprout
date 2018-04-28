@@ -6,7 +6,7 @@ namespace Code.Characters.Player.Interaction
 {
     public class Selector : MonoBehaviour
     {
-        private const float MIN_RADIUS = 5f, MAX_RADIUS = 10F, CHARGING_RATE = 3F;
+        private const float MIN_RADIUS = 7.5f, MAX_RADIUS = 20F, CHARGING_RATE = 3F;
 
         private readonly RaycastHit[] _hits = new RaycastHit[128];
 
@@ -47,7 +47,7 @@ namespace Code.Characters.Player.Interaction
 
         private void SetCursorScale () {
             var size = _whistleRadius * 2f;
-            _cursor.localScale = new Vector3(size, size / 1.5f, size);
+            _cursor.localScale = new Vector3(size, size / 2f, size);
         }
 
         private void PikminWhistle () {
