@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Interaction
+namespace Code.Characters.Player.Interaction
 {
     /// <summary>
     /// Make sure the sprite is facing the camera.

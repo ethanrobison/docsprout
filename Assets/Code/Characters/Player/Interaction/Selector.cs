@@ -1,11 +1,10 @@
 ﻿using System;
 using Code.Characters.Doods;
-using Code.Characters.Player;
 using Code.Session;
 using Code.Utils;
 using UnityEngine;
 
-namespace Code.Interaction
+namespace Code.Characters.Player.Interaction
 {
     public class Selector : MonoBehaviour
     {
