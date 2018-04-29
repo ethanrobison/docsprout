@@ -12,7 +12,7 @@ namespace Code.Characters.Player.Interaction
     {
         private IApproachable _target;
 
-        private void Start () { Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, Interact); }
+        private void Start () { Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton, Interact); }
 
         private void OnTriggerEnter (Collider other) {
             if (_target != null) { return; }

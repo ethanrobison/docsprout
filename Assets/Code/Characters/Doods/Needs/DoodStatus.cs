@@ -68,7 +68,7 @@ namespace Code.Characters.Doods.Needs
 
         public void OnApproach () { _dood.Comps.Color.IsInteracted = true; }
         public void OnDepart () { _dood.Comps.Color.IsInteracted = false; }
-        public void Interact () { Logging.Log("HI"); }
+        public void Interact () { }
 
         public void AdvertiseTo (Advertiser advertiser) {
             _advertisers.Add(advertiser);
