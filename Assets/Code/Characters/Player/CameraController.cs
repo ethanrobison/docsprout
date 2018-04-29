@@ -83,7 +83,9 @@ namespace Code.Characters.Player
             var dist = 0f;
             for (int i = 0; i < count; ++i) {
                 sdt = _alphaHits[i].collider.gameObject.GetComponent<ScreenDoorTransparency>();
-                if (sdt == null) { continue; }
+                if (sdt == null) {
+                    continue;
+                }
 
                 dist = _alphaHits[i].distance;
                 break;

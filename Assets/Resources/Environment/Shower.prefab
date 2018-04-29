@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 198983985527081400}
   - component: {fileID: 135603996298582846}
   - component: {fileID: 114359195554090708}
-  - component: {fileID: 114730379872588330}
   m_Layer: 12
   m_Name: Shower
   m_TagString: Untagged
@@ -59,7 +58,8 @@ GameObject:
   - component: {fileID: 33633415345062602}
   - component: {fileID: 23086417750578790}
   - component: {fileID: 136992459722032742}
-  m_Layer: 12
+  - component: {fileID: 114092893022292042}
+  m_Layer: 2
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 33092502362084000}
   - component: {fileID: 23798434804534998}
   - component: {fileID: 65466937063747416}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,8 +104,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1858972010407064}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 4972376487913224}
   m_RootOrder: 0
@@ -247,6 +247,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 1
+--- !u!114 &114092893022292042
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858972010407064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2ee44594275464799a07abaf0d335b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alpha: 1
 --- !u!114 &114359195554090708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -259,18 +271,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _satisfies: 1
---- !u!114 &114730379872588330
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1626686333586956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b2ee44594275464799a07abaf0d335b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _alpha: 1
 --- !u!135 &135036368497136330
 SphereCollider:
   m_ObjectHideFlags: 1
