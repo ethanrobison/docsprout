@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Code.Session.MainMenu
 {
-    public class MainMenuOption : MonoBehaviour
+    public class MainMenuOption : MonoBehaviour, IApproachable
     {
         public enum OptionType
         {
@@ -25,14 +25,10 @@ namespace Code.Session.MainMenu
 
         private void Start () {
             MakeState();
-            var monitor = Game.Sesh.Input.Monitor;
-            monitor.RegisterMapping(ControllerButton.AButton, () => {
-                if (_state.Active) { _state.PerformAction(); }
-            });
-            monitor.RegisterMapping(ControllerButton.RightBumper, () => {
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => {
                 if (_state.Active) { _state.ChangeOption(1); }
             });
-            monitor.RegisterMapping(ControllerButton.LeftBumper, () => {
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => {
                 if (_state.Active) { _state.ChangeOption(-1); }
             });
         }
@@ -61,18 +57,9 @@ namespace Code.Session.MainMenu
             _state.Reset();
         }
 
-        private void OnTriggerEnter (Collider other) {
-            if (other.gameObject.GetComponent<Player>() == null) { return; }
-
-            _state.SetState(true);
-        }
-
-        private void OnTriggerExit (Collider other) {
-            if (other.gameObject.GetComponent<Player>() == null) { return; }
-
-            _state.SetState(false);
-        }
-
+        public void OnApproach () { _state.SetState(true); }
+        public void OnDepart () { _state.SetState(false); }
+        public void Interact () { _state.PerformAction(); }
 
         //
         // menu state
