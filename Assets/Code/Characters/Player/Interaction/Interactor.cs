@@ -1,4 +1,5 @@
 ﻿using Code.Environment;
+using Code.Session;
 using UnityEngine;
 
 namespace Code.Characters.Player.Interaction
@@ -10,6 +11,8 @@ namespace Code.Characters.Player.Interaction
     public class Interactor : MonoBehaviour
     {
         private IApproachable _target;
+
+        private void Start () { Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, Interact); }
 
         private void OnTriggerEnter (Collider other) {
             if (_target != null) { return; }
@@ -29,6 +32,10 @@ namespace Code.Characters.Player.Interaction
 
             _target.OnDepart();
             _target = null;
+        }
+
+        private void Interact () {
+            if (_target != null) { _target.Interact(); }
         }
     }
 }

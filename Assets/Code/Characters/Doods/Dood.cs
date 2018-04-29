@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Code.Characters.Doods
 {
     [RequireComponent(typeof(FlockBehaviour))]
-    public class Dood : MonoBehaviour, ISelectable, IApproachable
+    public class Dood : MonoBehaviour, ISelectable
     {
         [HideInInspector] public bool IsSelected;
         public DoodComponents Comps { get; private set; }
@@ -46,9 +46,6 @@ namespace Code.Characters.Doods
             IsSelected = false;
             Comps.Color.IsSelected = false;
         }
-
-        public void OnApproach () { Comps.Status.OnApproach(); }
-        public void OnDepart () { Comps.Status.OnDepart(); }
     }
 
     public class DoodComponents
