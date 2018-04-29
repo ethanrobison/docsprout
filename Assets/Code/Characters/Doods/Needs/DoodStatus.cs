@@ -66,8 +66,9 @@ namespace Code.Characters.Doods.Needs
 
         public Need GetNeedOfType (NeedType type) { return _needs.FirstOrDefault(need => need.Type == type); }
 
-        public void OnApproach () { }
-        public void OnDepart () { }
+        public void OnApproach () { _dood.Comps.Color.IsInteracted = true; }
+        public void OnDepart () { _dood.Comps.Color.IsInteracted = false; }
+        public void Interact () { }
 
         public void AdvertiseTo (Advertiser advertiser) {
             _advertisers.Add(advertiser);

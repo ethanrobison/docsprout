@@ -1,4 +1,5 @@
 ﻿using Code.Environment;
+using Code.Session;
 using UnityEngine;
 
 namespace Code.Characters.Player.Interaction
@@ -9,16 +10,32 @@ namespace Code.Characters.Player.Interaction
     /// </summary>
     public class Interactor : MonoBehaviour
     {
+        private IApproachable _target;
+
+        private void Start () { Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton, Interact); }
+
         private void OnTriggerEnter (Collider other) {
-            if (other.GetComponent<IApproachable>() != null) {
-                other.GetComponent<IApproachable>().OnApproach();
-            }
+            if (_target != null) { return; }
+
+            var approachable = other.GetComponent<IApproachable>();
+            if (approachable == null) { return; }
+
+            _target = approachable;
+            _target.OnApproach();
         }
 
         private void OnTriggerExit (Collider other) {
-            if (other.GetComponent<IApproachable>() != null) {
-                other.GetComponent<IApproachable>().OnDepart();
-            }
+            if (_target == null) { return; }
+
+            var approachable = other.GetComponent<IApproachable>();
+            if (approachable == null || approachable != _target) { return; }
+
+            _target.OnDepart();
+            _target = null;
+        }
+
+        private void Interact () {
+            if (_target != null) { _target.Interact(); }
         }
     }
 }

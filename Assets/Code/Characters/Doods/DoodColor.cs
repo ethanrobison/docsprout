@@ -4,11 +4,14 @@ namespace Code.Characters.Doods
 {
     public class DoodColor : MonoBehaviour
     {
-        [SerializeField] private Color _color;
         [SerializeField] private float _happiness;
         [SerializeField] private Texture _texture;
-        [SerializeField] private Color _highlightColor;
-        private bool _isHighlighted;
+        [SerializeField] private Color _color;
+        [SerializeField] private Color _selectionColor;
+        [SerializeField] private Color _interactColor;
+        private Color _highlightColor;
+
+        private bool _isSelected, _isInteracted;
         private MaterialPropertyBlock _propertyBlock;
         private Renderer _renderer;
 
@@ -40,7 +43,7 @@ namespace Code.Characters.Doods
             }
         }
 
-        public Color HighlightColor {
+        private Color HighlightColor {
             get { return _highlightColor; }
             set {
                 _highlightColor = value;
@@ -49,12 +52,22 @@ namespace Code.Characters.Doods
             }
         }
 
-        public bool IsHighlighted {
-            get { return _isHighlighted; }
+        public bool IsSelected {
+            get { return _isSelected; }
             set {
-                _isHighlighted = value;
+                _isSelected = value;
                 _propertyBlock.SetFloat("_HighlightSize",
-                    _isHighlighted ? _renderer.material.GetFloat("_HighlightSize") : 0f);
+                    _isSelected ? _renderer.material.GetFloat("_HighlightSize") : 0f);
+            }
+        }
+
+        public bool IsInteracted {
+            get { return _isInteracted; }
+            set {
+                _isInteracted = value;
+                HighlightColor = _isInteracted ? _interactColor : _selectionColor;
+                _propertyBlock.SetFloat("_HighlightSize",
+                    _isInteracted || _isSelected ? _renderer.material.GetFloat("_HighlightSize") : 0f);
             }
         }
 
@@ -68,8 +81,11 @@ namespace Code.Characters.Doods
 
             _propertyBlock.SetColor("_HighlightColor", _highlightColor);
             _propertyBlock.SetFloat("_HighlightSize", 0f);
+
             _renderer = GetComponent<Renderer>();
             _renderer.SetPropertyBlock(_propertyBlock);
+
+            HighlightColor = _selectionColor;
         }
     }
 }
