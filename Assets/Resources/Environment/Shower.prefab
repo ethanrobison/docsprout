@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4349707694823752}
   - component: {fileID: 135036368497136330}
-  - component: {fileID: 114632615633709944}
+  - component: {fileID: 114028597998151620}
   m_Layer: 12
   m_Name: Satisfier
   m_TagString: Untagged
@@ -235,6 +235,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0000002, y: 2, z: 1.0000004}
   m_Center: {x: -0.00000017881393, y: 0, z: 0.0000001490116}
+--- !u!114 &114028597998151620
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1569021826386798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f986df0e60f7b43b79806cfd6956afe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 1
 --- !u!114 &114359195554090708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -247,17 +259,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _satisfies: 1
---- !u!114 &114632615633709944
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1569021826386798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8120a632533854fa09f24df8996b4be3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114730379872588330
 MonoBehaviour:
   m_ObjectHideFlags: 1
