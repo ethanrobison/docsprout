@@ -39,12 +39,12 @@ namespace Code.Characters.Doods
 
         public void OnSelect () {
             IsSelected = true;
-            Comps.Color.IsHighlighted = true;
+            Comps.Color.IsSelected = true;
         }
 
         public void OnDeselect () {
             IsSelected = false;
-            Comps.Color.IsHighlighted = false;
+            Comps.Color.IsSelected = false;
         }
 
         public void OnApproach () { Comps.Status.OnApproach(); }

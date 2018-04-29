@@ -9,16 +9,26 @@ namespace Code.Characters.Player.Interaction
     /// </summary>
     public class Interactor : MonoBehaviour
     {
+        private IApproachable _target;
+
         private void OnTriggerEnter (Collider other) {
-            if (other.GetComponent<IApproachable>() != null) {
-                other.GetComponent<IApproachable>().OnApproach();
-            }
+            if (_target != null) { return; }
+
+            var approachable = other.GetComponent<IApproachable>();
+            if (approachable == null) { return; }
+
+            _target = approachable;
+            _target.OnApproach();
         }
 
         private void OnTriggerExit (Collider other) {
-            if (other.GetComponent<IApproachable>() != null) {
-                other.GetComponent<IApproachable>().OnDepart();
-            }
+            if (_target == null) { return; }
+
+            var approachable = other.GetComponent<IApproachable>();
+            if (approachable == null || approachable != _target) { return; }
+
+            _target.OnDepart();
+            _target = null;
         }
     }
 }

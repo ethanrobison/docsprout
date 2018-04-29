@@ -542,10 +542,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde06abeb1ee649bf9984f9c9045dfcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _color: {r: 1, g: 0.8932361, b: 0.15566039, a: 0}
   _happiness: 0
   _texture: {fileID: 2800000, guid: 4339e94c4ae1d4d13addbb28ffdd3708, type: 3}
-  _highlightColor: {r: 0.17243624, g: 1, b: 0, a: 0}
+  _color: {r: 1, g: 0.8932361, b: 0.15566039, a: 0}
+  _selectionColor: {r: 0, g: 1, b: 0, a: 0}
+  _interactColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!114 &114370383534430040
 MonoBehaviour:
   m_ObjectHideFlags: 1

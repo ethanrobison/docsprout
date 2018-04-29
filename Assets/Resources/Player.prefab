@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 23342832822023112}
   - component: {fileID: 54895156538490122}
   - component: {fileID: 136648830860206040}
-  - component: {fileID: 135979639247644168}
+  - component: {fileID: 136529382795990182}
   - component: {fileID: 114195883025543934}
   - component: {fileID: 114092569214295398}
   - component: {fileID: 114556084374671864}
@@ -94,7 +94,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1648072005316490}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 7, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4399200575516396}
@@ -369,7 +369,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 121298be55d7c4f03a6abbfaf7e07a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  State: 0
 --- !u!114 &114398156653296562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -392,8 +391,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b0adeb9b51d4ef9a41a4415d83ceee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &135979639247644168
-SphereCollider:
+--- !u!136 &136529382795990182
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -401,9 +400,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.75
+  m_Height: 3
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 2}
 --- !u!136 &136648830860206040
 CapsuleCollider:
   m_ObjectHideFlags: 1
