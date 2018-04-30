@@ -58,6 +58,7 @@ namespace Code.Characters.Doods.Needs
             return Mathf.Clamp(Happiness + delta, 0f, MAX_HAPPINESS);
         }
 
+
         //
         // interfaces
 
