@@ -7,13 +7,11 @@ using UnityEngine;
 
 namespace Code.Characters.Doods.Needs
 {
-    public enum NeedType
+    public enum NeedType // Add new need types to the end
     {
         None,
         Water,
-
-//        Sun,
-//        Food,
+        Sun,
         Fun,
     }
 
