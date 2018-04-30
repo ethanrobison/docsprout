@@ -1168,18 +1168,6 @@ Prefab:
       propertyPath: m_Name
       value: Shower SE
       objectReference: {fileID: 0}
-    - target: {fileID: 4972376487913224, guid: 0b97afae74f874c4188d21c0d5e2f0e8, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4972376487913224, guid: 0b97afae74f874c4188d21c0d5e2f0e8, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4972376487913224, guid: 0b97afae74f874c4188d21c0d5e2f0e8, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0b97afae74f874c4188d21c0d5e2f0e8, type: 2}
   m_IsPrefabParent: 0
@@ -2897,7 +2885,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4.3
+  m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1750030070
 MonoBehaviour:
