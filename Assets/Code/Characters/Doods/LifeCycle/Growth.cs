@@ -7,7 +7,7 @@ namespace Code.Characters.Doods.LifeCycle
 {
     public class Growth : MonoBehaviour
     {
-        private const float GROWTH_RATE = 10f;
+        private const float GROWTH_RATE = 20f;
         public Mesh Next;
 
         private DoodStatus _status;
@@ -15,18 +15,18 @@ namespace Code.Characters.Doods.LifeCycle
 
         private ParticleSystem _particle;
         private AudioSource _pop;
-        private MeshFilter _filter;
 
         private void Start () {
             _particle = transform.Find("Particle System").GetComponent<ParticleSystem>();
             _status = transform.Find("Status").gameObject.GetRequiredComponent<DoodStatus>();
 
-            var plant = transform.Find("Dood/Capsule Dood/Plant").gameObject;
-            _filter = plant.GetRequiredComponent<MeshFilter>();
+            var plant = transform.Find("Dood/Body/Plant").gameObject;
             _pop = plant.GetRequiredComponent<AudioSource>();
 
-            _stage = new DoodStage(this);
-            _stage.AddSeed(new Seed(Next, new Seedling(Next, null)));
+            _stage = new DoodStage(this,
+                new LifeCycleStage(BodyType.Cone, Maturity.Empty,
+                    new LifeCycleStage(BodyType.Capsule, Maturity.Seedling,
+                        new LifeCycleStage(BodyType.Capsule, Maturity.Sprout, null))));
         }
 
         private void Update () {
@@ -34,12 +34,13 @@ namespace Code.Characters.Doods.LifeCycle
             _stage.ChangeGrowth(delta);
         }
 
-        public void PlayEffectAndChange (Mesh plant) { StartCoroutine(ChangePlant(plant)); }
 
-        private IEnumerator ChangePlant (Mesh plant) {
+        public void StartTransition () { StartCoroutine(ChangePlant()); }
+
+        private IEnumerator ChangePlant () {
             _particle.Play();
             yield return new WaitForSeconds(1f);
-            _filter.mesh = plant;
+            _stage.GoToNextStage();
             _pop.Play();
         }
     }
@@ -48,20 +49,23 @@ namespace Code.Characters.Doods.LifeCycle
     {
         private const float GROW_AT = 100f;
 
-        public Stage Stage {
-            get { return _currentStage == null ? Stage.Empty : _currentStage.Stage; }
+        public Maturity Stage {
+            get { return _currentStage == null ? Maturity.Empty : _currentStage.Maturity; }
         }
 
         private readonly Growth _growth;
         private float _value;
-        private LifeCyleStage _currentStage;
+        private LifeCycleStage _currentStage;
 
 
-        private GameObject _go;
+        private readonly GameObject _go;
 
-        public DoodStage (Growth growth) { _growth = growth; }
-
-        public void AddSeed (Seed stage) { _currentStage = stage; }
+        public DoodStage (Growth growth, LifeCycleStage stage) {
+            _growth = growth;
+            _go = _growth.gameObject;
+            _currentStage = stage;
+            ResetMeshes();
+        }
 
         public void ChangeGrowth (float delta) {
             _value = Mathf.Max(_value + delta, 0f);
@@ -70,15 +74,21 @@ namespace Code.Characters.Doods.LifeCycle
 
             if (_currentStage.Next == null) { return; }
 
-            GoToNextStage();
+            _growth.StartTransition();
             _value = 0f;
         }
 
-        private void GoToNextStage () {
-            if (_currentStage.Next == null) { return; }
-
+        public void GoToNextStage () {
             _currentStage = _currentStage.Next;
-            _growth.PlayEffectAndChange(_currentStage.Mesh);
+            ResetMeshes();
+        }
+
+        private void ResetMeshes () {
+            var body = _go.transform.Find("Dood/Body").gameObject;
+            body.GetComponent<MeshFilter>().mesh = _currentStage.Body;
+
+            var plant = _go.transform.Find("Dood/Body/Plant").gameObject;
+            plant.GetComponent<MeshFilter>().mesh = _currentStage.Leaf;
         }
     }
 }
