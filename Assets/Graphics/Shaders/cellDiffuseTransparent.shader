@@ -3,10 +3,59 @@
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
         _LightMultiplier ("Light Multiplier", Float) = .7
+        _OutlineColor ("Outline Color", Color) = (1,1,1,1)
+        _OutlineSize ("Outline Size", Float) = 0
 	}
 	SubShader {
 		Tags { "Queue" = "Transparent" }
 		LOD 200
+		
+		Pass {
+            Cull Front
+            
+            CGPROGRAM
+            
+            #pragma vertex vert
+            #pragma fragment frag
+            
+            #include "UnityCG.cginc"
+            
+            struct appdata {
+                float4 position : POSITION;
+                float3 normal : NORMAL;
+                UNITY_VERTEX_INPUT_INSTANCE_ID 
+            };
+            
+            struct v2f {
+                float4 pos : SV_POSITION;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+            
+            UNITY_INSTANCING_BUFFER_START(Props)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _OutlineColor)
+                UNITY_DEFINE_INSTANCED_PROP(float, _OutlineSize)
+            UNITY_INSTANCING_BUFFER_END(Props)
+            
+            v2f vert(appdata vert) {
+                v2f output; 
+                UNITY_SETUP_INSTANCE_ID(vert);
+                UNITY_TRANSFER_INSTANCE_ID(vert, output);
+                float3 worldNorm = UnityObjectToWorldNormal(vert.normal);
+                float4 worldPos = mul(unity_ObjectToWorld, vert.position);
+                worldPos.xyz += worldNorm*UNITY_ACCESS_INSTANCED_PROP(Props, _OutlineSize);
+                output.pos = mul(UNITY_MATRIX_VP, worldPos);
+                return output;
+            }
+            
+            half4 frag(v2f i) : SV_TARGET 
+            {
+                clip(_OutlineSize - 0.01);
+                UNITY_SETUP_INSTANCE_ID(i);
+                return UNITY_ACCESS_INSTANCED_PROP(Props, _OutlineColor);
+            }
+            
+            ENDCG
+        }
 
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
@@ -43,6 +92,7 @@
             //o.Alpha = 1;
 		}
 		ENDCG
+		
 	}
 	FallBack "Diffuse"
 }

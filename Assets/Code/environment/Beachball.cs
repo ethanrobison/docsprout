@@ -14,9 +14,11 @@ namespace Code.environment
         private float _cooldown;
         private const float COOLDOWN_TIME = .1f;
         private AudioSource _audioSource;
+        private InteractionHighlight _highlight;
 
         private void Start () {
             _rig = gameObject.GetRequiredComponent<Rigidbody>();
+            _highlight = gameObject.GetRequiredComponent<InteractionHighlight>();
             _audioSource = gameObject.GetRequiredComponent<AudioSource>();
             gameObject.GetRequiredComponentInChildren<Satisfier>().OnInteract += dood => { Kick(dood.transform); };
         }
@@ -37,7 +39,7 @@ namespace Code.environment
 
         public void Interact () { Kick(Game.Ctx.Player.transform); }
 
-        public void OnApproach () { }
-        public void OnDepart () { }
+        public void OnApproach () { _highlight.IsHighlighted = true; }
+        public void OnDepart () { _highlight.IsHighlighted = false; }
     }
 }
