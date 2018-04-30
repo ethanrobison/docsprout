@@ -8,10 +8,10 @@ namespace Code.Characters.Doods.Needs
         Sun = 2,
         Fun = 3,
     }
-    
+
     public class Need : MonoBehaviour
     {
-        private const float INCREASE = 40f, DECAY = 5f;
+        private const float INCREASE = 20f, DECAY = 10f;
 
         public Vector3 Range;
         public NeedType Type;
