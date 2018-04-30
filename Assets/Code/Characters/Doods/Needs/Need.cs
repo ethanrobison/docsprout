@@ -2,6 +2,13 @@
 
 namespace Code.Characters.Doods.Needs
 {
+    public enum NeedType // Add new need types to the end
+    {
+        Water = 1,
+        Sun = 2,
+        Fun = 3,
+    }
+    
     public class Need : MonoBehaviour
     {
         private const float INCREASE = 40f, DECAY = 5f;
