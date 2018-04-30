@@ -5,20 +5,13 @@ namespace Code.Utils
 {
     public enum UIPrefab
     {
-        // Main Menu Dialogs
-        MainMenu,
-        OptionsMenu,
-
-        // In-game Dialogs
-        PauseMenu,
+        Doodex
     }
 
     public static class UIUtils
     {
         private static readonly Dictionary<UIPrefab, string> PrefabsPaths = new Dictionary<UIPrefab, string> {
-            { UIPrefab.MainMenu, "UI/Main Menu" },
-            { UIPrefab.OptionsMenu, "UI/Options Menu" },
-            { UIPrefab.PauseMenu, "UI/Pause Menu" }
+            { UIPrefab.Doodex, "UI/Doodex" }
         };
 
         public static Transform GetCanvas () {
