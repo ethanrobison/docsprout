@@ -7,15 +7,6 @@ using UnityEngine;
 
 namespace Code.Characters.Doods.Needs
 {
-    public enum NeedType
-    {
-        None,
-        Water,
-
-//        Sun,
-//        Food,
-        Fun,
-    }
 
 
     public class DoodStatus : MonoBehaviour, IApproachable, IAdvertisable, ISatisfiable

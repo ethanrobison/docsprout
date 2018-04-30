@@ -14,9 +14,11 @@ namespace Code.Environment
         private bool _isOpen = false;
         private Transform _leftDoor;
         private Transform _rightDoor;
+        private InteractionHighlight _highlight;
 
         private void Start () {
             _audioSource = gameObject.GetRequiredComponent<AudioSource>();
+            _highlight = gameObject.GetRequiredComponent<InteractionHighlight>();
             _leftDoor = transform.Find("Left Door");
             _rightDoor = transform.Find("Right Door");
         }
@@ -29,10 +31,11 @@ namespace Code.Environment
         private bool _isAnimating;
 
         private void Animate (float deltaT) {
-            if(Mathf.Approximately(_timeAnimating, 0f)) {
+            if (Mathf.Approximately(_timeAnimating, 0f)) {
                 _audioSource.clip = _isOpen ? CloseSound : OpenSound;
                 _audioSource.Play();
             }
+
             _timeAnimating += deltaT / DURATION;
             if (_timeAnimating >= 1f) {
                 _timeAnimating = 0f;
@@ -55,8 +58,8 @@ namespace Code.Environment
 
         public void Interact () { _isAnimating = true; }
 
-        public void OnApproach () { }
+        public void OnApproach () { _highlight.IsHighlighted = true; }
 
-        public void OnDepart () { }
+        public void OnDepart () { _highlight.IsHighlighted = false; }
     }
 }
