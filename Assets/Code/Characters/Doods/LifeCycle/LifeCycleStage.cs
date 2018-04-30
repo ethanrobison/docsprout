@@ -4,11 +4,11 @@ namespace Code.Characters.Doods.LifeCycle
 {
     public enum Maturity
     {
-        Empty,
-        Seed,
-        Seedling,
-        Sprout,
-        Bud,
+        Empty = 0,
+        Seed = 1,
+        Seedling = 2,
+        Sprout = 4,
+        Bud = 8,
         Flower,
         Fruit
     }
@@ -21,7 +21,7 @@ namespace Code.Characters.Doods.LifeCycle
         // todo have a cycle in the last step to do harvesting, etc.
 
         public Mesh Body { get; private set; }
-        public Mesh Leaf { get; private set; }
+        public MeshInfo Leaf { get; private set; }
 
         public LifeCycleStage (BodyType body, Maturity maturity, LifeCycleStage next) {
             Next = next;
