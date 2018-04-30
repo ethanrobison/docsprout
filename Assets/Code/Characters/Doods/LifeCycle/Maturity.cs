@@ -23,9 +23,9 @@ namespace Code.Characters.Doods.LifeCycle
         public Mesh Body { get; private set; }
         public Mesh Leaf { get; private set; }
 
-        public LifeCycleStage (Mesh body, Maturity maturity, LifeCycleStage next) {
+        public LifeCycleStage (BodyType body, Maturity maturity, LifeCycleStage next) {
             Next = next;
-            Body = body;
+            Body = Doodopedia.GetBodyOfType(body);
             Leaf = Doodopedia.GetLeafOfType(maturity);
             Maturity = maturity;
         }

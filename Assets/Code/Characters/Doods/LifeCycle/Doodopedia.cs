@@ -4,6 +4,15 @@ using UnityEngine;
 
 namespace Code.Characters.Doods.LifeCycle
 {
+    public enum BodyType
+    {
+        Cone,
+        Capsule,
+        Sphere,
+        Cube,
+        Cylinder
+    }
+
     public static class Doodopedia
     {
         public enum DoodSpecies
@@ -15,24 +24,15 @@ namespace Code.Characters.Doods.LifeCycle
             var capsule = GetBodyOfType(BodyType.Capsule);
             var cone = GetBodyOfType(BodyType.Cone);
 
-            var bud = new LifeCycleStage(capsule, Maturity.Bud, null);
-            var sprout = new LifeCycleStage(capsule, Maturity.Sprout, bud);
-            var seedling = new LifeCycleStage(cone, Maturity.Seedling, sprout);
-            var seed = new LifeCycleStage(cone, Maturity.Seed, seedling);
+            var bud = new LifeCycleStage(BodyType.Capsule, Maturity.Bud, null);
+            var sprout = new LifeCycleStage(BodyType.Capsule, Maturity.Sprout, bud);
+            var seedling = new LifeCycleStage(BodyType.Cone, Maturity.Seedling, sprout);
+            var seed = new LifeCycleStage(BodyType.Cone, Maturity.Seed, seedling);
             return seed;
         }
 
 
-        private enum BodyType
-        {
-            Cone,
-            Capsule,
-            Sphere,
-            Cube,
-            Cylinder
-        }
-
-        private static Mesh GetBodyOfType (BodyType type) {
+        public static Mesh GetBodyOfType (BodyType type) {
             string path;
             if (!BodyPaths.TryGetValue(type, out path)) { Logging.Error("Missing path for type: " + type); }
 
@@ -64,6 +64,7 @@ namespace Code.Characters.Doods.LifeCycle
         };
 
         private static readonly Dictionary<Maturity, string> LeafPaths = new Dictionary<Maturity, string> {
+            { Maturity.Empty, "Models/Doods/Plants/sprout1" },
             { Maturity.Seedling, "Models/Doods/Plants/sprout1" },
             { Maturity.Sprout, "Models/Doods/Plants/sprout2" }
         };
