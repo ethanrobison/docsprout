@@ -1,4 +1,6 @@
-﻿namespace Code.Session
+﻿using UnityEngine.SceneManagement;
+
+namespace Code.Session
 {
     public class GameSession
     {
@@ -41,6 +43,17 @@
 
             Input.OnGameStart();
             Prefs.OnGameStart();
+        }
+
+        public void ReturnToMenu () {
+            Initialize();
+            SceneManager.sceneLoaded += RemoveContext;
+            SceneManager.LoadScene(0);
+        }
+
+        private static void RemoveContext (Scene scene, LoadSceneMode mode) {
+            Game.Ctx = null;
+            SceneManager.sceneLoaded -= RemoveContext;
         }
     }
 

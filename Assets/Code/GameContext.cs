@@ -15,13 +15,18 @@ namespace Code
                 return;
             }
 
-            SceneManager.sceneLoaded += (foo, bar) => { Initialize(); };
+            SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.LoadScene(scene);
 
             Initialize();
         }
 
         public void SetPlayer (Player player) { Player = player; }
+
+        private void OnSceneLoaded (Scene scene, LoadSceneMode mode) {
+            Initialize();
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
 
         private void Initialize () {
             Doods = new DoodManager();
