@@ -7,7 +7,7 @@ namespace Code.Characters.Doods.LifeCycle
 {
     public class Growth : MonoBehaviour
     {
-        private const float GROWTH_RATE = 20f;
+        private const float GROWTH_RATE = 0.3f;
 
         private DoodStatus _status;
         private DoodStage _stage;
@@ -29,7 +29,7 @@ namespace Code.Characters.Doods.LifeCycle
         }
 
         private void Update () {
-            var delta = (_status.Happiness - 50f) * GROWTH_RATE * Time.deltaTime * 0.01f;
+            var delta = (_status.Happiness - 50f) * GROWTH_RATE * Time.deltaTime;
             _stage.ChangeGrowth(delta);
         }
 
