@@ -1,11 +1,14 @@
-﻿using Code.Characters.Doods;
+﻿using System;
+using Code.Characters.Doods;
 using Code.Characters.Doods.Needs;
 using UnityEngine;
 
 namespace Code.Environment.Advertising
 {
-    public abstract class Satisfier : MonoBehaviour
+    public class Satisfier : MonoBehaviour
     {
+        public Action<Dood> OnInteract;
+        [SerializeField] private NeedType _type;
         private void OnTriggerEnter (Collider other) {
             var satisfiable = other.GetComponentInChildren<ISatisfiable>();
             if (satisfiable != null) { satisfiable.AllowSatisfaction(this); }
@@ -16,9 +19,12 @@ namespace Code.Environment.Advertising
             if (satisfiable != null) { satisfiable.ForbidSatisfaction(this); }
         }
 
-        public abstract void InteractWith (Dood user);
+        public void InteractWith (Dood dood) {
+            dood.Comps.Status.GetNeedOfType(Satisfies()).Satisfy();
+            if(OnInteract != null) OnInteract(dood);
+        }
 
-        public abstract NeedType Satisfies ();
+        public NeedType Satisfies () {return _type;}
     }
 
     public interface ISatisfiable
