@@ -4,6 +4,7 @@ namespace Code.Characters.Doods.LifeCycle
 {
     public enum Maturity
     {
+        // todo something more graceful than this
         Empty = 0,
         Seed = 1,
         Seedling = 2,
