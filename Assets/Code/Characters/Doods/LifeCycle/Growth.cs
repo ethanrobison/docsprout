@@ -8,7 +8,6 @@ namespace Code.Characters.Doods.LifeCycle
     public class Growth : MonoBehaviour
     {
         private const float GROWTH_RATE = 20f;
-        public Mesh Next;
 
         private DoodStatus _status;
         private DoodStage _stage;
