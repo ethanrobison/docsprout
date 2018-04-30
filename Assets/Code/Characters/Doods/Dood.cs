@@ -16,8 +16,9 @@ namespace Code.Characters.Doods
         private void Start () { Comps = new DoodComponents(this); }
 
         public bool MoveTowards (Vector3 pos, float minDist = 3f) {
-            var dist = Vector3.Distance(pos, transform.position);
-            if (dist < minDist) {
+            var diff = pos - transform.position;
+            diff.y = 0f;
+            if (diff.sqrMagnitude < minDist*minDist) {
                 StopMoving();
                 return true;
             }

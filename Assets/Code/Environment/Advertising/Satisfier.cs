@@ -21,7 +21,7 @@ namespace Code.Environment.Advertising
 
         public void InteractWith (Dood dood) {
             dood.Comps.Status.GetNeedOfType(Satisfies()).Satisfy();
-            OnInteract(dood);
+            if(OnInteract != null) OnInteract(dood);
         }
 
         public NeedType Satisfies () {return _type;}

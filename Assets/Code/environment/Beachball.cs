@@ -1,34 +1,43 @@
 ﻿using Code.Characters.Doods;
+using Code.Environment;
 using Code.Environment.Advertising;
 using Code.Utils;
 using UnityEngine;
 
 namespace Code.environment
 {
-	public class Beachball : MonoBehaviour {
-	
-		public Vector3 Force = new Vector3(0f, 5f, 5f);
-		
-		private Rigidbody _rig;
-		private float _cooldown;
-		private const float COOLDOWN_TIME = .1f;
+    public class Beachball : MonoBehaviour, IApproachable
+    {
+        public Vector3 Force = new Vector3(0f, 5f, 5f);
 
-		private void Start () {
-			_rig = gameObject.GetRequiredComponent<Rigidbody>();
-			gameObject.GetRequiredComponentInChildren<Satisfier>().OnInteract += Kick;
-		}
+        private Rigidbody _rig;
+        private float _cooldown;
+        private const float COOLDOWN_TIME = .1f;
+        private AudioSource _audioSource;
 
-		private void Update () {
-			if(_cooldown > 0f) {
-				_cooldown -= Time.deltaTime;
-			}
-		}
+        private void Start () {
+            _rig = gameObject.GetRequiredComponent<Rigidbody>();
+            _audioSource = gameObject.GetRequiredComponent<AudioSource>();
+            gameObject.GetRequiredComponentInChildren<Satisfier>().OnInteract += dood => { Kick(dood.transform); };
+        }
+
+        private void Update () {
+            if (_cooldown > 0f) {
+                _cooldown -= Time.deltaTime;
+            }
+        }
 
 
-		private void Kick(Dood dood) {
-			if(_cooldown > 0f) return;
-			_cooldown += COOLDOWN_TIME;
-			_rig.AddForce(dood.transform.TransformVector(Force), ForceMode.VelocityChange);
-		}
-	}
+        private void Kick (Transform tran) {
+            if (_cooldown > 0f) return;
+            _cooldown += COOLDOWN_TIME;
+            _audioSource.Play();
+            _rig.AddForce(tran.TransformVector(Force), ForceMode.VelocityChange);
+        }
+
+        public void Interact () { Kick(Game.Ctx.Player.transform); }
+
+        public void OnApproach () { }
+        public void OnDepart () { }
+    }
 }

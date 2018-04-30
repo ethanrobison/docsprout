@@ -9,6 +9,7 @@
 		Tags { "Queue" = "Transparent" }
 		LOD 200
         Blend SrcAlpha OneMinusSrcAlpha
+        ZWrite Off
 		Pass
 		{
 		    Cull Front
