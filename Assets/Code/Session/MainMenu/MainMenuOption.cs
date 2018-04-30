@@ -149,7 +149,11 @@ namespace Code.Session.MainMenu
             }
 
             protected override void SetText () {
+#if UNITY_EDITOR
                 InfoText.text = string.Format("Start scene: {0}", Options[CurrentOption].Index);
+#else
+                InfoText.text = string.Format("Start Game");
+#endif
             }
         }
 
