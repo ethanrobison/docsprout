@@ -19,23 +19,32 @@ namespace Code.Characters.Doods.AI
 
             InitializeTree(dood);
 
-            var close = new PlayerDistance(dood, -1f, 5f);
-            close.AddToEnd(new Idle(dood));
-
+//            var close = new PlayerDistance(dood, -1f, 5f);
+//            close.AddToEnd(new Idle(dood));
+//            close.AddToEnd(new LookAtPlayer(dood));
             var selected = new SelectedFilter(dood);
-            selected.AddToEnd(new FollowPlayer(dood));
+            var selectedSelector = new Selector(dood);
+            var selectedClose = new PlayerDistance(dood, -1f, 5f);
+            selectedClose.AddToEnd(new LookAtPlayer(dood));
+            selectedSelector.AddToEnd(selectedClose);
+            selectedSelector.AddToEnd(new FollowPlayer(dood));
+            selected.AddToEnd(selectedSelector);
 
             var far = new PlayerDistance(dood, 20f, float.PositiveInfinity);
             far.AddToEnd(new Wander(dood));
+            
+            var lookAtPlayer = new LookAtPlayer(dood);
 
 
-            AddActiveNode(dood, close);
+//            AddActiveNode(dood, close);
             AddActiveNode(dood, selected);
 
             AddPassiveNeed(dood, NeedType.Water);
             AddActiveNeed(dood, NeedType.Fun);
 
             AddActiveNode(dood, far);
+            
+            AddActiveNode(dood, lookAtPlayer);
 
             FinishBuildingTree(dood);
         }
@@ -84,16 +93,12 @@ namespace Code.Characters.Doods.AI
 
         private void AddPassiveNeed (Dood dood, NeedType type) {
             var need = _needs.First(n => n.Type == type);
-            var needNode = new NeedLevel(dood, need);
-            var needAdvertiser = new AdvertiserNear(dood, type);
             var needSatisfaction = new NeedSatisfiable(dood, type);
             needSatisfaction.AddToEnd(new InteractWithSatisfier(dood, type));
-            needAdvertiser.AddToEnd(needSatisfaction);
-            needNode.AddToEnd(needAdvertiser);
-            AddPassiveNode(dood, needNode);
+            AddPassiveNode(dood, needSatisfaction);
 
-            needNode = new NeedLevel(dood, need);
-            needAdvertiser = new AdvertiserNear(dood, type);
+            var needNode = new NeedLevel(dood, need);
+            var needAdvertiser = new AdvertiserNear(dood, type);
             needSatisfaction = new NeedSatisfiable(dood, type);
             needSatisfaction.AddToEnd(new Idle(dood));
             needAdvertiser.AddToEnd(needSatisfaction);

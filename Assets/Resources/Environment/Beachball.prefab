@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23430492769979446}
   - component: {fileID: 54788975054529458}
   - component: {fileID: 135256310685467390}
+  - component: {fileID: 114153048320237036}
   m_Layer: 2
   m_Name: Beachball
   m_TagString: Untagged
@@ -56,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4411116047657204}
   - component: {fileID: 135700025304802096}
-  - component: {fileID: 114840350303202078}
+  - component: {fileID: 114668762641769116}
   m_Layer: 12
   m_Name: Satisfier
   m_TagString: Untagged
@@ -84,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1107337818372056}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.205496, y: 4.3, z: 12.753032}
+  m_LocalPosition: {x: 5, y: 5, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4552587516855252}
@@ -162,6 +163,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114153048320237036
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1107337818372056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85aac6dcf3a8d4c6798b8a8e0d1e330b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Force: {x: 0, y: 5, z: 5}
 --- !u!114 &114331067507426854
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _satisfies: 2
---- !u!114 &114840350303202078
+--- !u!114 &114668762641769116
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -182,10 +195,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1675703058138656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94d17ac869f494d48a29d523ae5e1acf, type: 3}
+  m_Script: {fileID: 11500000, guid: f986df0e60f7b43b79806cfd6956afe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AppliedForce: {x: 0, y: 5, z: 5}
+  _type: 2
 --- !u!135 &135256310685467390
 SphereCollider:
   m_ObjectHideFlags: 1
