@@ -5,36 +5,26 @@ namespace Code.Characters.Doods.Needs
 {
     public class StatusDisplay
     {
-        private readonly GameObject _needMore;
-        private readonly GameObject _needLess;
+        private readonly GameObject _water, _shade;
 
         public StatusDisplay (GameObject go) {
-            _needMore = go.transform.Find("NeedWater").gameObject;
-            _needLess = go.transform.Find("StopWater").gameObject;
+            _water = go.transform.Find("Canvas/Icons/Water").gameObject;
+            _shade = go.transform.Find("Canvas/Icons/Shade").gameObject;
         }
 
-        public void Show (int status) {
-            // lol this could be a bit manipulation // but m'clarity
-            switch (status) {
-                case 0:
-                    SetDisplays(false, false);
+        public void SetIconOfType (NeedType need, int status) {
+            switch (need) {
+                case NeedType.Water:
+                    _water.SetActive(status < 0);
                     break;
-                case 1:
-                    SetDisplays(false, true);
+                case NeedType.Sun:
+                    _shade.SetActive(status < 0);
                     break;
-                case -1:
-                    SetDisplays(true, false);
+                case NeedType.Fun:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("need", need, null);
             }
-        }
-
-        public void Hide () { SetDisplays(false, false); }
-
-        private void SetDisplays (bool under, bool over) {
-            _needMore.SetActive(under);
-            _needLess.SetActive(over);
         }
     }
 }

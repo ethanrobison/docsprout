@@ -7,8 +7,6 @@ using UnityEngine;
 
 namespace Code.Characters.Doods.Needs
 {
-
-
     public class DoodStatus : MonoBehaviour, IApproachable, IAdvertisable, ISatisfiable
     {
         private const float MAX_HAPPINESS = 100f, MAGNITUDE = 5f;
@@ -17,7 +15,6 @@ namespace Code.Characters.Doods.Needs
         public SmallSet Satisfiable { get; private set; }
 
         private Dood _dood;
-        private Need _waterable;
         private StatusDisplay _display;
 
         private bool _displaying;
@@ -33,19 +30,23 @@ namespace Code.Characters.Doods.Needs
 
             _dood = gameObject.GetRequiredComponentInParent<Dood>();
             _needs = GetComponents<Need>();
-            _waterable = GetNeedOfType(NeedType.Water);
             _display = new StatusDisplay(gameObject);
         }
 
         private void Update () {
-            Happiness = CalculateHappiness();
-            _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;
+            var total = 0f;
+            for (int i = 0, c = _needs.Length; i < c; i++) {
+                total += CalculateHappiness(_needs[i]);
+            }
 
-            _display.Show(_waterable.Status);
+            Happiness = Mathf.Clamp01(total / _needs.Length) * 100f;
+            _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;
         }
 
-        private float CalculateHappiness () {
-            var delta = (_waterable.Status == 0 ? 5f : -1f) * MAGNITUDE * Time.deltaTime;
+        private float CalculateHappiness (Need need) {
+            _display.SetIconOfType(need.Type, need.Status);
+
+            var delta = (need.Status == 0 ? 3f : -2f) * MAGNITUDE * Time.deltaTime;
             return Mathf.Clamp(Happiness + delta, 0f, MAX_HAPPINESS);
         }
 
