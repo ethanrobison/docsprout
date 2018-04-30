@@ -9,7 +9,7 @@ namespace Code.Characters.Doods
 
         public readonly List<Dood> DoodList = new List<Dood>();
 
-        public void Initialize () { MakeNDoods(1, new Vector3(-10f, 0f, 20f)); }
+        public void Initialize () { MakeNDoods(15, new Vector3(-10f, 0f, 20f)); }
 
         public void ShutDown () { }
 

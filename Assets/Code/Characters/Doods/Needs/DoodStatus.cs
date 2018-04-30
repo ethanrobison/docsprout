@@ -39,15 +39,16 @@ namespace Code.Characters.Doods.Needs
                 total += CalculateHappiness(_needs[i]);
             }
 
-            Happiness = Mathf.Clamp01(total / _needs.Length) * 100f;
+            total = Mathf.Clamp(total / _needs.Length, -2 * MAGNITUDE, 2 * MAGNITUDE);
+
+            Happiness = Mathf.Clamp(Happiness + total, 0f, MAX_HAPPINESS);
             _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;
         }
 
         private float CalculateHappiness (Need need) {
             _display.SetIconOfType(need.Type, need.Status);
 
-            var delta = (need.Status == 0 ? 3f : -2f) * MAGNITUDE * Time.deltaTime;
-            return Mathf.Clamp(Happiness + delta, 0f, MAX_HAPPINESS);
+            return (need.Status == 0 ? 3f : -2f) * MAGNITUDE * Time.deltaTime;
         }
 
 
