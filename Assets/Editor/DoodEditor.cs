@@ -15,8 +15,7 @@ namespace Editor
         private string _filePath;
 
 
-        private Dictionary<Doodopedia.DoodSpecies, SpeciesEditor> _speciesEditors =
-            new Dictionary<Doodopedia.DoodSpecies, SpeciesEditor>();
+        private Dictionary<Doodopedia.DoodSpecies, SpeciesEditor> _speciesEditors;
 
         [MenuItem("Window/Dood Editor")]
         private static void Init () {
@@ -27,6 +26,7 @@ namespace Editor
 
 
         private void Awake () {
+            _speciesEditors = new Dictionary<Doodopedia.DoodSpecies, SpeciesEditor>();
             _filePath = Path.Combine(Application.dataPath, SAVE_FILE);
             if (!File.Exists(_filePath)) {
                 File.Create(_filePath).Close();
@@ -84,7 +84,7 @@ namespace Editor
             }
 
             foreach (var cycle in _doodSpecies.Cycles) {
-                _cylceEditors.Add(cycle.Current, new LifeCylceEditor(new LifeCycleInfoSerializable()));
+                _cylceEditors.Add(cycle.Current, new LifeCylceEditor(cycle));
             }
         }
 
