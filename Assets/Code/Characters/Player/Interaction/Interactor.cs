@@ -1,5 +1,6 @@
 ﻿using Code.Environment;
 using Code.Session;
+using Code.Characters.Doods.LifeCycle;
 using UnityEngine;
 
 namespace Code.Characters.Player.Interaction
@@ -11,6 +12,7 @@ namespace Code.Characters.Player.Interaction
     public class Interactor : MonoBehaviour
     {
         private IApproachable _target;
+        private Growth _harvestTarget;
 
         private void Start () { Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton, Interact); }
 
@@ -22,6 +24,8 @@ namespace Code.Characters.Player.Interaction
 
             _target = approachable;
             _target.OnApproach();
+
+            _harvestTarget = other.GetComponent<Growth>();
         }
 
         private void OnTriggerExit (Collider other) {
@@ -32,10 +36,16 @@ namespace Code.Characters.Player.Interaction
 
             _target.OnDepart();
             _target = null;
+            _harvestTarget = null;
         }
 
         private void Interact () {
             if (_target != null) { _target.Interact(); }
+        }
+
+        private void Harvest () {
+            if (_harvestTarget == null) return;
+            _harvestTarget.Harvest();
         }
     }
 }

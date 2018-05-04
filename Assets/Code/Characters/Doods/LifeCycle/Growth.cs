@@ -42,6 +42,8 @@ namespace Code.Characters.Doods.LifeCycle
             _stage.GoToNextStage();
             _pop.Play();
         }
+
+        public void Harvest () { }
     }
 
     public class DoodStage
@@ -95,6 +97,14 @@ namespace Code.Characters.Doods.LifeCycle
         public void GoToNextStage () {
             _currentStage = _currentStage.Next;
             ResetState();
+        }
+
+        public void Harvest () {
+            if (!_currentStage.Harvestable) {
+                return;
+            }
+            Logging.Log("Dood says \"Ow!\"");
+            GoToNextStage();
         }
     }
 }

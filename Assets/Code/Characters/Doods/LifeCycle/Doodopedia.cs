@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.Characters.Doods.Needs;
 using Code.Utils;
 using UnityEngine;
 
@@ -43,7 +44,7 @@ namespace Code.Characters.Doods.LifeCycle
             ModelInfo info;
             if (!LeafPaths.TryGetValue(stage, out info)) { Logging.Error("Missing path for type: " + stage); }
 
-            return new MeshInfo { Mesh = LoadMeshAtPath(info.Path), Offset = info.Pos };
+            return new MeshInfo {Mesh = LoadMeshAtPath(info.Path), Offset = info.Pos};
         }
 
         private static Mesh LoadMeshAtPath (string path) {
@@ -60,13 +61,13 @@ namespace Code.Characters.Doods.LifeCycle
 
         //
         // Nasty hard-coded dictionaries. Sorry about this.
-        
+
         private static readonly Dictionary<BodyType, string> BodyPaths = new Dictionary<BodyType, string> {
-            { BodyType.Cone, "Models/Doods/cone2" },
-            { BodyType.Capsule, "Models/Doods/capsule2" }
+            {BodyType.Cone, "Models/Doods/cone2"},
+            {BodyType.Capsule, "Models/Doods/capsule2"}
         };
 
-        
+
         private const string PLANT_BASE = "Models/Doods/Plants/";
 
         private static readonly Vector3
@@ -74,10 +75,12 @@ namespace Code.Characters.Doods.LifeCycle
             ConeOffset = new Vector3(0, 0, 0.9f);
 
         private static readonly Dictionary<Maturity, ModelInfo> LeafPaths = new Dictionary<Maturity, ModelInfo> {
-            { Maturity.Empty, new ModelInfo { Path = PLANT_BASE + "sprout1", Pos = ConeOffset } },
-            { Maturity.Seedling, new ModelInfo { Path = PLANT_BASE + "sprout1", Pos = CapsuleOffset } },
-            { Maturity.Sprout, new ModelInfo { Path = PLANT_BASE + "sprout2", Pos = CapsuleOffset } }
+            {Maturity.Empty, new ModelInfo {Path = PLANT_BASE + "sprout1", Pos = ConeOffset}},
+            {Maturity.Seedling, new ModelInfo {Path = PLANT_BASE + "sprout1", Pos = CapsuleOffset}},
+            {Maturity.Sprout, new ModelInfo {Path = PLANT_BASE + "sprout2", Pos = CapsuleOffset}}
         };
+        
+        private static Dictionary<DoodSpecies, DoodSpeciesInfo> _doodSpeciesInfo;
 
         private struct ModelInfo
         {

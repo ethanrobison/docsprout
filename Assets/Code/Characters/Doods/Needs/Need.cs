@@ -2,7 +2,7 @@
 
 namespace Code.Characters.Doods.Needs
 {
-    public enum NeedType // Add new need types to the end
+    public enum NeedType // Do not change numbers
     {
         Water = 1,
         Sun = 2,
@@ -11,7 +11,7 @@ namespace Code.Characters.Doods.Needs
 
     public class Need : MonoBehaviour
     {
-        private const float INCREASE = 20f, DECAY = 10f;
+        public float SatisfactionRate, DecayRate;
 
         public Vector3 Range;
         public NeedType Type;
@@ -23,30 +23,55 @@ namespace Code.Characters.Doods.Needs
         private NeedValues _values;
 
 
-        private void Start () { _values = new NeedValues(Range.x, Range.z); }
+        private void Start () { _values = new NeedValues(Range.x, Range.z, SatisfactionRate, DecayRate); }
         private void Update () { IncreaseNeed(Time.deltaTime); }
 
-        public void Satisfy () { _values.ChangeValue(INCREASE); }
+        public void Satisfy () { _values.SatisfyNeed(Time.deltaTime); }
 
-        private void IncreaseNeed (float time) { _values.ChangeValue(-time * DECAY); }
+        private void IncreaseNeed (float time) { _values.IncreaseNeed(time); }
+        
+        public void UpdateValues(float bottom, float top, float satisfactionRate, float decayRate) {
+            _values.UpdateValues(bottom, top, satisfactionRate, decayRate);
+        }
+        
+        
     }
 
     public struct NeedValues
     {
         private const float MAX = 100f;
-        private readonly float _bottom, _top;
+        private float _bottom, _top;
+        private float _satisfactionRate, _decayRate;
         private float _value;
 
-        public NeedValues (float bottom, float top) {
+        public NeedValues (float bottom, float top, float satisfactionRate, float decayRate) {
             _bottom = bottom;
             _top = top;
+            _satisfactionRate = satisfactionRate;
+            _decayRate = decayRate;
             _value = 50f;
         }
 
-        public void ChangeValue (float delta) {
+        private void ChangeValue (float delta) {
             var result = _value + delta;
             _value = Mathf.Clamp(result, 0f, MAX);
         }
+        
+        public void SatisfyNeed(float time) {
+            ChangeValue(time * _satisfactionRate);
+        }
+        
+        public void IncreaseNeed(float time) {
+            ChangeValue(-time * _decayRate);
+        }
+        
+        public void UpdateValues(float bottom, float top, float satisfactionRate, float decayRate) {
+            _bottom = bottom;
+            _top = top;
+            _satisfactionRate = satisfactionRate;
+            _decayRate = decayRate;
+        }
+        
 
         public int Status {
             get {
