@@ -1,4 +1,5 @@
-﻿using Code.Characters.Doods;
+﻿using System;
+using Code.Characters.Doods;
 using Code.Session;
 using UnityEngine;
 
@@ -6,12 +7,14 @@ namespace Code.Characters.Player.Interaction
 {
     public class Selector : MonoBehaviour
     {
-        private const float MIN_RADIUS = 7.5f, MAX_RADIUS = 20F, CHARGING_RATE = 3F;
+        private const float MIN_RADIUS = 2f, MAX_RADIUS = 10F, CHARGING_DELTA = 3f;
+        private const float MIN_CHARGING_RATE = 1f, MAX_CHARGING_RATE = 3f;
 
         private readonly RaycastHit[] _hits = new RaycastHit[128];
 
         private Renderer _renderer;
         private Transform _cursor;
+        private float _chargingRate = MIN_CHARGING_RATE;
 
         private void Start () {
             _cursor = transform.Find("Cursor");
@@ -33,7 +36,8 @@ namespace Code.Characters.Player.Interaction
         private void Update () {
             if (!_chargingWhistle) { return; }
 
-            _whistleRadius = Mathf.Min(_whistleRadius + CHARGING_RATE * Time.deltaTime, MAX_RADIUS);
+            _chargingRate = Mathf.Min(_chargingRate + CHARGING_DELTA * Time.deltaTime, MAX_CHARGING_RATE);
+            _whistleRadius = Mathf.Min(_whistleRadius + _chargingRate * Time.deltaTime, MAX_RADIUS);
             SetCursorScale();
         }
 
@@ -41,6 +45,7 @@ namespace Code.Characters.Player.Interaction
             if (!state) { _whistleRadius = MIN_RADIUS; }
 
             SetCursorScale();
+            _chargingRate = MIN_CHARGING_RATE;
             _chargingWhistle = state;
             _cursor.gameObject.SetActive(state);
         }
