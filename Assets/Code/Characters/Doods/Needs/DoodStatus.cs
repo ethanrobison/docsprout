@@ -22,24 +22,24 @@ namespace Code.Characters.Doods.Needs
         private readonly List<Advertiser> _advertisers = new List<Advertiser>();
         private readonly List<Satisfier> _satisfiers = new List<Satisfier>();
 
-        private Need[] _needs;
+        public Need[] Needs { get; private set; }
 
         private void Start () {
             Advertised = new SmallSet();
             Satisfiable = new SmallSet();
 
             _dood = gameObject.GetRequiredComponentInParent<Dood>();
-            _needs = GetComponents<Need>();
+            Needs = GetComponents<Need>();
             _display = new StatusDisplay(gameObject);
         }
 
         private void Update () {
             var total = 0f;
-            for (int i = 0, c = _needs.Length; i < c; i++) {
-                total += CalculateHappiness(_needs[i]);
+            for (int i = 0, c = Needs.Length; i < c; i++) {
+                total += CalculateHappiness(Needs[i]);
             }
 
-            total = Mathf.Clamp(total / _needs.Length, -2 * MAGNITUDE, 2 * MAGNITUDE);
+            total = Mathf.Clamp(total / Needs.Length, -2 * MAGNITUDE, 2 * MAGNITUDE);
 
             Happiness = Mathf.Clamp(Happiness + total, 0f, MAX_HAPPINESS);
             _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;
@@ -58,11 +58,11 @@ namespace Code.Characters.Doods.Needs
         public Advertiser GetAdvertiserOfType (NeedType type) { return _advertisers.First(a => a.Satisfies() == type); }
         public Satisfier GetSatisfierOfType (NeedType type) { return _satisfiers.First(a => a.Satisfies() == type); }
 
-        public Need GetNeedOfType (NeedType type) { return _needs.FirstOrDefault(need => need.Type == type); }
+        public Need GetNeedOfType (NeedType type) { return Needs.FirstOrDefault(need => need.Type == type); }
 
         public void OnApproach () { _dood.Comps.Color.IsInteracted = true; }
         public void OnDepart () { _dood.Comps.Color.IsInteracted = false; }
-        public void Interact () { }
+        public void Interact () { Game.Ctx.Doods.Doodex.Show(_dood); }
 
         public void AdvertiseTo (Advertiser advertiser) {
             _advertisers.Add(advertiser);
