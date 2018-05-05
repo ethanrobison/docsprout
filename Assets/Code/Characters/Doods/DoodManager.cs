@@ -1,15 +1,23 @@
 ﻿using System.Collections.Generic;
+using Code.Session;
 using UnityEngine;
 
 namespace Code.Characters.Doods
 {
     public class DoodManager : IContextManager
     {
+        public Doodex.Doodex Doodex { get; private set; }
+
         private static Object _prefab;
 
         public readonly List<Dood> DoodList = new List<Dood>();
 
-        public void Initialize () { MakeNDoods(10, new Vector3(-10f, 0f, 20f)); }
+        public void Initialize () {
+            MakeNDoods(10, new Vector3(-10f, 0f, 20f));
+            
+            Doodex = new Doodex.Doodex();
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Doodex.Hide);
+        }
 
         public void ShutDown () { }
 

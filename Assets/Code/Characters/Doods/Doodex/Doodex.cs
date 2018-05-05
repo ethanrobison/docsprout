@@ -8,19 +8,23 @@ namespace Code.Characters.Doods.Doodex
     {
         private GameObject _go;
         private bool _active;
-        private DoodStatus _activeStatus;
+        private Dood _activeDood;
 
-        public void Show (DoodStatus status) {
-            Logging.Assert(!_active, "Double showing doodex?!");
+        private Transform _needs;
+
+        public void Show (Dood dood) {
+            if (_active) { return; }
 
             _go = UIUtils.MakeUIPrefab(UIPrefab.Doodex);
-            _activeStatus = status;
+            _activeDood = dood;
             OnShow();
 
             _active = true;
         }
 
         public void Hide () {
+            if (!_active) { return; }
+
             OnHide();
             Object.Destroy(_go);
             _go = null;
@@ -28,8 +32,22 @@ namespace Code.Characters.Doods.Doodex
             _active = false;
         }
 
-        private void OnShow () { }
+        private void OnShow () {
+            _needs = _go.transform.Find("Left/Needs");
+            foreach (var need in _activeDood.Comps.Status.Needs) {
+                var meter = UIUtils.MakeUIPrefab(UIPrefab.NeedMeter, _needs);
+                var monitor = meter.AddComponent<NeedMonitor>();
+                monitor.Need = need;
+            }
+        }
 
         private void OnHide () { }
+    }
+
+    public class NeedMonitor : MonoBehaviour
+    {
+        public Need Need;
+
+        private void Update () { }
     }
 }

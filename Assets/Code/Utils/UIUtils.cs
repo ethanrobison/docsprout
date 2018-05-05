@@ -5,13 +5,15 @@ namespace Code.Utils
 {
     public enum UIPrefab
     {
-        Doodex
+        Doodex,
+        NeedMeter,
     }
 
     public static class UIUtils
     {
         private static readonly Dictionary<UIPrefab, string> PrefabsPaths = new Dictionary<UIPrefab, string> {
-            { UIPrefab.Doodex, "UI/Doodex" }
+            { UIPrefab.Doodex, "UI/Doodex" },
+            { UIPrefab.NeedMeter, "UI/Need" }
         };
 
         public static Transform GetCanvas () {
@@ -22,7 +24,7 @@ namespace Code.Utils
         /// Makes a GameObject (given a UIPrefab enum) and returns it.
         /// </summary>
         public static GameObject MakeUIPrefab (UIPrefab prefab, Transform holder = null) {
-            holder = holder ?? GetCanvas();
+            holder = holder != null ? holder : GetCanvas(); // for some reason ?? doesn't work?!
             string path;
             if (!PrefabsPaths.TryGetValue(prefab, out path)) {
                 Logging.Error("Invalid path for prefab: " + prefab);
