@@ -8,19 +8,23 @@ namespace Code.Characters.Doods.Doodex
     public class DoodTab : DoodexTab
     {
         private readonly Transform _needs;
+        private readonly Dood _dood;
         private GameObject _doodovision;
 
-        public DoodTab (GameObject go, Dood dood) : base(go, dood) {
+        public DoodTab (Transform tr, Transform tabbar, Dood dood) : base(tr, tabbar) {
+            _dood = dood;
+            if (dood == null) { return; } // todo fix?
+
             _needs = GO.transform.Find("Left/Needs");
 
-            foreach (var need in Dood.Comps.Status.Needs) {
+            foreach (var need in _dood.Comps.Status.Needs) {
                 var meter = UIUtils.MakeUIPrefab(UIPrefab.NeedMeter, _needs);
                 var monitor = meter.AddComponent<NeedMonitor>();
                 monitor.Need = need;
             }
 
             var prefab = Resources.Load("Doods/Doodovision");
-            _doodovision = (GameObject) Object.Instantiate(prefab, Dood.transform);
+            _doodovision = (GameObject) Object.Instantiate(prefab, _dood.transform);
         }
 
         public override void OnInitialize () { }
@@ -28,6 +32,11 @@ namespace Code.Characters.Doods.Doodex
         public override void OnShutdown () {
             Object.Destroy(_doodovision);
             _doodovision = null;
+        }
+
+        public override void Show () {
+            base.Show();
+            if (_dood == null) { GO.transform.Find("Left/Doodovision").gameObject.SetActive(false); }
         }
     }
 

@@ -14,9 +14,8 @@ namespace Code.Characters.Doods
 
         public void Initialize () {
             MakeNDoods(10, new Vector3(-10f, 0f, 20f));
-            
+
             Doodex = new Doodex.Doodex();
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Doodex.Hide);
         }
 
         public void ShutDown () { }
