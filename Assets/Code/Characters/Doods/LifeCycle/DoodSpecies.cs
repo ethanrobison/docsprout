@@ -1,66 +1,85 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Characters.Doods.Needs;
 using Code.Characters.Doods.LifeCycle;
+using Code.Utils;
 using UnityEngine;
 
 namespace Code.Characters.Doods.LifeCycle
 {
-    [System.Serializable]
-    public class DoodSpeciesInfo
+    public class DoodSpecies
     {
-        public readonly Doodopedia.DoodSpecies Species;
+        public readonly Species Species;
+        private readonly BodyType _body;
 
-        private readonly Dictionary<Maturity, LifeCycleInfo> _lifeCycleInfo =
-            new Dictionary<Maturity, LifeCycleInfo>();
+        private Dictionary<Maturity, LifeCycleStage> _stages = new Dictionary<Maturity, LifeCycleStage>();
 
-        private readonly Maturity _stageAfterHarvest;
-        private readonly BodyType _bodyType;
-
-        public DoodSpeciesInfo (Doodopedia.DoodSpecies species, List<LifeCycleInfo> lifeCycleInfo,
-            Maturity stageAfterHarvest, BodyType bodyType) {
+        public DoodSpecies (Species species, BodyType body) {
             Species = species;
+            _body = body;
+        }
 
-            foreach (var cycleInfo in lifeCycleInfo) {
-                _lifeCycleInfo.Add(cycleInfo.Current, cycleInfo);
+        public DoodSpecies (Species species, BodyType body, SpeciesLifeCycles cycles) {
+            Species = species;
+            _body = body;
+            foreach (var cycle in cycles.LifeCycles) {
+                AddLifeCycle(cycle.Maturity, cycle.Cycle);
+            }
+        }
+
+        private void AddLifeCycle (Maturity maturity, LifeCycleStage cycle) {
+            if (_stages.ContainsKey(maturity)) {
+                _stages[maturity] = cycle;
+                return;
             }
 
-            _stageAfterHarvest = stageAfterHarvest;
-            _bodyType = bodyType;
+            _stages.Add(maturity, cycle);
+        }
+
+        public int GetNumGrowthStages (Maturity maturity) {
+            LifeCycleStage cycle;
+            Logging.Assert(_stages.TryGetValue(maturity, out cycle),
+                "Species does not contain maturity " + maturity.ToString());
+            return cycle.Values.GrowthStages;
+        }
+
+        public Maturity GetNextStage (Maturity current) {
+            LifeCycleStage cycle;
+            Logging.Assert(_stages.TryGetValue(current, out cycle),
+                "Species does not contain maturity " + current.ToString());
+            return cycle.Values.Next;
+        }
+
+        public Mesh GetBody () { return Doodopedia.GetBodyOfType(_body); }
+
+        public MeshInfo GetLeaf (Maturity maturity) {
+            LifeCycleStage cycle;
+            Logging.Assert(_stages.TryGetValue(maturity, out cycle),
+                "Species does not contain maturity " + maturity.ToString());
+
+            return Doodopedia.GetLeafForBody(cycle.Values.LeafType, _body);
+        }
+        
+        public int GetNeedOfType(Maturity maturity, NeedType type) {
+            return _stages[maturity].GetNeedOfType(type);
         }
     }
 
     [System.Serializable]
-    public struct LifeCycleInfo
+    public struct SpeciesLifeCycles
     {
-        public readonly Maturity Current;
-        public readonly Maturity Next;
-        public readonly MeshInfo Leaf;
-        public readonly float GrowthRate;
-    
-        private readonly Dictionary<NeedType, NeedValuesInfo> _needValues;
-
-        public LifeCycleInfo (Maturity current, Maturity next, MeshInfo leaf, float growthRate) {
-            Current = current;
-            Next = next;
-            Leaf = leaf;
-            GrowthRate = growthRate;
-            _needValues = new Dictionary<NeedType, NeedValuesInfo>();
-        }
+        public List<MaturityLifeCyclePair> LifeCycles;
     }
 
     [System.Serializable]
-    public struct NeedValuesInfo
+    public struct MaturityLifeCyclePair
     {
-        public readonly NeedType Type;
-        public readonly float Bottom, Top, SatisfactionRate, DecayRate;
+        public Maturity Maturity;
+        public LifeCycleStage Cycle;
 
-        public NeedValuesInfo (NeedType type, float bottom, float top, float satisfactionRate, float decayRate) {
-            Type = type;
-            Bottom = bottom;
-            Top = top;
-            SatisfactionRate = satisfactionRate;
-            DecayRate = decayRate;
+        public MaturityLifeCyclePair (Maturity maturity, LifeCycleStage cycle) {
+            Maturity = maturity;
+            Cycle = cycle;
         }
     }
-
 }

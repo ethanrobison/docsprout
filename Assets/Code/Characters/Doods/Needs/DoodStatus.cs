@@ -35,11 +35,13 @@ namespace Code.Characters.Doods.Needs
 
         private void Update () {
             var total = 0f;
+            int numNeeds = 0;
             for (int i = 0, c = _needs.Length; i < c; i++) {
+                if(_needs[i].IsEnabled()) numNeeds ++;
                 total += CalculateHappiness(_needs[i]);
             }
 
-            total = Mathf.Clamp(total / _needs.Length, -2 * MAGNITUDE, 2 * MAGNITUDE);
+            total = Mathf.Clamp(total / numNeeds, -2 * MAGNITUDE, 2 * MAGNITUDE);
 
             Happiness = Mathf.Clamp(Happiness + total, 0f, MAX_HAPPINESS);
             _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;
@@ -47,6 +49,10 @@ namespace Code.Characters.Doods.Needs
 
         private float CalculateHappiness (Need need) {
             _display.SetIconOfType(need.Type, need.Status);
+
+            if (!need.IsEnabled()) {
+                return 0f;
+            }
 
             return (need.Status == 0 ? 3f : -2f) * MAGNITUDE * Time.deltaTime;
         }

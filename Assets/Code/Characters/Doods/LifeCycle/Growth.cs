@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Code.Characters.Doods.Needs;
 using Code.Utils;
 using UnityEngine;
@@ -7,7 +8,11 @@ namespace Code.Characters.Doods.LifeCycle
 {
     public class Growth : MonoBehaviour
     {
+        public Action<DoodSpecies, Maturity> OnGrow;
+        
         private const float GROWTH_RATE = 0.3f;
+
+        public Species Species;
 
         private DoodStatus _status;
         private DoodStage _stage;
@@ -15,17 +20,15 @@ namespace Code.Characters.Doods.LifeCycle
         private ParticleSystem _particle;
         private AudioSource _pop;
 
+
         private void Start () {
             _particle = transform.Find("Particle System").GetComponent<ParticleSystem>();
             _status = transform.Find("Status").gameObject.GetRequiredComponent<DoodStatus>();
 
             var plant = transform.Find("Dood/Body/Plant").gameObject;
             _pop = plant.GetRequiredComponent<AudioSource>();
-
-            _stage = new DoodStage(this,
-                new LifeCycleStage(BodyType.Cone, Maturity.Empty,
-                    new LifeCycleStage(BodyType.Capsule, Maturity.Seedling,
-                        new LifeCycleStage(BodyType.Capsule, Maturity.Sprout, null))));
+            
+            _stage = new DoodStage(this, Species);
         }
 
         private void Update () {
@@ -50,17 +53,19 @@ namespace Code.Characters.Doods.LifeCycle
     {
         private const float GROW_AT = 100f;
 
+        private readonly DoodSpecies _species;
         private readonly Growth _growth;
         private float _value;
-        private LifeCycleStage _currentStage;
+        private Maturity _currentStage;
         private int _stepsLeft;
 
         private readonly GameObject _go;
 
-        public DoodStage (Growth growth, LifeCycleStage stage) {
+        public DoodStage (Growth growth, Species species) {
             _growth = growth;
             _go = _growth.gameObject;
-            _currentStage = stage;
+            _species = Doodopedia.GetDoodSpecies(species);
+            _currentStage = Maturity.Seed;
             ResetState();
         }
 
@@ -74,7 +79,7 @@ namespace Code.Characters.Doods.LifeCycle
 
         private void IncrementGrowth () {
             _value = 0f;
-            if (_currentStage.Next == null) { return; }
+            if (_species.GetNextStage(_currentStage) == Maturity.Empty) { return; }
 
             _stepsLeft--;
             if (_stepsLeft > 0) { return; }
@@ -83,28 +88,21 @@ namespace Code.Characters.Doods.LifeCycle
         }
 
         private void ResetState () {
-            _stepsLeft = (int) _currentStage.Maturity;
+            _stepsLeft = _species.GetNumGrowthStages(_currentStage);
 
             var body = _go.transform.Find("Dood/Body").gameObject;
-            body.GetComponent<MeshFilter>().mesh = _currentStage.Body;
+            body.GetComponent<MeshFilter>().mesh = _species.GetBody();
 
             var plant = _go.transform.Find("Dood/Body/Plant").gameObject;
-            var info = _currentStage.Leaf;
+            var info = _species.GetLeaf(_currentStage);
             plant.transform.localPosition = info.Offset;
             plant.GetComponent<MeshFilter>().mesh = info.Mesh;
         }
 
         public void GoToNextStage () {
-            _currentStage = _currentStage.Next;
+            _currentStage = _species.GetNextStage(_currentStage);
             ResetState();
-        }
-
-        public void Harvest () {
-            if (!_currentStage.Harvestable) {
-                return;
-            }
-            Logging.Log("Dood says \"Ow!\"");
-            GoToNextStage();
+            _growth.OnGrow(_species, _currentStage);
         }
     }
 }

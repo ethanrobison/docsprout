@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Code.Characters.Doods.LifeCycle;
+using Code.Utils;
+using UnityEngine;
 
 namespace Code.Characters.Doods.Needs
 {
@@ -11,44 +14,56 @@ namespace Code.Characters.Doods.Needs
 
     public class Need : MonoBehaviour
     {
-        public float SatisfactionRate, DecayRate;
+        private static readonly Dictionary<NeedType, NeedValues> NeedValues = new Dictionary<NeedType, NeedValues> {
+            {NeedType.Water, new NeedValues(30f, 100f, 20f, 5f)},
+            {NeedType.Sun, new NeedValues(30f, 100f, 20f, 5f)},
+            {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
+        };
 
-        public Vector3 Range;
         public NeedType Type;
+
+        private NeedValues _values;
 
         public int Status {
             get { return _values.Status; }
         }
 
-        private NeedValues _values;
+        private void Start () {
+            var growth = transform.parent.gameObject.GetRequiredComponent<Growth>();
+            growth.OnGrow += OnGrow;
+            var template = NeedValues[Type];
+            _values = new NeedValues(template.Bottom, template.Top, template.SatisfactionRate, template.DecayRate) {
+                Enabled = Doodopedia.GetDoodSpecies(growth.Species).GetNeedOfType(Maturity.Seed, Type) > 0
+            };
+        }
 
-
-        private void Start () { _values = new NeedValues(Range.x, Range.z, SatisfactionRate, DecayRate); }
         private void Update () { IncreaseNeed(Time.deltaTime); }
 
         public void Satisfy () { _values.SatisfyNeed(Time.deltaTime); }
 
         private void IncreaseNeed (float time) { _values.IncreaseNeed(time); }
-        
-        public void UpdateValues(float bottom, float top, float satisfactionRate, float decayRate) {
-            _values.UpdateValues(bottom, top, satisfactionRate, decayRate);
+
+        private void OnGrow (DoodSpecies species, Maturity maturity) {
+            _values.Enabled = species.GetNeedOfType(maturity, Type) > 0;
         }
-        
-        
+
+
+        public bool IsEnabled () { return _values.Enabled; }
     }
 
-    public struct NeedValues
+    public class NeedValues
     {
         private const float MAX = 100f;
-        private float _bottom, _top;
-        private float _satisfactionRate, _decayRate;
+        public float Bottom, Top;
+        public float SatisfactionRate, DecayRate;
         private float _value;
+        private bool _enabled = true;
 
         public NeedValues (float bottom, float top, float satisfactionRate, float decayRate) {
-            _bottom = bottom;
-            _top = top;
-            _satisfactionRate = satisfactionRate;
-            _decayRate = decayRate;
+            Bottom = bottom;
+            Top = top;
+            SatisfactionRate = satisfactionRate;
+            DecayRate = decayRate;
             _value = 50f;
         }
 
@@ -56,28 +71,28 @@ namespace Code.Characters.Doods.Needs
             var result = _value + delta;
             _value = Mathf.Clamp(result, 0f, MAX);
         }
-        
-        public void SatisfyNeed(float time) {
-            ChangeValue(time * _satisfactionRate);
-        }
-        
-        public void IncreaseNeed(float time) {
-            ChangeValue(-time * _decayRate);
-        }
-        
-        public void UpdateValues(float bottom, float top, float satisfactionRate, float decayRate) {
-            _bottom = bottom;
-            _top = top;
-            _satisfactionRate = satisfactionRate;
-            _decayRate = decayRate;
-        }
-        
+
+        public void SatisfyNeed (float time) { ChangeValue(time * SatisfactionRate); }
+
+        public void IncreaseNeed (float time) { ChangeValue(-time * DecayRate); }
 
         public int Status {
             get {
-                return _value < _bottom ? -1 :
-                    _value > _top ? 1 :
+                if (!_enabled) return 0;
+                return _value < Bottom ? -1 :
+                    _value > Top ? 1 :
                     0;
+            }
+        }
+
+        public bool Enabled {
+            get { return _enabled; }
+            set {
+                if (!_enabled && value) {
+                    _value = 50f;
+                }
+
+                _enabled = value;
             }
         }
     }
