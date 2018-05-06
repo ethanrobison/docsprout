@@ -47,7 +47,6 @@ namespace Code.Characters.Doods.Needs
 
         private float CalculateHappiness (Need need) {
             _display.SetIconOfType(need.Type, need.Status);
-
             return (need.Status == 0 ? 3f : -2f) * MAGNITUDE * Time.deltaTime;
         }
 
