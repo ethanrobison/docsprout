@@ -7,12 +7,11 @@ namespace Code.Characters.Doods.Doodex
 {
     public class Doodex
     {
-        private bool _active;
         private GameObject _go;
+        private bool _active;
         private Dood _activeDood;
-        private Transform _needs;
 
-        private GameObject _doodovision;
+        private DoodexTab _doodTab, _marketTab;
 
         public void Show (Dood dood) {
             if (_active) { return; }
@@ -35,39 +34,33 @@ namespace Code.Characters.Doods.Doodex
         }
 
         private void OnShow () {
-            _needs = _go.transform.Find("Left/Needs");
-            foreach (var need in _activeDood.Comps.Status.Needs) {
-                var meter = UIUtils.MakeUIPrefab(UIPrefab.NeedMeter, _needs);
-                var monitor = meter.AddComponent<NeedMonitor>();
-                monitor.Need = need;
-            }
-
-            var prefab = Resources.Load("Doods/Doodovision");
-            _doodovision = (GameObject) Object.Instantiate(prefab, _activeDood.transform);
+//            _market.OnInitialize();
+            _doodTab = new DoodTab(_go.transform.Find("Tabs/Dood").gameObject, _activeDood);
+            _doodTab.OnInitialize();
         }
 
         private void OnHide () {
-            Object.Destroy(_doodovision);
-            _doodovision = null;
+            _doodTab.OnShutdown();
+//            _market.OnShutdown();
         }
     }
 
-    public class NeedMonitor : MonoBehaviour
+    public abstract class DoodexTab
     {
-        public Need Need;
+        protected readonly GameObject GO;
+        protected readonly Dood Dood;
 
-        private Transform _meter;
-
-        private void Start () {
-            _meter = transform.Find("Meter");
-            transform.Find("Label").GetComponent<Text>().text = Need.Type.ToString();
+        protected DoodexTab (GameObject go, Dood dood) {
+            GO = go;
+            Dood = dood;
         }
 
-        private void Update () {
-            var value = Mathf.RoundToInt(Need.Value / 25f);
-            SetToggleOn(value);
-        }
+        public void SetState (bool state) { GO.SetActive(state); }
 
-        private void SetToggleOn (int index) { _meter.GetChild(index).GetComponent<Toggle>().isOn = true; }
+        public abstract void OnInitialize ();
+        public abstract void OnShutdown ();
+
+        public virtual void Show () { }
+        public virtual void Hide () { }
     }
 }
