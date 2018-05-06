@@ -12,7 +12,6 @@ namespace Code.Characters.Doods.Needs
     public class Need : MonoBehaviour
     {
         private const float INCREASE = 20f, DECAY = 10f;
-        private ParticleSystem SatisPart;
 
         public Vector3 Range;
         public NeedType Type;
@@ -21,47 +20,53 @@ namespace Code.Characters.Doods.Needs
             get { return _values.Status; }
         }
 
+        public float Value {
+            get { return _values.Value; }
+        }
+
+        private ParticleSystem _satisfactionParticle;
         private NeedValues _values;
 
 
         private void Start () {
             _values = new NeedValues(Range.x, Range.z);
-            SatisPart = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
+            _satisfactionParticle = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
         }
+
         private void Update () { IncreaseNeed(Time.deltaTime); }
 
         public void Satisfy () {
-            int PrevStatus = _values.Status;
+            var prevStatus = _values.Status;
             _values.ChangeValue(INCREASE);
-            if (PrevStatus != 0 && _values.Status == 0) {
-                SatisPart.Play();
+            if (prevStatus != 0 && _values.Status == 0) {
+                _satisfactionParticle.Play();
             }
         }
 
         private void IncreaseNeed (float time) { _values.ChangeValue(-time * DECAY); }
     }
 
-    public struct NeedValues
+    public class NeedValues
     {
         private const float MAX = 100f;
         private readonly float _bottom, _top;
-        private float _value;
+        public float Value { get; private set; }
 
         public NeedValues (float bottom, float top) {
             _bottom = bottom;
             _top = top;
-            _value = 50f;
+            Value = 50f;
         }
 
         public void ChangeValue (float delta) {
-            var result = _value + delta;
-            _value = Mathf.Clamp(result, 0f, MAX);
+            var result = Value + delta;
+            Value = Mathf.Clamp(result, 0f, MAX);
         }
 
         public int Status {
             get {
-                return _value < _bottom ? -1 :
-                    _value > _top ? 1 :
+                return Value < _bottom ? -1 :
+                    Value > _top ? 1 :
                     0;
             }
         }
