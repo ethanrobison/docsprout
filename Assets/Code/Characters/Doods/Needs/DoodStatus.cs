@@ -37,7 +37,7 @@ namespace Code.Characters.Doods.Needs
             var total = 0f;
             int numNeeds = 0;
             for (int i = 0, c = Needs.Length; i < c; i++) {
-                if(Needs[i].IsEnabled()) numNeeds ++;
+                if (Needs[i].IsEnabled()) numNeeds++;
                 total += CalculateHappiness(Needs[i]);
             }
 
@@ -49,7 +49,6 @@ namespace Code.Characters.Doods.Needs
 
         private float CalculateHappiness (Need need) {
             _display.SetIconOfType(need.Type, need.Status);
-
             if (!need.IsEnabled()) {
                 return 0f;
             }

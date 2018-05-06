@@ -21,7 +21,8 @@ namespace Code.Characters.Doods.Needs
             {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
         };
 
-        private ParticleSystem SatisPart;
+        private ParticleSystem _satisPart;
+
 
 
         public NeedType Type;
@@ -40,7 +41,7 @@ namespace Code.Characters.Doods.Needs
                 Enabled = Doodopedia.GetDoodSpecies(growth.Species).GetNeedOfType(Maturity.Seed, Type) > 0
             };
             
-            SatisPart = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
+            _satisPart = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
         }
 
         private void Update () { IncreaseNeed(Time.deltaTime); }
@@ -49,7 +50,7 @@ namespace Code.Characters.Doods.Needs
             int PrevStatus = _values.Status;
             _values.SatisfyNeed(Time.deltaTime);
             if (PrevStatus != 0 && _values.Status == 0) {
-                SatisPart.Play();
+               _satisPart.Play();
             }
         }
 

@@ -59,9 +59,15 @@ namespace Code.Characters.Doods.LifeCycle
 
             return Doodopedia.GetLeafForBody(cycle.Values.LeafType, _body);
         }
-        
-        public int GetNeedOfType(Maturity maturity, NeedType type) {
-            return _stages[maturity].GetNeedOfType(type);
+
+        public int GetNeedOfType (Maturity maturity, NeedType type) { return _stages[maturity].GetNeedOfType(type); }
+
+        public bool IsHarvestable (Maturity maturity) {
+            LifeCycleStage cycle;
+            Logging.Assert(_stages.TryGetValue(maturity, out cycle),
+                "Species does not contain maturity " + maturity.ToString());
+
+            return cycle.Values.Harvestable;
         }
     }
 
