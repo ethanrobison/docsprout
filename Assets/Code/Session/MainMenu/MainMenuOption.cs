@@ -59,6 +59,7 @@ namespace Code.Session.MainMenu
         public void OnApproach () { _state.SetState(true); }
         public void OnDepart () { _state.SetState(false); }
         public void Interact () { _state.PerformAction(); }
+        public void SecondaryInteract () { }
 
         //
         // menu state

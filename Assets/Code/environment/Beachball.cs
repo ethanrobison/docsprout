@@ -38,6 +38,7 @@ namespace Code.environment
         }
 
         public void Interact () { Kick(Game.Ctx.Player.transform); }
+        public void SecondaryInteract () { }
 
         public void OnApproach () { _highlight.IsHighlighted = true; }
         public void OnDepart () { _highlight.IsHighlighted = false; }
