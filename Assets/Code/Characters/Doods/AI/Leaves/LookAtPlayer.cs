@@ -1,19 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Code;
-using Code.Characters.Doods;
-using Code.Characters.Doods.AI;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class LookAtPlayer : BehaviorTreeNode
+namespace Code.Characters.Doods.AI
 {
-    public LookAtPlayer (Dood dood) : base(dood) { }
+    public class LookAtPlayer : BehaviorTreeNode
+    {
+        public LookAtPlayer (Dood dood) : base(dood) { }
 
-    protected override Status Update () {
-        Vector3 playerPos = Game.Ctx.Player.transform.position;
-        playerPos.y = Dood.transform.position.y;
-        Dood.transform.LookAt(playerPos);
-        Dood.StopMoving();
-        return Status.Success;
+        protected override Status Update () {
+            var playerPos = Game.Ctx.Player.transform.position;
+            playerPos.y = Dood.transform.position.y;
+            var goalrotation = Quaternion.LookRotation(playerPos - Dood.transform.position);
+            Dood.transform.rotation = Quaternion.Slerp(Dood.transform.rotation, goalrotation, 0.1f);
+            
+            Dood.StopMoving();
+            return Status.Success;
+        }
     }
 }

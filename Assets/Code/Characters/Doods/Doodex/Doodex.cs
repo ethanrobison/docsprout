@@ -6,11 +6,12 @@ namespace Code.Characters.Doods.Doodex
 {
     public class Doodex
     {
-        private GameObject _go;
         private bool _active;
+        private GameObject _go;
         private Dood _activeDood;
-
         private Transform _needs;
+
+        private GameObject _doodovision;
 
         public void Show (Dood dood) {
             if (_active) { return; }
@@ -39,9 +40,15 @@ namespace Code.Characters.Doods.Doodex
                 var monitor = meter.AddComponent<NeedMonitor>();
                 monitor.Need = need;
             }
+
+            var prefab = Resources.Load("Doods/Doodovision");
+            _doodovision = (GameObject) Object.Instantiate(prefab, _activeDood.transform);
         }
 
-        private void OnHide () { }
+        private void OnHide () {
+            Object.Destroy(_doodovision);
+            _doodovision = null;
+        }
     }
 
     public class NeedMonitor : MonoBehaviour
