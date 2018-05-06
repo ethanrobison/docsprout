@@ -12,6 +12,7 @@ namespace Code.Characters.Doods.Needs
     public class Need : MonoBehaviour
     {
         private const float INCREASE = 20f, DECAY = 10f;
+        private ParticleSystem SatisPart;
 
         public Vector3 Range;
         public NeedType Type;
@@ -23,10 +24,19 @@ namespace Code.Characters.Doods.Needs
         private NeedValues _values;
 
 
-        private void Start () { _values = new NeedValues(Range.x, Range.z); }
+        private void Start () {
+            _values = new NeedValues(Range.x, Range.z);
+            SatisPart = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
+        }
         private void Update () { IncreaseNeed(Time.deltaTime); }
 
-        public void Satisfy () { _values.ChangeValue(INCREASE); }
+        public void Satisfy () {
+            int PrevStatus = _values.Status;
+            _values.ChangeValue(INCREASE);
+            if (PrevStatus != 0 && _values.Status == 0) {
+                SatisPart.Play();
+            }
+        }
 
         private void IncreaseNeed (float time) { _values.ChangeValue(-time * DECAY); }
     }
