@@ -14,11 +14,15 @@ namespace Code.Characters.Doods.Needs
 
     public class Need : MonoBehaviour
     {
+
         private static readonly Dictionary<NeedType, NeedValues> NeedValues = new Dictionary<NeedType, NeedValues> {
             {NeedType.Water, new NeedValues(30f, 100f, 20f, 5f)},
             {NeedType.Sun, new NeedValues(30f, 100f, 20f, 5f)},
             {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
         };
+
+        private ParticleSystem SatisPart;
+
 
         public NeedType Type;
 
@@ -35,11 +39,19 @@ namespace Code.Characters.Doods.Needs
             _values = new NeedValues(template.Bottom, template.Top, template.SatisfactionRate, template.DecayRate) {
                 Enabled = Doodopedia.GetDoodSpecies(growth.Species).GetNeedOfType(Maturity.Seed, Type) > 0
             };
+            
+            SatisPart = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
         }
 
         private void Update () { IncreaseNeed(Time.deltaTime); }
 
-        public void Satisfy () { _values.SatisfyNeed(Time.deltaTime); }
+        public void Satisfy () {
+            int PrevStatus = _values.Status;
+            _values.SatisfyNeed(Time.deltaTime);
+            if (PrevStatus != 0 && _values.Status == 0) {
+                SatisPart.Play();
+            }
+        }
 
         private void IncreaseNeed (float time) { _values.IncreaseNeed(time); }
 
