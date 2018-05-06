@@ -14,24 +14,25 @@ namespace Code.Characters.Doods.Needs
 
     public class Need : MonoBehaviour
     {
-
         private static readonly Dictionary<NeedType, NeedValues> NeedValues = new Dictionary<NeedType, NeedValues> {
             {NeedType.Water, new NeedValues(30f, 100f, 20f, 5f)},
             {NeedType.Sun, new NeedValues(30f, 100f, 20f, 5f)},
             {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
         };
 
-        private ParticleSystem _satisPart;
-
-
-
         public NeedType Type;
 
+        public float Value {
+            get { return _values.Value; }
+        }
+
+        private ParticleSystem _satisfactionParticle;
         private NeedValues _values;
 
         public int Status {
             get { return _values.Status; }
         }
+
 
         private void Start () {
             var growth = transform.parent.gameObject.GetRequiredComponent<Growth>();
@@ -40,8 +41,8 @@ namespace Code.Characters.Doods.Needs
             _values = new NeedValues(template.Bottom, template.Top, template.SatisfactionRate, template.DecayRate) {
                 Enabled = Doodopedia.GetDoodSpecies(growth.Species).GetNeedOfType(Maturity.Seed, Type) > 0
             };
-            
-            _satisPart = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
+
+            _satisfactionParticle = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
         }
 
         private void Update () { IncreaseNeed(Time.deltaTime); }
@@ -50,7 +51,7 @@ namespace Code.Characters.Doods.Needs
             int PrevStatus = _values.Status;
             _values.SatisfyNeed(Time.deltaTime);
             if (PrevStatus != 0 && _values.Status == 0) {
-               _satisPart.Play();
+                _satisfactionParticle.Play();
             }
         }
 
@@ -69,7 +70,7 @@ namespace Code.Characters.Doods.Needs
         private const float MAX = 100f;
         public float Bottom, Top;
         public float SatisfactionRate, DecayRate;
-        private float _value;
+        public float Value { get; private set; }
         private bool _enabled = true;
 
         public NeedValues (float bottom, float top, float satisfactionRate, float decayRate) {
@@ -77,12 +78,12 @@ namespace Code.Characters.Doods.Needs
             Top = top;
             SatisfactionRate = satisfactionRate;
             DecayRate = decayRate;
-            _value = 50f;
+            Value = 50f;
         }
 
         private void ChangeValue (float delta) {
-            var result = _value + delta;
-            _value = Mathf.Clamp(result, 0f, MAX);
+            var result = Value + delta;
+            Value = Mathf.Clamp(result, 0f, MAX);
         }
 
         public void SatisfyNeed (float time) { ChangeValue(time * SatisfactionRate); }
@@ -92,8 +93,8 @@ namespace Code.Characters.Doods.Needs
         public int Status {
             get {
                 if (!_enabled) return 0;
-                return _value < Bottom ? -1 :
-                    _value > Top ? 1 :
+                return Value < Bottom ? -1 :
+                    Value > Top ? 1 :
                     0;
             }
         }
@@ -102,7 +103,7 @@ namespace Code.Characters.Doods.Needs
             get { return _enabled; }
             set {
                 if (!_enabled && value) {
-                    _value = 50f;
+                    Value = 50f;
                 }
 
                 _enabled = value;
