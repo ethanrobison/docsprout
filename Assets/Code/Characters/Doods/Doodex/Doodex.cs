@@ -1,6 +1,7 @@
 ﻿using Code.Characters.Doods.Needs;
 using Code.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Code.Characters.Doods.Doodex
 {
@@ -55,6 +56,18 @@ namespace Code.Characters.Doods.Doodex
     {
         public Need Need;
 
-        private void Update () { }
+        private Transform _meter;
+
+        private void Start () {
+            _meter = transform.Find("Meter");
+            transform.Find("Label").GetComponent<Text>().text = Need.Type.ToString();
+        }
+
+        private void Update () {
+            var value = Mathf.RoundToInt(Need.Value / 25f);
+            SetToggleOn(value);
+        }
+
+        private void SetToggleOn (int index) { _meter.GetChild(index).GetComponent<Toggle>().isOn = true; }
     }
 }
