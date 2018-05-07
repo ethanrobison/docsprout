@@ -84,7 +84,7 @@ namespace Code.Characters.Doods.LifeCycle
 
         private static readonly Dictionary<BodyType, string> BodyPaths = new Dictionary<BodyType, string> {
             {BodyType.Cone, "Models/Doods/cone2"},
-            {BodyType.Capsule, "Models/Doods/capsule2"}
+            {BodyType.Capsule, "Models/Doods/CapsuleScaled"}
         };
 
 

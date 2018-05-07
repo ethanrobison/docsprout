@@ -354,8 +354,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1401300419392684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.177, y: -0.58, z: 1.801}
-  m_LocalScale: {x: 0.005, y: 0.005, z: 0.005}
+  m_LocalPosition: {x: 0.117, y: -0.58, z: 1.801}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4838558227960666}
   m_Father: {fileID: 4364043335888438}
@@ -534,7 +534,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1930480925226762}
-  m_Mesh: {fileID: 4300000, guid: b9669030fecf243ee877d9c614fb6265, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 183a91a9db0c14f85834b43eeb7a169f, type: 3}
 --- !u!33 &33891305563771242
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -814,8 +814,8 @@ MonoBehaviour:
   _happiness: 0
   _texture: {fileID: 2800000, guid: 4339e94c4ae1d4d13addbb28ffdd3708, type: 3}
   _color: {r: 1, g: 0.8932361, b: 0.15566039, a: 0}
-  _selectionColor: {r: 0, g: 1, b: 0, a: 0}
-  _interactColor: {r: 1, g: 1, b: 1, a: 0}
+  _selectionColor: {r: 0.5424528, g: 1, b: 0.9124058, a: 0}
+  _interactColor: {r: 1, g: 0.6462264, b: 0.81959206, a: 0}
 --- !u!114 &114350637826094912
 MonoBehaviour:
   m_ObjectHideFlags: 1
