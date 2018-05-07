@@ -49,7 +49,7 @@ namespace Code.Characters.Doods.Doodex
             _activeTab.Show();
         }
 
-        public void Hide () {
+        private void Hide () {
             if (!_active) { return; }
 
             OnHide();
