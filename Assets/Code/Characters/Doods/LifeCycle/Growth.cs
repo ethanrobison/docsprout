@@ -9,7 +9,7 @@ namespace Code.Characters.Doods.LifeCycle
     public class Growth : MonoBehaviour
     {
         public Action<DoodSpecies, Maturity> OnGrow;
-        
+
         private const float GROWTH_RATE = 0.3f;
 
         public Species Species;
@@ -27,7 +27,7 @@ namespace Code.Characters.Doods.LifeCycle
 
             var plant = transform.Find("Dood/Body/Plant").gameObject;
             _pop = plant.GetRequiredComponent<AudioSource>();
-            
+
             _stage = new DoodStage(this, Species);
         }
 
@@ -46,7 +46,7 @@ namespace Code.Characters.Doods.LifeCycle
             _pop.Play();
         }
 
-        public void Harvest () { }
+        public void Harvest () { _stage.Harvest(); }
     }
 
     public class DoodStage
@@ -97,10 +97,22 @@ namespace Code.Characters.Doods.LifeCycle
             var info = _species.GetLeaf(_currentStage);
             plant.transform.localPosition = info.Offset;
             plant.GetComponent<MeshFilter>().mesh = info.Mesh;
+            plant.GetComponent<Renderer>().material = info.Material;
+
+            var froot = _go.transform.Find("Dood/Body/Plant/Froot");
+            froot.GetComponent<Renderer>().enabled = _species.IsHarvestable(_currentStage);
         }
 
         public void GoToNextStage () {
             _currentStage = _species.GetNextStage(_currentStage);
+            ResetState();
+            _growth.OnGrow(_species, _currentStage);
+        }
+
+        public void Harvest () {
+            if (!_species.IsHarvestable(_currentStage)) { return; }
+            _value = 0f;
+            _currentStage = _species.GetStageAfterHarvest();
             ResetState();
             _growth.OnGrow(_species, _currentStage);
         }

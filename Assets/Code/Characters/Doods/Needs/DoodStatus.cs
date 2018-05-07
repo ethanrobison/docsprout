@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Code.Characters.Doods.Doodex;
+using Code.Characters.Doods.LifeCycle;
 using Code.Environment;
 using Code.Environment.Advertising;
 using Code.Utils;
@@ -69,7 +70,7 @@ namespace Code.Characters.Doods.Needs
         public void OnApproach () { _dood.Comps.Color.IsInteracted = true; }
         public void OnDepart () { _dood.Comps.Color.IsInteracted = false; }
         public void Interact () { Game.Ctx.Doods.Doodex.Show(DisplayMode.SingleDood, _dood); }
-        public void SecondaryInteract () { }
+        public void SecondaryInteract () { transform.GetComponentInParent<Growth>().Harvest(); }
 
         public void AdvertiseTo (Advertiser advertiser) {
             _advertisers.Add(advertiser);

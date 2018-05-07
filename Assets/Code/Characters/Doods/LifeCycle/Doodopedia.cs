@@ -49,10 +49,14 @@ namespace Code.Characters.Doods.LifeCycle
         }
 
         public static MeshInfo GetLeafForBody (LeafType leaf, BodyType bodyType) {
-            string path;
-            if (!LeafPaths.TryGetValue(leaf, out path)) { Logging.Error("Missing path for type: " + leaf); }
+            LeafInfo leafInfo;
+            if (!LeafPaths.TryGetValue(leaf, out leafInfo)) { Logging.Error("Missing path for type: " + leaf); }
 
-            return new MeshInfo {Mesh = LoadMeshAtPath(path), Offset = LeafOffsets[bodyType]};
+            return new MeshInfo {
+                Mesh = LoadMeshAtPath(leafInfo.Model),
+                Offset = LeafOffsets[bodyType],
+                Material = loadMaterialAtPath(leafInfo.Material)
+            };
         }
 
         public static DoodSpecies GetDoodSpecies (Species species) { return SpeciesInstances[species]; }
@@ -69,6 +73,12 @@ namespace Code.Characters.Doods.LifeCycle
             return mesh;
         }
 
+        private static Material loadMaterialAtPath (string path) {
+            var mat = (Material) Resources.Load(path);
+            Logging.Assert(mat != null, "Missing material at path " + path);
+            return mat;
+        }
+
         //
         // Nasty hard-coded dictionaries. Sorry about this.
 
@@ -79,16 +89,17 @@ namespace Code.Characters.Doods.LifeCycle
 
 
         private const string PLANT_BASE = "Models/Doods/Plants/";
+        private const string MATERIAL_BASE = "Graphics/Materials/";
 
         private static readonly Dictionary<BodyType, Vector3> LeafOffsets = new Dictionary<BodyType, Vector3> {
             {BodyType.Capsule, new Vector3(0, 0, 1.8f)},
             {BodyType.Cone, new Vector3(0, 0, 0.9f)}
         };
 
-        private static readonly Dictionary<LeafType, string> LeafPaths = new Dictionary<LeafType, string> {
-            {LeafType.Seed, PLANT_BASE + "Seed"},
-            {LeafType.Seedling, PLANT_BASE + "sprout1"},
-            {LeafType.Sprout, PLANT_BASE + "sprout2"}
+        private static readonly Dictionary<LeafType, LeafInfo> LeafPaths = new Dictionary<LeafType, LeafInfo> {
+            {LeafType.Seed, new LeafInfo {Model = PLANT_BASE + "Seed", Material = MATERIAL_BASE + "Seed"}},
+            {LeafType.Seedling, new LeafInfo {Model = PLANT_BASE + "sprout1", Material = MATERIAL_BASE + "Sprout"}},
+            {LeafType.Sprout, new LeafInfo {Model = PLANT_BASE + "sprout2", Material = MATERIAL_BASE + "Sprout"}}
         };
 
         private static Dictionary<Species, DoodSpecies> SpeciesInstances = new Dictionary<Species, DoodSpecies>();
@@ -104,7 +115,7 @@ namespace Code.Characters.Doods.LifeCycle
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seed,
-                new LifeCycleStage(new LifeCycleValues(Maturity.Seedling, 1, LeafType.Seed), needs)));
+                new LifeCycleStage(new LifeCycleValues(Maturity.Fullgrown, 1, LeafType.Seed), needs)));
 
             needs.Needs = new List<NeedTypeIntPair> {
                 new NeedTypeIntPair(NeedType.Water, 1),
@@ -113,15 +124,43 @@ namespace Code.Characters.Doods.LifeCycle
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seedling,
-                new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 0, LeafType.Seedling), needs)));
+                new LifeCycleStage(new LifeCycleValues(Maturity.Sprout, 2, LeafType.Seedling), needs)));
 
-            SpeciesInstances.Add(Species.Debug, new DoodSpecies(Species.Debug, BodyType.Capsule, cycles));
+            needs.Needs = new List<NeedTypeIntPair> {
+                new NeedTypeIntPair(NeedType.Water, 1),
+                new NeedTypeIntPair(NeedType.Sun, 1),
+                new NeedTypeIntPair(NeedType.Fun, 0)
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Sprout,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Fullgrown, 3, LeafType.Sprout), needs)));
+
+            needs.Needs = new List<NeedTypeIntPair> {
+                new NeedTypeIntPair(NeedType.Water, 1),
+                new NeedTypeIntPair(NeedType.Sun, 1),
+                new NeedTypeIntPair(NeedType.Fun, 0)
+            };
+
+            var newCycle = new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 3, LeafType.Sprout), needs);
+            newCycle.Values.Harvestable = true;
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Fullgrown, newCycle));
+
+            SpeciesInstances.Add(Species.Debug,
+                new DoodSpecies(Species.Debug, BodyType.Capsule, Maturity.Sprout, cycles));
+        }
+
+        private struct LeafInfo
+        {
+            public string Model;
+            public string Material;
         }
     }
 
     public struct MeshInfo
     {
         public Mesh Mesh;
+        public Material Material;
         public Vector3 Offset;
     }
 }

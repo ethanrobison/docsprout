@@ -11,6 +11,7 @@ namespace Code.Characters.Doods.LifeCycle
     {
         public readonly Species Species;
         private readonly BodyType _body;
+        private readonly Maturity _stageAfterHarvest;
 
         private Dictionary<Maturity, LifeCycleStage> _stages = new Dictionary<Maturity, LifeCycleStage>();
 
@@ -19,9 +20,10 @@ namespace Code.Characters.Doods.LifeCycle
             _body = body;
         }
 
-        public DoodSpecies (Species species, BodyType body, SpeciesLifeCycles cycles) {
+        public DoodSpecies (Species species, BodyType body, Maturity stageAfterHarvest, SpeciesLifeCycles cycles) {
             Species = species;
             _body = body;
+            _stageAfterHarvest = stageAfterHarvest;
             foreach (var cycle in cycles.LifeCycles) {
                 AddLifeCycle(cycle.Maturity, cycle.Cycle);
             }
@@ -49,6 +51,8 @@ namespace Code.Characters.Doods.LifeCycle
                 "Species does not contain maturity " + current.ToString());
             return cycle.Values.Next;
         }
+
+        public Maturity GetStageAfterHarvest () { return _stageAfterHarvest; }
 
         public Mesh GetBody () { return Doodopedia.GetBodyOfType(_body); }
 
