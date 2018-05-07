@@ -91,7 +91,7 @@ namespace Code.Characters.Doods.LifeCycle
         }
 
         private void ResetState () {
-            _stepsLeft = _species.GetNumGrowthStages(_currentStage);
+            _stepsLeft = _species.GetGrowthStageCount(_currentStage);
 
             var body = _go.transform.Find("Dood/Body").gameObject;
             body.GetComponent<MeshFilter>().mesh = _species.GetBody();

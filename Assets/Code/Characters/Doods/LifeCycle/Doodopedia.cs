@@ -29,18 +29,6 @@ namespace Code.Characters.Doods.LifeCycle
 
     public static class Doodopedia
     {
-//        public static LifeCycleStage MakeDoodOfType (Species species) {
-//            var capsule = GetBodyOfType(BodyType.Capsule);
-//            var cone = GetBodyOfType(BodyType.Cone);
-//
-//            var bud = new LifeCycleStage(BodyType.Capsule, Maturity.Bud, null);
-//            var sprout = new LifeCycleStage(BodyType.Capsule, Maturity.Sprout, bud);
-//            var seedling = new LifeCycleStage(BodyType.Cone, Maturity.Seedling, sprout);
-//            var seed = new LifeCycleStage(BodyType.Cone, Maturity.Seed, seedling);
-//            return seed;
-//        }
-
-
         public static Mesh GetBodyOfType (BodyType type) {
             string path;
             if (!BodyPaths.TryGetValue(type, out path)) { Logging.Error("Missing path for type: " + type); }
@@ -55,7 +43,7 @@ namespace Code.Characters.Doods.LifeCycle
             return new MeshInfo {
                 Mesh = LoadMeshAtPath(leafInfo.Model),
                 Offset = LeafOffsets[bodyType],
-                Material = loadMaterialAtPath(leafInfo.Material)
+                Material = LoadMaterialAtPath(leafInfo.Material)
             };
         }
 
@@ -73,7 +61,7 @@ namespace Code.Characters.Doods.LifeCycle
             return mesh;
         }
 
-        private static Material loadMaterialAtPath (string path) {
+        private static Material LoadMaterialAtPath (string path) {
             var mat = (Material) Resources.Load(path);
             Logging.Assert(mat != null, "Missing material at path " + path);
             return mat;
@@ -83,8 +71,8 @@ namespace Code.Characters.Doods.LifeCycle
         // Nasty hard-coded dictionaries. Sorry about this.
 
         private static readonly Dictionary<BodyType, string> BodyPaths = new Dictionary<BodyType, string> {
-            {BodyType.Cone, "Models/Doods/cone2"},
-            {BodyType.Capsule, "Models/Doods/CapsuleScaled"}
+            { BodyType.Cone, "Models/Doods/cone2" },
+            { BodyType.Capsule, "Models/Doods/CapsuleScaled" }
         };
 
 
@@ -92,14 +80,14 @@ namespace Code.Characters.Doods.LifeCycle
         private const string MATERIAL_BASE = "Graphics/Materials/";
 
         private static readonly Dictionary<BodyType, Vector3> LeafOffsets = new Dictionary<BodyType, Vector3> {
-            {BodyType.Capsule, new Vector3(0, 0, 1.8f)},
-            {BodyType.Cone, new Vector3(0, 0, 0.9f)}
+            { BodyType.Capsule, new Vector3(0, 0, 1.8f) },
+            { BodyType.Cone, new Vector3(0, 0, 0.9f) }
         };
 
         private static readonly Dictionary<LeafType, LeafInfo> LeafPaths = new Dictionary<LeafType, LeafInfo> {
-            {LeafType.Seed, new LeafInfo {Model = PLANT_BASE + "Seed", Material = MATERIAL_BASE + "Seed"}},
-            {LeafType.Seedling, new LeafInfo {Model = PLANT_BASE + "sprout1", Material = MATERIAL_BASE + "Sprout"}},
-            {LeafType.Sprout, new LeafInfo {Model = PLANT_BASE + "sprout2", Material = MATERIAL_BASE + "Sprout"}}
+            { LeafType.Seed, new LeafInfo { Model = PLANT_BASE + "Seed", Material = MATERIAL_BASE + "Seed" } },
+            { LeafType.Seedling, new LeafInfo { Model = PLANT_BASE + "sprout1", Material = MATERIAL_BASE + "Sprout" } },
+            { LeafType.Sprout, new LeafInfo { Model = PLANT_BASE + "sprout2", Material = MATERIAL_BASE + "Sprout" } }
         };
 
         private static Dictionary<Species, DoodSpecies> SpeciesInstances = new Dictionary<Species, DoodSpecies>();

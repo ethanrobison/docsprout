@@ -12,7 +12,8 @@ namespace Code.Characters.Doods.LifeCycle
         Seedling = 2,
         Sprout = 4,
         Bud = 8,
-        Fullgrown
+        Fullgrown,
+        Invalid = 99,
     }
 
     public class LifeCycleStage
@@ -50,11 +51,8 @@ namespace Code.Characters.Doods.LifeCycle
 
             _needs.Add(type, 0);
         }
-        
-        public int GetNeedOfType(NeedType type) {
-            return _needs[type];
-        }
-        
+
+        public int GetNeedOfType (NeedType type) { return _needs[type]; }
     }
 
     [System.Serializable]

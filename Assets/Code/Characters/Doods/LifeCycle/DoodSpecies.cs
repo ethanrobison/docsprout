@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Code.Characters.Doods.Needs;
-using Code.Characters.Doods.LifeCycle;
 using Code.Utils;
 using UnityEngine;
 
@@ -38,18 +36,20 @@ namespace Code.Characters.Doods.LifeCycle
             _stages.Add(maturity, cycle);
         }
 
-        public int GetNumGrowthStages (Maturity maturity) {
+        public int GetGrowthStageCount (Maturity maturity) {
             LifeCycleStage cycle;
-            Logging.Assert(_stages.TryGetValue(maturity, out cycle),
-                "Species does not contain maturity " + maturity.ToString());
-            return cycle.Values.GrowthStages;
+            if (_stages.TryGetValue(maturity, out cycle)) { return cycle.Values.GrowthStages; }
+
+            Logging.Error("Species does not contain maturity " + maturity);
+            return -1;
         }
 
         public Maturity GetNextStage (Maturity current) {
             LifeCycleStage cycle;
-            Logging.Assert(_stages.TryGetValue(current, out cycle),
-                "Species does not contain maturity " + current.ToString());
-            return cycle.Values.Next;
+            if (_stages.TryGetValue(current, out cycle)) { return cycle.Values.Next; }
+
+            Logging.Error("Species does not contain maturity " + current);
+            return Maturity.Invalid;
         }
 
         public Maturity GetStageAfterHarvest () { return _stageAfterHarvest; }
@@ -58,20 +58,22 @@ namespace Code.Characters.Doods.LifeCycle
 
         public MeshInfo GetLeaf (Maturity maturity) {
             LifeCycleStage cycle;
-            Logging.Assert(_stages.TryGetValue(maturity, out cycle),
-                "Species does not contain maturity " + maturity.ToString());
+            if (_stages.TryGetValue(maturity, out cycle)) {
+                return Doodopedia.GetLeafForBody(cycle.Values.LeafType, _body);
+            }
 
-            return Doodopedia.GetLeafForBody(cycle.Values.LeafType, _body);
+            Logging.Error("Species does not contain maturity " + maturity);
+            return Doodopedia.GetLeafForBody(LeafType.Seed, _body); // todo throw an exception? this is more graceful
         }
 
         public int GetNeedOfType (Maturity maturity, NeedType type) { return _stages[maturity].GetNeedOfType(type); }
 
         public bool IsHarvestable (Maturity maturity) {
             LifeCycleStage cycle;
-            Logging.Assert(_stages.TryGetValue(maturity, out cycle),
-                "Species does not contain maturity " + maturity.ToString());
+            if (_stages.TryGetValue(maturity, out cycle)) { return cycle.Values.Harvestable; }
 
-            return cycle.Values.Harvestable;
+            Logging.Error("Species does not contain maturity " + maturity);
+            return false;
         }
     }
 
