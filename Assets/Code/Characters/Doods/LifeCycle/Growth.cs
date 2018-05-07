@@ -10,7 +10,7 @@ namespace Code.Characters.Doods.LifeCycle
     {
         public Action<DoodSpecies, Maturity> OnGrow;
 
-        private const float GROWTH_RATE = 0.1f;
+        private const float GROWTH_RATE = 0.2f;
 
         public Species Species;
 
