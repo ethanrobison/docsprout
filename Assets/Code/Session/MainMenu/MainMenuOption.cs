@@ -140,7 +140,7 @@ namespace Code.Session.MainMenu
 #if UNITY_EDITOR
                 Game.Sesh.StartGame(Options[CurrentOption].Index);
 #else
-			Game.Sesh.StartGame (3);
+			Game.Sesh.StartGame (1);
 #endif
             }
 
