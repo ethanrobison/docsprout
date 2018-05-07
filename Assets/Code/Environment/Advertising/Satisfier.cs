@@ -9,6 +9,7 @@ namespace Code.Environment.Advertising
     {
         public Action<Dood> OnInteract;
         [SerializeField] private NeedType _type;
+
         private void OnTriggerEnter (Collider other) {
             var satisfiable = other.GetComponentInChildren<ISatisfiable>();
             if (satisfiable != null) { satisfiable.AllowSatisfaction(this); }
@@ -20,11 +21,14 @@ namespace Code.Environment.Advertising
         }
 
         public void InteractWith (Dood dood) {
-            dood.Comps.Status.GetNeedOfType(Satisfies()).Satisfy();
-            if(OnInteract != null) OnInteract(dood);
+            if (Satisfies() == NeedType.Fun) { dood.Comps.Status.BoostHappiness(); }
+
+            else { dood.Comps.Status.GetNeedOfType(Satisfies()).Satisfy(); }
+
+            if (OnInteract != null) OnInteract(dood);
         }
 
-        public NeedType Satisfies () {return _type;}
+        public NeedType Satisfies () { return _type; }
     }
 
     public interface ISatisfiable

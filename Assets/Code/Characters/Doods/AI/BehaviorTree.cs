@@ -32,7 +32,7 @@ namespace Code.Characters.Doods.AI
 
             var far = new PlayerDistance(dood, 20f, float.PositiveInfinity);
             far.AddToEnd(new Wander(dood));
-            
+
             var lookAtPlayer = new LookAtPlayer(dood);
 
 
@@ -41,11 +41,22 @@ namespace Code.Characters.Doods.AI
 
             AddPassiveNeed(dood, NeedType.Water);
             AddPassiveNeed(dood, NeedType.Sun);
-            AddActiveNeed(dood, NeedType.Fun);
+//            AddActiveNeed(dood, NeedType.Fun);
             AddActiveNeed(dood, NeedType.Food);
 
+            var need = _needs.First(n => n.Type == NeedType.Fun);
+            var needAdvertiser = new AdvertiserNear(dood, NeedType.Fun);
+            var needSatisfaction = new NeedSatisfiable(dood, NeedType.Fun);
+            needSatisfaction.AddToEnd(new InteractWithSatisfier(dood, NeedType.Fun));
+            needAdvertiser.AddToEnd(needSatisfaction);
+
+            var goToNeed = new AlwaysSucceed(dood);
+            goToNeed.SetChild(new GoToAdvertiser(dood, NeedType.Fun));
+            needAdvertiser.AddToEnd(goToNeed);
+            AddActiveNode(dood, needAdvertiser);
+
             AddActiveNode(dood, far);
-            
+
             AddActiveNode(dood, lookAtPlayer);
 
             FinishBuildingTree(dood);

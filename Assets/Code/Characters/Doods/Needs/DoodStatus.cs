@@ -12,6 +12,7 @@ namespace Code.Characters.Doods.Needs
     public class DoodStatus : MonoBehaviour, IApproachable, IAdvertisable, ISatisfiable
     {
         private const float MAX_HAPPINESS = 100f, MAGNITUDE = 5f;
+        private const float HAPPINESS_BOOST = 15f;
         [Range(0f, 100f)] public float Happiness;
         public SmallSet Advertised { get; private set; }
         public SmallSet Satisfiable { get; private set; }
@@ -99,5 +100,7 @@ namespace Code.Characters.Doods.Needs
             var c = _satisfiers.Count(a => a.Satisfies() == type);
             if (c == 0) { Satisfiable.Remove((ushort) type); }
         }
+
+        public void BoostHappiness () { Happiness += HAPPINESS_BOOST; }
     }
 }
