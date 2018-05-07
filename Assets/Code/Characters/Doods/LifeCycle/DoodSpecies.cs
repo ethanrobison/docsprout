@@ -66,7 +66,7 @@ namespace Code.Characters.Doods.LifeCycle
             return Doodopedia.GetLeafForBody(LeafType.Seed, _body); // todo throw an exception? this is more graceful
         }
 
-        public int GetNeedOfType (Maturity maturity, NeedType type) { return _stages[maturity].GetNeedOfType(type); }
+        public bool GetNeedOfType (Maturity maturity, NeedType type) { return _stages[maturity].GetNeedOfType(type); }
 
         public bool IsHarvestable (Maturity maturity) {
             LifeCycleStage cycle;

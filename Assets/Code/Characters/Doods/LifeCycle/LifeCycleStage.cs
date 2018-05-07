@@ -20,39 +20,16 @@ namespace Code.Characters.Doods.LifeCycle
     {
         public LifeCycleValues Values;
 
-        private Dictionary<NeedType, int> _needs = new Dictionary<NeedType, int>();
+        private HashSet<NeedType> _needs = new HashSet<NeedType>();
 
         public LifeCycleStage (LifeCycleValues values, LifeCycleNeeds needs) {
             Values = values;
-            foreach (var need in needs.Needs) {
-                if (need.Value > 0) EnableNeed(need.Type);
-                else {
-                    DisableNeed(need.Type);
-                }
-            }
+            _needs.Clear();
+
+            foreach (var need in needs.Needs) { _needs.Add(need); }
         }
 
-        public LifeCycleStage (LifeCycleValues values) { Values = values; }
-
-        public void EnableNeed (NeedType type) {
-            if (_needs.ContainsKey(type)) {
-                _needs[type] = 1;
-                return;
-            }
-
-            _needs.Add(type, 1);
-        }
-
-        public void DisableNeed (NeedType type) {
-            if (_needs.ContainsKey(type)) {
-                _needs[type] = 0;
-                return;
-            }
-
-            _needs.Add(type, 0);
-        }
-
-        public int GetNeedOfType (NeedType type) { return _needs[type]; }
+        public bool GetNeedOfType (NeedType type) { return _needs.Contains(type); }
     }
 
     [System.Serializable]
@@ -63,8 +40,7 @@ namespace Code.Characters.Doods.LifeCycle
         public LeafType LeafType;
         public bool Harvestable;
 
-        public LifeCycleValues (Maturity next, int growthStages, LeafType leafType,
-            bool harvestable = false) {
+        public LifeCycleValues (Maturity next, int growthStages, LeafType leafType, bool harvestable = false) {
             Next = next;
             GrowthStages = growthStages;
             LeafType = leafType;
@@ -75,7 +51,7 @@ namespace Code.Characters.Doods.LifeCycle
     [System.Serializable]
     public struct LifeCycleNeeds
     {
-        public List<NeedTypeIntPair> Needs;
+        public List<NeedType> Needs;
     }
 
     [System.Serializable]

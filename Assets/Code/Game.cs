@@ -27,9 +27,9 @@ namespace Code
 
             Sesh = new GameSession();
             Sesh.Initialize();
-            
-            if (TestScene) { Game.Sesh.StartTestGame(); }
-            
+
+            if (TestScene) { Sesh.StartTestGame(); }
+
             Doodopedia.LoadSpecies();
         }
 

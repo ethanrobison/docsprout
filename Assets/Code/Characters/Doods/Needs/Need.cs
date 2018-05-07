@@ -16,10 +16,10 @@ namespace Code.Characters.Doods.Needs
     public class Need : MonoBehaviour
     {
         private static readonly Dictionary<NeedType, NeedValues> NeedValues = new Dictionary<NeedType, NeedValues> {
-            {NeedType.Water, new NeedValues(40f, 100f, 10f, 1f)},
-            {NeedType.Sun, new NeedValues(40f, 100f, 7f, .6f)},
-            {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
-            {NeedType.Food, new NeedValues(40f, 100f, 5f, .4f)}
+            { NeedType.Water, new NeedValues(40f, 100f, 10f, 1f) },
+            { NeedType.Sun, new NeedValues(40f, 100f, 7f, .6f) },
+            { NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f) },
+            { NeedType.Food, new NeedValues(40f, 100f, 5f, .4f) }
         };
 
         public NeedType Type;
@@ -41,7 +41,7 @@ namespace Code.Characters.Doods.Needs
             growth.OnGrow += OnGrow;
             var template = NeedValues[Type];
             _values = new NeedValues(template.Bottom, template.Top, template.SatisfactionRate, template.DecayRate) {
-                Enabled = Doodopedia.GetDoodSpecies(growth.Species).GetNeedOfType(Maturity.Seed, Type) > 0
+                Enabled = Doodopedia.GetDoodSpecies(growth.Species).GetNeedOfType(Maturity.Seed, Type)
             };
 
             _satisfactionParticle = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
@@ -60,7 +60,7 @@ namespace Code.Characters.Doods.Needs
         private void IncreaseNeed (float time) { _values.IncreaseNeed(time); }
 
         private void OnGrow (DoodSpecies species, Maturity maturity) {
-            _values.Enabled = species.GetNeedOfType(maturity, Type) > 0;
+            _values.Enabled = species.GetNeedOfType(maturity, Type);
         }
 
 
