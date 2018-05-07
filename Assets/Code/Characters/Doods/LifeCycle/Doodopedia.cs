@@ -115,7 +115,7 @@ namespace Code.Characters.Doods.LifeCycle
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seed,
-                new LifeCycleStage(new LifeCycleValues(Maturity.Fullgrown, 1, LeafType.Seed), needs)));
+                new LifeCycleStage(new LifeCycleValues(Maturity.Seedling, 1, LeafType.Seed), needs)));
 
             needs.Needs = new List<NeedTypeIntPair> {
                 new NeedTypeIntPair(NeedType.Water, 1),
