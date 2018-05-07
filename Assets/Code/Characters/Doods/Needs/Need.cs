@@ -17,9 +17,9 @@ namespace Code.Characters.Doods.Needs
     {
         private static readonly Dictionary<NeedType, NeedValues> NeedValues = new Dictionary<NeedType, NeedValues> {
             {NeedType.Water, new NeedValues(40f, 100f, 10f, 1f)},
-            {NeedType.Sun, new NeedValues(40f, 100f, 7f, .4f)},
+            {NeedType.Sun, new NeedValues(40f, 100f, 7f, .6f)},
             {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
-            {NeedType.Food, new NeedValues(30f, 100f, 20f, 5f)}
+            {NeedType.Food, new NeedValues(40f, 100f, 5f, .4f)}
         };
 
         public NeedType Type;
