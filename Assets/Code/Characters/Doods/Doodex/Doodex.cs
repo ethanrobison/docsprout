@@ -28,6 +28,7 @@ namespace Code.Characters.Doods.Doodex
         private DisplayMode _mode;
 
         public Doodex () {
+            return; // todo fix this noop; doodex is broken :(
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.Start, () => { Show(DisplayMode.Menu); });
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Hide);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => SwitchTab(1));
