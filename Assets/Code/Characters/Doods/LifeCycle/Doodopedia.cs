@@ -111,7 +111,8 @@ namespace Code.Characters.Doods.LifeCycle
             needs.Needs = new List<NeedTypeIntPair> {
                 new NeedTypeIntPair(NeedType.Water, 1),
                 new NeedTypeIntPair(NeedType.Sun, 0),
-                new NeedTypeIntPair(NeedType.Fun, 0)
+                new NeedTypeIntPair(NeedType.Fun, 0),
+                new NeedTypeIntPair(NeedType.Food, 0)
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seed,
@@ -120,7 +121,8 @@ namespace Code.Characters.Doods.LifeCycle
             needs.Needs = new List<NeedTypeIntPair> {
                 new NeedTypeIntPair(NeedType.Water, 1),
                 new NeedTypeIntPair(NeedType.Sun, 1),
-                new NeedTypeIntPair(NeedType.Fun, 0)
+                new NeedTypeIntPair(NeedType.Fun, 0),
+                new NeedTypeIntPair(NeedType.Food, 0)
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seedling,
@@ -129,7 +131,8 @@ namespace Code.Characters.Doods.LifeCycle
             needs.Needs = new List<NeedTypeIntPair> {
                 new NeedTypeIntPair(NeedType.Water, 1),
                 new NeedTypeIntPair(NeedType.Sun, 1),
-                new NeedTypeIntPair(NeedType.Fun, 0)
+                new NeedTypeIntPair(NeedType.Fun, 0),
+                new NeedTypeIntPair(NeedType.Food, 1)
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Sprout,
@@ -138,7 +141,8 @@ namespace Code.Characters.Doods.LifeCycle
             needs.Needs = new List<NeedTypeIntPair> {
                 new NeedTypeIntPair(NeedType.Water, 1),
                 new NeedTypeIntPair(NeedType.Sun, 1),
-                new NeedTypeIntPair(NeedType.Fun, 0)
+                new NeedTypeIntPair(NeedType.Fun, 0),
+                new NeedTypeIntPair(NeedType.Food, 1)
             };
 
             var newCycle = new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 3, LeafType.Sprout), needs);

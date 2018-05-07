@@ -42,6 +42,7 @@ namespace Code.Characters.Doods.AI
             AddPassiveNeed(dood, NeedType.Water);
             AddPassiveNeed(dood, NeedType.Sun);
             AddActiveNeed(dood, NeedType.Fun);
+            AddActiveNeed(dood, NeedType.Food);
 
             AddActiveNode(dood, far);
             

@@ -10,6 +10,7 @@ namespace Code.Characters.Doods.Needs
         Water = 1,
         Sun = 2,
         Fun = 3,
+        Food = 4
     }
 
     public class Need : MonoBehaviour
@@ -18,6 +19,7 @@ namespace Code.Characters.Doods.Needs
             {NeedType.Water, new NeedValues(30f, 100f, 20f, 5f)},
             {NeedType.Sun, new NeedValues(30f, 100f, 20f, 5f)},
             {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
+            {NeedType.Food, new NeedValues(30f, 100f, 20f, 5f)}
         };
 
         public NeedType Type;

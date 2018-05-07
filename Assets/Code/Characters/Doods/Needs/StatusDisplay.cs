@@ -22,8 +22,8 @@ namespace Code.Characters.Doods.Needs
                     break;
                 case NeedType.Fun:
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException("need", need, null);
+                //default:
+                    //throw new ArgumentOutOfRangeException("need", need, null);
             }
         }
     }
