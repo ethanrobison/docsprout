@@ -124,7 +124,7 @@ namespace Code.Characters.Doods.LifeCycle
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seedling,
-                new LifeCycleStage(new LifeCycleValues(Maturity.Sprout, 2, LeafType.Seedling), needs)));
+                new LifeCycleStage(new LifeCycleValues(Maturity.Sprout, 3, LeafType.Seedling), needs)));
 
             needs.Needs = new List<NeedTypeIntPair> {
                 new NeedTypeIntPair(NeedType.Water, 1),
@@ -133,7 +133,7 @@ namespace Code.Characters.Doods.LifeCycle
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Sprout,
-                new LifeCycleStage(new LifeCycleValues(Maturity.Fullgrown, 3, LeafType.Sprout), needs)));
+                new LifeCycleStage(new LifeCycleValues(Maturity.Fullgrown, 5, LeafType.Sprout), needs)));
 
             needs.Needs = new List<NeedTypeIntPair> {
                 new NeedTypeIntPair(NeedType.Water, 1),
@@ -141,7 +141,7 @@ namespace Code.Characters.Doods.LifeCycle
                 new NeedTypeIntPair(NeedType.Fun, 0)
             };
 
-            var newCycle = new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 3, LeafType.Sprout), needs);
+            var newCycle = new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 0, LeafType.Sprout), needs);
             newCycle.Values.Harvestable = true;
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Fullgrown, newCycle));

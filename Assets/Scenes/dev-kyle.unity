@@ -646,23 +646,13 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4325453309534798, guid: c68c701bfe4e8407fa210cd1e1c7d221, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.6666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 4325453309534798, guid: c68c701bfe4e8407fa210cd1e1c7d221, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 0.6666667
-      objectReference: {fileID: 0}
-    - target: {fileID: 4325453309534798, guid: c68c701bfe4e8407fa210cd1e1c7d221, type: 2}
-      propertyPath: m_LocalScale.z
-      value: 0.6666667
-      objectReference: {fileID: 0}
     - target: {fileID: 1398096695872946, guid: c68c701bfe4e8407fa210cd1e1c7d221, type: 2}
       propertyPath: m_Name
       value: Sprinkler (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 136019803540680466, guid: c68c701bfe4e8407fa210cd1e1c7d221, type: 2}
+    - {fileID: 136488203357308540, guid: c68c701bfe4e8407fa210cd1e1c7d221, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: c68c701bfe4e8407fa210cd1e1c7d221, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &297454972 stripped

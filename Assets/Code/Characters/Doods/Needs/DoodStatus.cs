@@ -55,7 +55,7 @@ namespace Code.Characters.Doods.Needs
                 return 0f;
             }
 
-            return (need.Status == 0 ? 3f : -2f) * MAGNITUDE * Time.deltaTime;
+            return (need.Status == 0 ? 1f : -3f) * MAGNITUDE * Time.deltaTime;
         }
 
 
