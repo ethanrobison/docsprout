@@ -71,10 +71,7 @@ namespace Code.Characters.Doods.Needs
         public void OnApproach () { _dood.Comps.Color.IsInteracted = true; }
         public void OnDepart () { _dood.Comps.Color.IsInteracted = false; }
 
-        public void Interact () {
-            return; // todo fix this noop - doodex is broken :(
-            Game.Ctx.Doods.Doodex.Show(DisplayMode.SingleDood, _dood);
-        }
+        public void Interact () { Game.Ctx.Doods.Doodex.Show(DisplayMode.SingleDood, _dood); }
 
         public void SecondaryInteract () { transform.GetComponentInParent<Growth>().Harvest(); }
 
