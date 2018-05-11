@@ -1,5 +1,4 @@
-﻿using Code.Characters.Doods.LifeCycle;
-using Code.Session;
+﻿using Code.Session;
 using Code.Utils;
 using UnityEngine;
 
@@ -27,10 +26,6 @@ namespace Code
 
             Sesh = new GameSession();
             Sesh.Initialize();
-
-            if (TestScene) { Sesh.StartTestGame(); }
-
-            Doodopedia.LoadSpecies();
         }
 
         public static void SetContext (GameSession sesh, GameContext ctx) {

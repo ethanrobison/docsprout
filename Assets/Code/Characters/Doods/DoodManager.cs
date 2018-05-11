@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Code.Session;
 using UnityEngine;
 
 namespace Code.Characters.Doods
@@ -12,9 +11,9 @@ namespace Code.Characters.Doods
 
         public readonly List<Dood> DoodList = new List<Dood>();
 
-        public void Initialize () {
-            MakeNDoods(10, new Vector3(-10f, 0f, 20f));
 
+        public void Initialize () {
+            MakeNDoods(1, new Vector3(-10f, 0f, 20f));
             Doodex = new Doodex.Doodex();
         }
 

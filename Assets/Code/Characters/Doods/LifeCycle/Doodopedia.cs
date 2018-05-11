@@ -26,6 +26,7 @@ namespace Code.Characters.Doods.LifeCycle
     public enum Species
     {
         Debug,
+        NoNeeds
     }
 
     public static class Doodopedia
@@ -72,8 +73,8 @@ namespace Code.Characters.Doods.LifeCycle
         // Nasty hard-coded dictionaries. Sorry about this.
 
         private static readonly Dictionary<BodyType, string> BodyPaths = new Dictionary<BodyType, string> {
-            { BodyType.Cone, "Models/Doods/cone2" },
-            { BodyType.Capsule, "Models/Doods/CapsuleScaled" }
+            {BodyType.Cone, "Models/Doods/cone2"},
+            {BodyType.Capsule, "Models/Doods/CapsuleScaled"}
         };
 
 
@@ -81,23 +82,23 @@ namespace Code.Characters.Doods.LifeCycle
         private const string MATERIAL_BASE = "Graphics/Materials/";
 
         private static readonly Dictionary<BodyType, Vector3> LeafOffsets = new Dictionary<BodyType, Vector3> {
-            { BodyType.Capsule, new Vector3(0, 0, 1.8f) },
-            { BodyType.Cone, new Vector3(0, 0, 0.9f) }
+            {BodyType.Capsule, new Vector3(0, 0, 1.8f)},
+            {BodyType.Cone, new Vector3(0, 0, 0.9f)}
         };
 
         private static readonly Dictionary<LeafType, LeafInfo> LeafPaths = new Dictionary<LeafType, LeafInfo> {
-            { LeafType.Seed, new LeafInfo { Model = PLANT_BASE + "Seed", Material = MATERIAL_BASE + "Seed" } },
-            { LeafType.Seedling, new LeafInfo { Model = PLANT_BASE + "sprout1", Material = MATERIAL_BASE + "Sprout" } },
-            { LeafType.Sprout, new LeafInfo { Model = PLANT_BASE + "sprout2", Material = MATERIAL_BASE + "Sprout" } }
+            {LeafType.Seed, new LeafInfo {Model = PLANT_BASE + "Seed", Material = MATERIAL_BASE + "Seed"}},
+            {LeafType.Seedling, new LeafInfo {Model = PLANT_BASE + "sprout1", Material = MATERIAL_BASE + "Sprout"}},
+            {LeafType.Sprout, new LeafInfo {Model = PLANT_BASE + "sprout2", Material = MATERIAL_BASE + "Sprout"}}
         };
 
         private static Dictionary<Species, DoodSpecies> SpeciesInstances = new Dictionary<Species, DoodSpecies>();
 
         public static void LoadSpecies () {
-            var cycles = new SpeciesLifeCycles { LifeCycles = new List<MaturityLifeCyclePair>() };
+            var cycles = new SpeciesLifeCycles {LifeCycles = new List<MaturityLifeCyclePair>()};
 
             var needs = new LifeCycleNeeds {
-                Needs = new List<NeedType> { NeedType.Water }
+                Needs = new List<NeedType> {NeedType.Water}
             };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seed,
@@ -128,13 +129,22 @@ namespace Code.Characters.Doods.LifeCycle
 
             var newCycle =
                 new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 0, LeafType.Sprout), needs) {
-                    Values = { Harvestable = true }
+                    Values = {Harvestable = true}
                 };
 
             cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Fullgrown, newCycle));
 
             SpeciesInstances.Add(Species.Debug,
                 new DoodSpecies(Species.Debug, BodyType.Capsule, Maturity.Sprout, cycles));
+
+            var noNeedCycles = new SpeciesLifeCycles {LifeCycles = new List<MaturityLifeCyclePair>()};
+            var noNeedNeeds = new LifeCycleNeeds {Needs = new List<NeedType>()};
+
+            noNeedCycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seed,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 0, LeafType.Seed), noNeedNeeds)));
+
+            SpeciesInstances.Add(Species.NoNeeds,
+                new DoodSpecies(Species.NoNeeds, BodyType.Capsule, Maturity.Seed, noNeedCycles));
         }
 
         private struct LeafInfo

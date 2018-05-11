@@ -1,5 +1,9 @@
 ﻿using Code.Characters.Doods;
+using Code.Characters.Doods.LifeCycle;
+using Code.Characters.Doods.Needs;
 using Code.Characters.Player;
+using Code.Session;
+using Code.Utils;
 using UnityEngine.SceneManagement;
 
 namespace Code
@@ -9,19 +13,23 @@ namespace Code
         public DoodManager Doods { get; private set; }
         public Player Player { get; private set; }
 
-        public void StartGame (int scene, bool testscene = false) {
-            if (testscene) {
+        private readonly int _startNumDoods;
+
+
+        public void StartGame (int scene) {
+            if (scene < 0) {
                 Initialize();
                 return;
             }
 
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.LoadScene(scene);
-
-            Initialize();
         }
 
-        public void SetPlayer (Player player) { Player = player; }
+        public void SetPlayer (Player player) {
+            Player = player;
+            Doods.DoodList[0].transform.position = player.transform.position + player.transform.forward * 3f;
+        }
 
         private void OnSceneLoaded (Scene scene, LoadSceneMode mode) {
             Initialize();
@@ -30,13 +38,21 @@ namespace Code
 
         private void Initialize () {
             Doods = new DoodManager();
-
             Doods.Initialize();
+
+            //All of this feels like a hack, but I don't have any better ideas
+            if (SceneManager.GetActiveScene().buildIndex != (int) SceneIdx.MainMenu) {
+                Doods.DoodList[0].IsSelected = true;
+                Doods.DoodList[0].Comps.Color.IsSelected = true;
+            }
+            else {
+                // The menu must not be sad
+                Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.NoNeeds;
+            }
         }
 
         private void ShutDown () {
             Doods.ShutDown();
-
             Doods = null;
         }
 

@@ -44,7 +44,7 @@ namespace Code.Characters.Doods.Needs
                 total += CalculateHappiness(Needs[i]);
             }
 
-            total = Mathf.Clamp(total / numNeeds, -2 * MAGNITUDE, 2 * MAGNITUDE);
+            total = Mathf.Clamp(total / (numNeeds + 0.00001f), -2 * MAGNITUDE, 2 * MAGNITUDE);
 
             Happiness = Mathf.Clamp(Happiness + total, 0f, MAX_HAPPINESS);
             _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;

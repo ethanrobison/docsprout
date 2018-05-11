@@ -1,7 +1,18 @@
-﻿using UnityEngine.SceneManagement;
+﻿using Code.Characters.Doods.LifeCycle;
+using UnityEngine.SceneManagement;
 
 namespace Code.Session
 {
+    public enum SceneIdx
+    {
+        Current = -1,
+        MainMenu = 0,
+        Demo = 1,
+        Ethan = 2,
+        Kyle = 3,
+        Alyssa = 4
+    }
+
     public class GameSession
     {
         public PreferencesManager Prefs { get; private set; }
@@ -13,6 +24,9 @@ namespace Code.Session
 
             Prefs.Initialize();
             Input.Initialize();
+            Doodopedia.LoadSpecies();
+
+            SetCtx((int) SceneIdx.Current);
         }
 
         //        private void Shutdown () {
@@ -25,7 +39,11 @@ namespace Code.Session
 
 
         // todo this isn't very sophisticated in fact I dislike it
-        public void StartGame (int scene) {
+        public void StartGame (int scene) { SetCtx(scene); }
+
+        public void ReturnToMenu () { SetCtx((int) SceneIdx.MainMenu); }
+
+        private void SetCtx (int scene) {
             var ctx = new GameContext();
             Game.SetContext(this, ctx);
 
@@ -33,27 +51,6 @@ namespace Code.Session
 
             Input.OnGameStart();
             Prefs.OnGameStart();
-        }
-
-        public void StartTestGame () {
-            var ctx = new GameContext();
-            Game.SetContext(this, ctx);
-
-            ctx.StartGame(0, true);
-
-            Input.OnGameStart();
-            Prefs.OnGameStart();
-        }
-
-        public void ReturnToMenu () {
-            Initialize();
-            SceneManager.sceneLoaded += RemoveContext;
-            SceneManager.LoadScene(0);
-        }
-
-        private static void RemoveContext (Scene scene, LoadSceneMode mode) {
-            Game.Ctx = null;
-            SceneManager.sceneLoaded -= RemoveContext;
         }
     }
 
