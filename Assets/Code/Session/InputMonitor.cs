@@ -34,16 +34,10 @@ namespace Code.Session
             get { return Input.GetAxisRaw(_rightV); }
         }
 
-        public PressType Rt { get; private set; }
-
-        public PressType Lt { get; private set; }
-
         private string _leftH;
         private string _leftV;
         private string _rightH;
         private string _rightV;
-        private const string RT = "RT";
-        private const string LT = "LT";
 
         private Dictionary<ControllerButton, KeyCode> _buttonNames;
         private readonly List<ButtonPair> _mappings = new List<ButtonPair>();
@@ -61,7 +55,6 @@ namespace Code.Session
 
         public void OnGameStart () { _mappings.Clear(); }
 
-        // todo maybe loop unroll me? seems like overkill
         private void Update () {
             for (int i = 0, c = _mappings.Count; i < c; i++) {
                 var pair = _mappings[i];
@@ -91,8 +84,6 @@ namespace Code.Session
 
                 c = _mappings.Count;
             }
-
-            SetTriggers();
         }
 
 
@@ -130,35 +121,6 @@ namespace Code.Session
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private bool _ltDown, _rtDown;
-
-        // we hide the nastiness here so that we have better APIs elsewhere
-        private void SetTriggers () {
-            var pressedRight = Input.GetAxisRaw(RT) > 0.1f;
-            if (pressedRight && _rtDown) { Rt = PressType.Hold; }
-            else if (pressedRight && !_rtDown) {
-                Rt = PressType.ButtonDown;
-                _rtDown = true;
-            }
-            else if (_rtDown) {
-                Rt = PressType.ButtonUp;
-                _rtDown = false;
-            }
-            else { Rt = PressType.None; }
-
-            var pressedLeft = Input.GetAxisRaw(LT) > 0.1f;
-            if (pressedLeft && _ltDown) { Lt = PressType.Hold; }
-            else if (pressedLeft && !_ltDown) {
-                Lt = PressType.ButtonDown;
-                _ltDown = true;
-            }
-            else if (_ltDown) {
-                Lt = PressType.ButtonUp;
-                _ltDown = false;
-            }
-            else { Lt = PressType.None; }
         }
 
         //
