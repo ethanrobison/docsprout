@@ -19,25 +19,27 @@ namespace Code.Session
     public class InputMonitor : MonoBehaviour, ISessionManager
     {
         public float LeftH {
-            get { return Input.GetAxisRaw(_leftH); }
+            get { return _inMenu ? 0f : Input.GetAxisRaw(_leftH); }
         }
 
         public float LeftV {
-            get { return Input.GetAxisRaw(_leftV); }
+            get { return _inMenu ? 0f : Input.GetAxisRaw(_leftV); }
         }
 
         public float RightH {
-            get { return Input.GetAxisRaw(_rightH); }
+            get { return _inMenu ? 0f : Input.GetAxisRaw(_rightH); }
         }
 
         public float RightV {
-            get { return Input.GetAxisRaw(_rightV); }
+            get { return _inMenu ? 0f : Input.GetAxisRaw(_rightV); }
         }
 
         private string _leftH;
         private string _leftV;
         private string _rightH;
         private string _rightV;
+
+        private bool _inMenu;
 
         private Dictionary<ControllerButton, KeyCode> _buttonNames;
         private readonly List<ButtonPair> _mappings = new List<ButtonPair>();
@@ -136,6 +138,8 @@ namespace Code.Session
             var pair = new ButtonPair(buttonname, onpress, type);
             _mappings.Add(pair);
         }
+
+        public void SetMenuState (bool state) { _inMenu = state; }
 
         //
         // helper classes

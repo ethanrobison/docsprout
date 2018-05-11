@@ -244,7 +244,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 282840810}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243514788923554038, guid: c9ccd49cbcfb24fbe8cc01dddd8e2a0f,
     type: 2}
@@ -812,7 +812,7 @@ MonoBehaviour:
   m_SubmitButton: A
   m_CancelButton: B
   m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
+  m_RepeatDelay: 0.75
   m_ForceModuleActive: 0
 --- !u!114 &1151627242
 MonoBehaviour:

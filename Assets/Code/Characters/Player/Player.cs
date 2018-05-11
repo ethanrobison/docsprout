@@ -20,9 +20,7 @@ namespace Code.Characters.Player
         private void Update () {
             var x = Game.Sesh.Input.Monitor.LeftH;
             var y = Game.Sesh.Input.Monitor.LeftV;
-            if (x * x + y * y < 0.01) {
-                _movement.SetDirection(Vector3.zero);
-            }
+            if (x * x + y * y < 0.01) { _movement.SetDirection(Vector3.zero); }
 
             var forwards = Vector3.Cross(_camController.Camera.transform.right, Vector3.up).normalized;
             var dir = new Vector2(x * _camController.Camera.transform.right.x + y * forwards.x,

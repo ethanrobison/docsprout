@@ -47,10 +47,13 @@ namespace Code.Characters.Doods.Doodex
             _active = true;
             _activeTab = GetAppropriateTab();
             _activeTab.Show();
+            
+            Game.Sesh.Input.Monitor.SetMenuState(true);
         }
 
         private void Hide () {
             if (!_active) { return; }
+            Game.Sesh.Input.Monitor.SetMenuState(false);
 
             OnHide();
             Object.Destroy(_go);
@@ -64,21 +67,21 @@ namespace Code.Characters.Doods.Doodex
             var tabbar = _go.transform.Find("Tab Bar");
 
             _doodTab = new DoodTab(tabs.Find("Dood"), tabbar.Find("Dood"), _activeDood);
-            _doodTab.OnInitialize();
-
             _marketTab = new MarketTab(tabs.Find("Market"), tabbar.Find("Market"));
-            _marketTab.OnInitialize();
-
             _allDoodsTab = new AllDoodsTab(tabs.Find("All Doods"), tabbar.Find("All Doods"));
-            _allDoodsTab.OnInitialize();
-
             _menuTab = new MenuTab(tabs.Find("Menu"), tabbar.Find("Menu"));
+
+            _doodTab.OnInitialize();
+            _marketTab.OnInitialize();
+            _allDoodsTab.OnInitialize();
             _menuTab.OnInitialize();
         }
 
         private void OnHide () {
             _doodTab.OnShutdown();
-//            _market.OnShutdown();
+            _marketTab.OnShutdown();
+            _allDoodsTab.OnShutdown();
+            _menuTab.OnShutdown();
         }
 
         private void SwitchTab (int dir) {
@@ -103,8 +106,6 @@ namespace Code.Characters.Doods.Doodex
                 default: throw new ArgumentOutOfRangeException();
             }
         }
-
-        // todo generative tabs?
     }
 
     public abstract class DoodexTab
