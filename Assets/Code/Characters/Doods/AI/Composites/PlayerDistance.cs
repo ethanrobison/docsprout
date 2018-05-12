@@ -1,4 +1,7 @@
+using Code.Session;
+using Code.Utils;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Code.Characters.Doods.AI
 {
@@ -12,6 +15,10 @@ namespace Code.Characters.Doods.AI
         }
 
         protected override bool Precondition () {
+            if (Game.Ctx.Player == null) {
+                return false;
+            }
+
             var dist = Vector3.Distance(Dood.transform.position, Game.Ctx.Player.transform.position);
             return _minThresh < dist && dist < _maxThresh;
         }
