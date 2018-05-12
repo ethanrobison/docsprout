@@ -1,9 +1,7 @@
 ﻿using System;
-using Code.Characters.Doods.Needs;
 using Code.Session;
 using Code.Utils;
 using UnityEngine;
-using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace Code.Characters.Doods.Doodex
@@ -28,10 +26,14 @@ namespace Code.Characters.Doods.Doodex
         private DisplayMode _mode;
 
         public Doodex () {
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.Start, () => { Show(DisplayMode.Menu); });
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.Start, () => {
+                if (_active) { Hide(); }
+                else { Show(DisplayMode.Menu); }
+            });
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Hide);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => SwitchTab(1));
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => SwitchTab(-1));
+            
         }
 
         public void Show (DisplayMode mode, Dood dood = null) {
@@ -47,12 +49,13 @@ namespace Code.Characters.Doods.Doodex
             _active = true;
             _activeTab = GetAppropriateTab();
             _activeTab.Show();
-            
+
             Game.Sesh.Input.Monitor.SetMenuState(true);
         }
 
         private void Hide () {
             if (!_active) { return; }
+
             Game.Sesh.Input.Monitor.SetMenuState(false);
 
             OnHide();
