@@ -43,12 +43,15 @@ namespace Code
             //All of this feels like a hack, but I don't have any better ideas
             if (SceneManager.GetActiveScene().buildIndex != (int) SceneIdx.MainMenu) {
                 Doods.DoodList[0].IsSelected = true;
-                Doods.DoodList[0].Comps.Color.IsSelected = true;
+                Doods.DoodList[0].transform.Find("Dood/Body").gameObject.GetRequiredComponent<DoodColor>().IsSelected =
+                    true;
             }
             else {
                 // The menu must not be sad
                 Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.NoNeeds;
             }
+            
+            
         }
 
         private void ShutDown () {
