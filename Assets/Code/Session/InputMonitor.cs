@@ -103,9 +103,7 @@ namespace Code.Session
         }
 
         private void SetButtonNames () {
-            if (Game.Sesh.Input.Controller == Controller.None) {
-                return;
-            } // todo how to handle this?
+            if (Game.Sesh.Input.Controller == Controller.None) { return; }
 
             var xbox = Game.Sesh.Input.Controller == Controller.XBox;
 
@@ -113,15 +111,12 @@ namespace Code.Session
                 case Platform.OSX:
                     _buttonNames = xbox ? ButtonMappings.OsxXBox : ButtonMappings.Osxds4;
                     break;
-                case Platform.Windows:
-                    break;
-                case Platform.Linux:
-                    break;
+                case Platform.Windows: break;
+                case Platform.Linux: break;
                 case Platform.Invalid:
                     Logging.Error("Invalid platform; can't choose bindings.");
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -156,36 +151,6 @@ namespace Code.Session
                 OnPress = action;
                 PressType = type;
             }
-        }
-
-        // I am sorry about all the hard-coding
-        private static class ButtonMappings
-        {
-            //public static readonly Dictionary<ControllerButton, string> WindowsXBox = new Dictionary<ControllerButton, string> { };
-            //public static readonly Dictionary<ControllerButton, string> WindowsDS4 = new Dictionary<ControllerButton, string> { };
-            public static readonly Dictionary<ControllerButton, KeyCode> OsxXBox =
-                new Dictionary<ControllerButton, KeyCode> {
-                    { ControllerButton.AButton, KeyCode.JoystickButton16 },
-                    { ControllerButton.BButton, KeyCode.JoystickButton17 },
-                    { ControllerButton.XButton, KeyCode.JoystickButton18 },
-                    { ControllerButton.YButton, KeyCode.JoystickButton19 },
-                    { ControllerButton.RightBumper, KeyCode.JoystickButton14 },
-                    { ControllerButton.LeftBumper, KeyCode.JoystickButton13 },
-                    { ControllerButton.Start, KeyCode.JoystickButton9 },
-                    { ControllerButton.Select, KeyCode.JoystickButton10 }
-                };
-
-            public static readonly Dictionary<ControllerButton, KeyCode> Osxds4 =
-                new Dictionary<ControllerButton, KeyCode> {
-                    { ControllerButton.AButton, KeyCode.JoystickButton1 },
-                    { ControllerButton.BButton, KeyCode.JoystickButton2 },
-                    { ControllerButton.XButton, KeyCode.JoystickButton0 },
-                    { ControllerButton.YButton, KeyCode.JoystickButton3 },
-                    { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
-                    { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
-                    { ControllerButton.Start, KeyCode.JoystickButton9 },
-                    { ControllerButton.Select, KeyCode.JoystickButton17 }
-                };
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Code.Utils;
+﻿using System.Collections.Generic;
+using Code.Utils;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Code.Session
 {
@@ -46,6 +48,7 @@ namespace Code.Session
     public class InputManager : ISessionManager
     {
         public InputMonitor Monitor { get; private set; }
+        private StandaloneInputModule _module;
 
         public Platform Platform { get; private set; }
         public Controller Controller { get; private set; }
@@ -56,6 +59,7 @@ namespace Code.Session
 
             Monitor = Game.GO.AddComponent<InputMonitor>();
             Monitor.Initialize();
+            _module = Game.GO.GetRequiredComponentInChildren<StandaloneInputModule>();
         }
 
         public void ShutDown () {
@@ -65,7 +69,7 @@ namespace Code.Session
 
         public void OnGameStart () { Monitor.OnGameStart(); }
 
-        void SetupPlatform () {
+        private void SetupPlatform () {
             switch (Application.platform) {
                 case RuntimePlatform.OSXEditor:
                 case RuntimePlatform.OSXPlayer:
@@ -106,5 +110,40 @@ namespace Code.Session
             Logging.Warn("No controllers plugged in.");
             Controller = Controller.None;
         }
+
+        private void SetupInputModule () {
+            _module.submitButton = "";
+            _module.cancelButton = "";
+        }
+    }
+    
+    // I am sorry about all the hard-coding
+    public static class ButtonMappings
+    {
+        //public static readonly Dictionary<ControllerButton, string> WindowsXBox = new Dictionary<ControllerButton, string> { };
+        //public static readonly Dictionary<ControllerButton, string> WindowsDS4 = new Dictionary<ControllerButton, string> { };
+        public static readonly Dictionary<ControllerButton, KeyCode> OsxXBox =
+            new Dictionary<ControllerButton, KeyCode> {
+                { ControllerButton.AButton, KeyCode.JoystickButton16 },
+                { ControllerButton.BButton, KeyCode.JoystickButton17 },
+                { ControllerButton.XButton, KeyCode.JoystickButton18 },
+                { ControllerButton.YButton, KeyCode.JoystickButton19 },
+                { ControllerButton.RightBumper, KeyCode.JoystickButton14 },
+                { ControllerButton.LeftBumper, KeyCode.JoystickButton13 },
+                { ControllerButton.Start, KeyCode.JoystickButton9 },
+                { ControllerButton.Select, KeyCode.JoystickButton10 }
+            };
+
+        public static readonly Dictionary<ControllerButton, KeyCode> Osxds4 =
+            new Dictionary<ControllerButton, KeyCode> {
+                { ControllerButton.AButton, KeyCode.JoystickButton1 },
+                { ControllerButton.BButton, KeyCode.JoystickButton2 },
+                { ControllerButton.XButton, KeyCode.JoystickButton0 },
+                { ControllerButton.YButton, KeyCode.JoystickButton3 },
+                { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
+                { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
+                { ControllerButton.Start, KeyCode.JoystickButton9 },
+                { ControllerButton.Select, KeyCode.JoystickButton17 }
+            };
     }
 }
