@@ -42,7 +42,7 @@ namespace Code.Characters.Doods.AI
             AddPassiveNeed(dood, NeedType.Water);
             AddPassiveNeed(dood, NeedType.Sun);
 //            AddActiveNeed(dood, NeedType.Fun);
-            AddActiveNeed(dood, NeedType.Food);
+            AddPassiveNeed(dood, NeedType.Food);
 
             var need = _needs.First(n => n.Type == NeedType.Fun);
             var needAdvertiser = new AdvertiserNear(dood, NeedType.Fun);
