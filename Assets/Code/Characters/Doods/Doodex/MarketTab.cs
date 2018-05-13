@@ -35,6 +35,8 @@ namespace Code.Characters.Doods.Doodex
             var ctx = button.AddComponent<SeedPurchaseContext>();
             ctx.Info = info;
             ctx.Tab = this;
+
+            button.GetComponent<Button>().onClick.AddListener(() => Logging.Log("Preparing to buy seed:" + info.Name));
         }
 
 
