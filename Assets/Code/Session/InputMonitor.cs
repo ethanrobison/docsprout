@@ -42,8 +42,8 @@ namespace Code.Session
         private string _leftV;
         private string _rightH;
         private string _rightV;
-        private const string RT = "RT";
-        private const string LT = "LT";
+        private string _rt = "RT";
+        private string _lt = "LT";
 
         private Dictionary<ControllerButton, KeyCode> _buttonNames;
         private readonly List<ButtonPair> _mappings = new List<ButtonPair>();
@@ -54,7 +54,28 @@ namespace Code.Session
             _leftV = GetAxisName(true, false);
             _rightH = GetAxisName(false, true);
             _rightV = GetAxisName(false, false);
+
             SetButtonNames();
+
+            string plat = "";
+            switch (Game.Sesh.Input.Platform) {
+                case Platform.OSX:
+                    plat = "Mac";
+                    break;
+                case Platform.Windows:
+                    plat = "Win";
+                    break;
+                case Platform.Linux:
+                    break;
+                case Platform.Invalid:
+                    Logging.Error("Invalid platform; can't choose bindings.");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            _rt += plat;
+            _lt += plat;
         }
 
         public void ShutDown () { }
@@ -106,7 +127,29 @@ namespace Code.Session
 
             axisname += horizontal ? "H" : "V";
 
-            return axisname;
+            if (Game.Sesh.Input.Controller == Controller.None) {
+                return axisname;
+            }
+
+            string plat = "";
+
+            switch (Game.Sesh.Input.Platform) {
+                case Platform.OSX:
+                    plat = "Mac";
+                    break;
+                case Platform.Windows:
+                    plat = "Win";
+                    break;
+                case Platform.Linux:
+                    break;
+                case Platform.Invalid:
+                    Logging.Error("Invalid platform; can't choose bindings.");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return axisname + plat;
         }
 
         private void SetButtonNames () {
@@ -121,6 +164,7 @@ namespace Code.Session
                     _buttonNames = xbox ? ButtonMappings.OsxXBox : ButtonMappings.Osxds4;
                     break;
                 case Platform.Windows:
+                    _buttonNames = xbox ? ButtonMappings.WindowsXBox : ButtonMappings.Windowsds4;
                     break;
                 case Platform.Linux:
                     break;
@@ -136,7 +180,7 @@ namespace Code.Session
 
         // we hide the nastiness here so that we have better APIs elsewhere
         private void SetTriggers () {
-            var pressedRight = Input.GetAxisRaw(RT) > 0.1f;
+            var pressedRight = Input.GetAxisRaw(_rt) > 0.1f;
             if (pressedRight && _rtDown) { Rt = PressType.Hold; }
             else if (pressedRight && !_rtDown) {
                 Rt = PressType.ButtonDown;
@@ -148,7 +192,7 @@ namespace Code.Session
             }
             else { Rt = PressType.None; }
 
-            var pressedLeft = Input.GetAxisRaw(LT) > 0.1f;
+            var pressedLeft = Input.GetAxisRaw(_lt) > 0.1f;
             if (pressedLeft && _ltDown) { Lt = PressType.Hold; }
             else if (pressedLeft && !_ltDown) {
                 Lt = PressType.ButtonDown;
@@ -207,7 +251,18 @@ namespace Code.Session
                     {ControllerButton.Select, KeyCode.JoystickButton6}
                 };
 
-            //public static readonly Dictionary<ControllerButton, string> WindowsDS4 = new Dictionary<ControllerButton, string> { };
+            public static readonly Dictionary<ControllerButton, KeyCode> Windowsds4 =
+                new Dictionary<ControllerButton, KeyCode> {
+                    {ControllerButton.AButton, KeyCode.JoystickButton1},
+                    {ControllerButton.BButton, KeyCode.JoystickButton2},
+                    {ControllerButton.XButton, KeyCode.JoystickButton0},
+                    {ControllerButton.YButton, KeyCode.JoystickButton3},
+                    {ControllerButton.RightBumper, KeyCode.JoystickButton5},
+                    {ControllerButton.LeftBumper, KeyCode.JoystickButton4},
+                    {ControllerButton.Start, KeyCode.JoystickButton9},
+                    {ControllerButton.Select, KeyCode.JoystickButton8}
+                };
+
             public static readonly Dictionary<ControllerButton, KeyCode> OsxXBox =
                 new Dictionary<ControllerButton, KeyCode> {
                     {ControllerButton.AButton, KeyCode.JoystickButton16},
