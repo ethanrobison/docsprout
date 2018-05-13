@@ -21,6 +21,7 @@ namespace Code.Session
         }
 
         public void OnGameStart () { }
+        public void OnGameStop () { }
     }
 
     public class UISettings : ISessionManager
@@ -32,6 +33,7 @@ namespace Code.Session
         public void ShutDown () { }
 
         public void OnGameStart () { }
+        public void OnGameStop () { }
 
         public void SetUIScale (int option) {
             var scale = UIScalingList[option];

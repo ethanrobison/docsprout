@@ -54,6 +54,7 @@ namespace Code.Session
         public void ShutDown () { }
 
         public void OnGameStart () { _mappings.Clear(); }
+        public void OnGameStop () { _mappings.Clear(); }
 
         private void Update () {
             for (int i = 0, c = _mappings.Count; i < c; i++) {

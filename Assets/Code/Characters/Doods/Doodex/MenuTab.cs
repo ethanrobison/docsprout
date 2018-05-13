@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.Session;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Code.Characters.Doods.Doodex
@@ -16,6 +17,10 @@ namespace Code.Characters.Doods.Doodex
 
         public override void OnInitialize () {
             _mainMenu = GO.transform.Find("Main Menu").GetComponent<Button>();
+            _mainMenu.onClick.AddListener(() => {
+                Game.Sesh.ReturnToMenu();
+                Hide();
+            });
             _options = GO.transform.Find("Options").GetComponent<Button>();
         }
 

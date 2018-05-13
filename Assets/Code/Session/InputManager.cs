@@ -73,6 +73,7 @@ namespace Code.Session
         }
 
         public void OnGameStart () { Monitor.OnGameStart(); }
+        public void OnGameStop () { Monitor.OnGameStop(); }
 
         private void SetupPlatform () {
             switch (Application.platform) {

@@ -15,14 +15,6 @@ namespace Code.Session
             Input.Initialize();
         }
 
-        //        private void Shutdown () {
-        //            Dialogs.ShutDown();
-        //            Prefs.ShutDown();
-        //
-        //            Dialogs = null;
-        //            Prefs = null;
-        //        }
-
 
         // todo this isn't very sophisticated in fact I dislike it
         public void StartGame (int scene) {
@@ -45,8 +37,10 @@ namespace Code.Session
             Prefs.OnGameStart();
         }
 
+        private void StopGame () { Input.OnGameStop(); }
+
         public void ReturnToMenu () {
-            Initialize();
+            StopGame();
             SceneManager.sceneLoaded += RemoveContext;
             SceneManager.LoadScene(0);
         }
@@ -62,5 +56,6 @@ namespace Code.Session
         void Initialize ();
         void ShutDown ();
         void OnGameStart ();
+        void OnGameStop ();
     }
 }
