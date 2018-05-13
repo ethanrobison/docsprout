@@ -53,7 +53,7 @@ namespace Code.Characters.Doods.Doodex
             Game.Sesh.Input.Monitor.SetMenuState(true);
         }
 
-        private void Hide () {
+        public void Hide () {
             if (!_active) { return; }
 
             Game.Sesh.Input.Monitor.SetMenuState(false);
