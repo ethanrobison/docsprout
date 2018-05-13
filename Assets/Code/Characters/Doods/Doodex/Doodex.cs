@@ -23,18 +23,19 @@ namespace Code.Characters.Doods.Doodex
 
         private DoodexTab _doodTab, _marketTab, _allDoodsTab, _menuTab;
         private DoodexTab _activeTab;
-        private DisplayMode _mode;
+        private DisplayMode _mode = DisplayMode.Market;
 
         public Doodex () {
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.Start, () => {
                 if (_active) { Hide(); }
-                else { Show(DisplayMode.Menu); }
+                else { Show(); }
             });
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Hide);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => SwitchTab(1));
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => SwitchTab(-1));
-            
         }
+
+        private void Show () { Show(_mode); }
 
         public void Show (DisplayMode mode, Dood dood = null) {
             if (_active) { return; }
