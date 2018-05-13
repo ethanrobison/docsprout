@@ -21,6 +21,8 @@ namespace Code.Session.MainMenu
         public OptionType Option;
 
         private MenuInfo _state;
+        
+        private InteractionHighlight _highlight;
 
         private void Start () {
             MakeState();
@@ -30,6 +32,9 @@ namespace Code.Session.MainMenu
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => {
                 if (_state.Active) { _state.ChangeOption(-1); }
             });
+            
+            _highlight = transform.Find("Cube").gameObject.GetRequiredComponent<InteractionHighlight>();
+            
         }
 
         private void MakeState () {
@@ -56,8 +61,14 @@ namespace Code.Session.MainMenu
             _state.Reset();
         }
 
-        public void OnApproach () { _state.SetState(true); }
-        public void OnDepart () { _state.SetState(false); }
+        public void OnApproach () {
+            _state.SetState(true);
+            _highlight.IsHighlighted = true;
+        }
+        public void OnDepart () {
+            _state.SetState(false); 
+            _highlight.IsHighlighted = false;
+        }
         public void Interact () { _state.PerformAction(); }
         public void SecondaryInteract () { }
 

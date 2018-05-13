@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 33796834916913836}
   - component: {fileID: 23134928744294202}
   - component: {fileID: 65380838314330890}
+  - component: {fileID: 114119258256873324}
   m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
@@ -107,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4668243488586066}
   - component: {fileID: 135878943540063366}
-  - component: {fileID: 114722380353798560}
+  - component: {fileID: 114358557807529100}
   m_Layer: 10
   m_Name: Main Menu Item
   m_TagString: Untagged
@@ -123,7 +124,7 @@ Transform:
   m_GameObject: {fileID: 1272426132812728}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 4668243488586066}
   m_RootOrder: 0
@@ -148,8 +149,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1898392849403824}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 8}
+  m_LocalRotation: {x: 0, y: 0.2588191, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: -8, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4014209650881660}
@@ -157,7 +158,7 @@ Transform:
   - {fileID: 224378648562402170}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 30, z: 0}
 --- !u!4 &4827696510610854
 Transform:
   m_ObjectHideFlags: 1
@@ -289,7 +290,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1272426132812728}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 28378d3ca3565467caa2258b818f84f0, type: 3}
 --- !u!65 &65380838314330890
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -302,6 +303,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114119258256873324
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1272426132812728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fa0ec5a55443437b93720c5a63ad6b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isHighlighted: 0
 --- !u!114 &114350505828173402
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -323,6 +336,18 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114358557807529100
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1898392849403824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03ca4848da81a409793148e89bf33991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Option: 1
 --- !u!114 &114483652053132032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -371,18 +396,6 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: This is some informative text. It exists to tell you things about this thing
     right here.
---- !u!114 &114722380353798560
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1898392849403824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03ca4848da81a409793148e89bf33991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Option: 0
 --- !u!114 &114977365418725632
 MonoBehaviour:
   m_ObjectHideFlags: 1
