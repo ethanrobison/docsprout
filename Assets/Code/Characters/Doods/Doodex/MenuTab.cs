@@ -1,5 +1,4 @@
-﻿using Code.Session;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Code.Characters.Doods.Doodex
