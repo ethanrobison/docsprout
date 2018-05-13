@@ -41,7 +41,6 @@ namespace Code.Session
 
         private bool _inMenu;
 
-        private Dictionary<ControllerButton, KeyCode> _buttonNames;
         private readonly List<ButtonPair> _mappings = new List<ButtonPair>();
 
         public void Initialize () {
@@ -50,7 +49,6 @@ namespace Code.Session
             _leftV = GetAxisName(true, false);
             _rightH = GetAxisName(false, true);
             _rightV = GetAxisName(false, false);
-            SetButtonNames();
         }
 
         public void ShutDown () { }
@@ -62,29 +60,22 @@ namespace Code.Session
                 var pair = _mappings[i];
                 switch (pair.PressType) {
                     case PressType.ButtonDown:
-                        if (Input.GetKeyDown(pair.ButtonName)) {
-                            pair.OnPress();
-                        }
+                        if (Input.GetKeyDown(pair.ButtonName)) { pair.OnPress(); }
 
                         break;
                     case PressType.ButtonUp:
-                        if (Input.GetKeyUp(pair.ButtonName)) {
-                            pair.OnPress();
-                        }
+                        if (Input.GetKeyUp(pair.ButtonName)) { pair.OnPress(); }
 
                         break;
                     case PressType.Hold:
-                        if (Input.GetKey(pair.ButtonName)) {
-                            pair.OnPress();
-                        }
+                        if (Input.GetKey(pair.ButtonName)) { pair.OnPress(); }
 
                         break;
-                    case PressType.None:
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
-                c = _mappings.Count;
+                c = _mappings.Count; // hack to prevent errors on scene loading
             }
         }
 
@@ -102,30 +93,12 @@ namespace Code.Session
             return axisname;
         }
 
-        private void SetButtonNames () {
-            if (Game.Sesh.Input.Controller == Controller.None) { return; }
-
-            var xbox = Game.Sesh.Input.Controller == Controller.XBox;
-
-            switch (Game.Sesh.Input.Platform) {
-                case Platform.OSX:
-                    _buttonNames = xbox ? ButtonMappings.OsxXBox : ButtonMappings.Osxds4;
-                    break;
-                case Platform.Windows: break;
-                case Platform.Linux: break;
-                case Platform.Invalid:
-                    Logging.Error("Invalid platform; can't choose bindings.");
-                    break;
-                default: throw new ArgumentOutOfRangeException();
-            }
-        }
-
         //
         // API
 
         public void RegisterMapping (ControllerButton button, Action onpress, PressType type = PressType.ButtonDown) {
             KeyCode buttonname;
-            if (!_buttonNames.TryGetValue(button, out buttonname)) {
+            if (!Game.Sesh.Input.ButtonNames.TryGetValue(button, out buttonname)) {
                 Logging.Error("Missing name for button: " + button);
                 return;
             }

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Object = UnityEngine.Object;
 
 namespace Code.Session
 {
@@ -53,13 +55,16 @@ namespace Code.Session
         public Platform Platform { get; private set; }
         public Controller Controller { get; private set; }
 
+        public Dictionary<ControllerButton, KeyCode> ButtonNames { get; private set; }
+
         public void Initialize () {
             SetupPlatform();
             SetupController();
+            SetButtonNames();
+            SetupInputModule();
 
             Monitor = Game.GO.AddComponent<InputMonitor>();
             Monitor.Initialize();
-            _module = Game.GO.GetRequiredComponentInChildren<StandaloneInputModule>();
         }
 
         public void ShutDown () {
@@ -111,12 +116,37 @@ namespace Code.Session
             Controller = Controller.None;
         }
 
+        private void SetButtonNames () {
+            if (Game.Sesh.Input.Controller == Controller.None) { return; }
+
+            var xbox = Game.Sesh.Input.Controller == Controller.XBox;
+
+            switch (Game.Sesh.Input.Platform) {
+                case Platform.OSX:
+                    ButtonNames = xbox ? ButtonMappings.OsxXBox : ButtonMappings.Osxds4;
+                    break;
+                case Platform.Windows: break;
+                case Platform.Linux: break;
+                case Platform.Invalid:
+                    Logging.Error("Invalid platform; can't choose bindings.");
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private void SetupInputModule () {
-            _module.submitButton = "";
-            _module.cancelButton = "";
+            _module = Game.GO.GetRequiredComponentInChildren<StandaloneInputModule>();
+
+            KeyCode buttonname;
+            if (!ButtonNames.TryGetValue(ControllerButton.AButton, out buttonname)) {
+                Logging.Error("Button names not set up?");
+                return;
+            }
+
+            _module.submitButton = buttonname.ToString();
         }
     }
-    
+
     // I am sorry about all the hard-coding
     public static class ButtonMappings
     {
