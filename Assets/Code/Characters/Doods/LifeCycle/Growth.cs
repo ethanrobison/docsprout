@@ -19,13 +19,13 @@ namespace Code.Characters.Doods.LifeCycle
 
         private ParticleSystem _particle;
         private AudioSource _pop;
-        public ParticleSystem HappyParticles;
+        //public ParticleSystem HappyParticles;
 
 
         private void Start () {
             _particle = transform.Find("Particle System").GetComponent<ParticleSystem>();
             _status = transform.Find("Status").gameObject.GetRequiredComponent<DoodStatus>();
-            HappyParticles = transform.Find("HappyParticles").GetComponent<ParticleSystem>();
+            //HappyParticles = transform.Find("HappyParticles").GetComponent<ParticleSystem>();
 
             var plant = transform.Find("Dood/Body/Plant").gameObject;
             _pop = plant.GetRequiredComponent<AudioSource>();
@@ -83,7 +83,7 @@ namespace Code.Characters.Doods.LifeCycle
             _value = 0f;
             if (_species.GetNextStage(_currentStage) == Maturity.Empty) { return; }
 
-            _growth.HappyParticles.Play();
+            //_growth.HappyParticles.Play();
             _stepsLeft--;
             if (_stepsLeft > 0) { return; }
 

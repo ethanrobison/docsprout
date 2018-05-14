@@ -50,4 +50,12 @@ namespace Code.Characters.Doods.AI
             return Status.Success;
         }
     }
+    
+    
+    public class TreatsNear : FilterSelector
+    {
+        public TreatsNear (Dood dood) : base(dood) {}
+
+        protected override bool Precondition () { return Dood.Comps.Status.TreatsAdvertising > 0; }
+    }
 }

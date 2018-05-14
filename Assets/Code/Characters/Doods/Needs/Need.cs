@@ -44,7 +44,7 @@ namespace Code.Characters.Doods.Needs
                 Enabled = Doodopedia.GetDoodSpecies(growth.Species).GetNeedOfType(Maturity.Seed, Type)
             };
 
-            _satisfactionParticle = transform.parent.Find("SatisfyingParticles").GetComponent<ParticleSystem>();
+            _satisfactionParticle = transform.parent.Find("HappyParticles").GetComponent<ParticleSystem>();
         }
 
 
@@ -89,7 +89,7 @@ namespace Code.Characters.Doods.Needs
             Value = Mathf.Clamp(result, 0f, MAX);
         }
 
-        public void SatisfyNeed (float time) { ChangeValue(time * SatisfactionRate); }
+        public void SatisfyNeed (float time) { Value = Mathf.Lerp(Value, MAX, time * SatisfactionRate); }
 
         public void IncreaseNeed (float time) { ChangeValue(-time * DecayRate); }
 
