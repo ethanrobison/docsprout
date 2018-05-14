@@ -26,31 +26,28 @@ namespace Code.Session
             Input.Initialize();
             Doodopedia.LoadSpecies();
 
-            SetCtx(SceneIndex.Current);
+            StartGame(SceneIndex.MainMenu);
         }
 
 
         // todo this isn't very sophisticated in fact I dislike it
         public void StartGame (SceneIndex index) {
-            SetCtx(index);
+            ResetContext();
+            if (index == SceneIndex.MainMenu) {
+                Input.OnGameStop();
+                Prefs.OnGameStop();
+            }
+            else {
+                Input.OnGameStart();
+                Prefs.OnGameStart();
+            }
+
             Game.Ctx.StartGame(index);
-            Input.OnGameStart();
-            Prefs.OnGameStart();
         }
 
-        private void StopGame () {
-            Input.OnGameStop();
-            Prefs.OnGameStop();
-        }
+        public void ReturnToMenu () { ResetContext(); }
 
-        public void ReturnToMenu () {
-            SetCtx(SceneIndex.MainMenu);
-            StopGame();
-        }
-
-        private void SetCtx (SceneIndex index) {
-            Game.SetContext(this, index == SceneIndex.MainMenu ? null : new GameContext());
-        }
+        private void ResetContext () { Game.SetContext(this, new GameContext()); }
     }
 
     public interface ISessionManager

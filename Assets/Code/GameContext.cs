@@ -13,14 +13,9 @@ namespace Code
         public DoodManager Doods { get; private set; }
         public Player Player { get; private set; }
 
-        private readonly int _startNumDoods;
-
-
         public void StartGame (SceneIndex index) {
-            if (index < 0) {
-                Initialize();
-                return;
-            }
+            Initialize();
+            if (index < SceneIndex.Demo) { return; }
 
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.LoadScene((int) index);
