@@ -1,4 +1,5 @@
 using Code.Characters.Doods;
+using Code.Utils;
 using UnityEngine;
 
 namespace Code.Characters.Player
@@ -11,8 +12,8 @@ namespace Code.Characters.Player
 
 
         private void Start () {
-            _camController = GetComponent<CameraController>();
-            _movement = GetComponent<Movement>();
+            _camController = gameObject.GetRequiredComponent<CameraController>();
+            _movement = gameObject.GetRequiredComponent<Movement>();
 
             if (Game.Ctx != null) { Game.Ctx.SetPlayer(this); }
         }
