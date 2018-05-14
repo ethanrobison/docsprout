@@ -10,7 +10,7 @@ namespace Code.Characters.Doods.Doodex
     {
         private Transform _contents, _description;
 
-        private List<SeedInfo> _seeds = new List<SeedInfo> { new SeedInfo("A"), new SeedInfo("B"), new SeedInfo("C") };
+        private readonly List<SeedInfo> _seeds = new List<SeedInfo> { new SeedInfo("Moste Basiq Dood") };
 
         public MarketTab (Transform tr, Transform tabbar) : base(tr, tabbar) { }
 
@@ -36,7 +36,7 @@ namespace Code.Characters.Doods.Doodex
             ctx.Info = info;
             ctx.Tab = this;
 
-            button.GetComponent<Button>().onClick.AddListener(() => Logging.Log("Preparing to buy seed:" + info.Name));
+            button.GetComponent<Button>().onClick.AddListener(ctx.Buy);
         }
 
 
@@ -59,5 +59,7 @@ namespace Code.Characters.Doods.Doodex
         public MarketTab Tab;
 
         public void OnSelect (BaseEventData eventData) { Tab.SelectInfo(Info); }
+
+        public void Buy () { Game.Ctx.Doods.PurchaseSeed(Info); }
     }
 }

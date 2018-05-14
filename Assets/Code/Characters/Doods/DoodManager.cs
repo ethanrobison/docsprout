@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.Characters.Doods.Doodex;
 using UnityEngine;
 
 namespace Code.Characters.Doods
@@ -43,6 +44,12 @@ namespace Code.Characters.Doods
             foreach (var dood in DoodList) {
                 dood.OnDeselect();
             }
+        }
+
+        public void PurchaseSeed (SeedInfo info) {
+            var tr = Game.Ctx.Player.transform;
+            var pos = tr.position + tr.forward * 3f + Vector3.up * 3f;
+            MakeDood(pos, "Base Dood");
         }
     }
 }
