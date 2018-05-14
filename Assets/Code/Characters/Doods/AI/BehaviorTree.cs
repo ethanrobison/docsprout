@@ -39,16 +39,15 @@ namespace Code.Characters.Doods.AI
 //            AddActiveNode(dood, close);
             AddActiveNode(dood, selected);
 
-            var treatsNear = new TreatsNear(dood); 
-            treatsNear.AddToEnd(new GoToTreat(dood));
-            AddActiveNode(dood, treatsNear);
-            
             AddPassiveNeed(dood, NeedType.Water);
             AddPassiveNeed(dood, NeedType.Sun);
 //            AddActiveNeed(dood, NeedType.Fun);
             AddPassiveNeed(dood, NeedType.Food);
+            
+            var treatsNear = new TreatsNear(dood);
+            treatsNear.AddToEnd(new GoToTreat(dood));
+            AddActiveNode(dood, treatsNear);
 
-            var need = _needs.First(n => n.Type == NeedType.Fun);
             var needAdvertiser = new AdvertiserNear(dood, NeedType.Fun);
             var needSatisfaction = new NeedSatisfiable(dood, NeedType.Fun);
             needSatisfaction.AddToEnd(new InteractWithSatisfier(dood, NeedType.Fun));

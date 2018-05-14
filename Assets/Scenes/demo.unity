@@ -857,6 +857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc1e3947f304146902b202ee3019ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTreat: 0
   _satisfies: 3
 --- !u!135 &630323272
 SphereCollider:
@@ -1575,6 +1576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc1e3947f304146902b202ee3019ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTreat: 0
   _satisfies: 2
 --- !u!1 &910331274
 GameObject:
@@ -1742,6 +1744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc1e3947f304146902b202ee3019ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTreat: 0
   _satisfies: 2
 --- !u!135 &1011454987
 SphereCollider:
@@ -2616,6 +2619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc1e3947f304146902b202ee3019ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTreat: 0
   _satisfies: 2
 --- !u!135 &1187706581
 SphereCollider:
@@ -3084,7 +3088,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b38bac420534554982919dfbdebbff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestScene: 1
 --- !u!4 &1773484852
 Transform:
   m_ObjectHideFlags: 0

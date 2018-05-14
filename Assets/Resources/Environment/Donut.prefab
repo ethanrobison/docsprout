@@ -2012,6 +2012,7 @@ GameObject:
   - component: {fileID: 23926772730391556}
   - component: {fileID: 65895501080287748}
   - component: {fileID: 54805795057563314}
+  - component: {fileID: 114073836894362768}
   m_Layer: 14
   m_Name: Donut
   m_TagString: Untagged
@@ -4853,7 +4854,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1582685690959470}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 11.78262, y: 0.22961791, z: 6.772804}
+  m_LocalPosition: {x: 38.81885, y: -0.0000041498242, z: -23.2075}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4733050037392118}
@@ -14847,6 +14848,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.9, y: 2.8999999, z: 0.9018191}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114073836894362768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1582685690959470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a1734615ce714f5381e07ab0ac23ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114210225417135788
 MonoBehaviour:
   m_ObjectHideFlags: 1
