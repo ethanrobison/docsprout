@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4394020894729560}
   - component: {fileID: 33369723280425858}
   - component: {fileID: 23917117257022852}
-  - component: {fileID: 136019803540680466}
   m_Layer: 12
   m_Name: Base
   m_TagString: Untagged
@@ -75,7 +74,6 @@ GameObject:
   - component: {fileID: 4586299775090430}
   - component: {fileID: 33632885560970054}
   - component: {fileID: 23312942886608176}
-  - component: {fileID: 136488203357308540}
   m_Layer: 12
   m_Name: Cylinder
   m_TagString: Untagged
@@ -103,7 +101,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1398096695872946}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -22, y: 0.25, z: 20}
+  m_LocalPosition: {x: 20, y: 0.25, z: -10}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 4394020894729560}
@@ -233,6 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc1e3947f304146902b202ee3019ca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsTreat: 0
   _satisfies: 1
 --- !u!114 &114991601263590058
 MonoBehaviour:
@@ -270,32 +269,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 9
   m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &136019803540680466
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1220288829167172}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!136 &136488203357308540
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1706722015271256}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!198 &198318119583640280
 ParticleSystem:
   m_ObjectHideFlags: 1
