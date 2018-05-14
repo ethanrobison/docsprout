@@ -201,7 +201,7 @@ namespace Code.Session
                 { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
                 { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
                 { ControllerButton.Start, KeyCode.JoystickButton9 },
-                { ControllerButton.Select, KeyCode.JoystickButton17 }
+                { ControllerButton.Select, KeyCode.JoystickButton8 }
             };
     }
 }
