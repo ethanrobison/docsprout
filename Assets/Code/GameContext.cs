@@ -13,12 +13,19 @@ namespace Code
         public DoodManager Doods { get; private set; }
         public Player Player { get; private set; }
 
+        public bool InMenu {
+            get { return _index == SceneIndex.MainMenu || _index == SceneIndex.Current; }
+        }
+
+        private SceneIndex _index;
+
         public void StartGame (SceneIndex index) {
+            _index = index;
             Initialize();
-            if (index < SceneIndex.Demo) { return; }
+            if (_index < SceneIndex.Demo) { return; }
 
             SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.LoadScene((int) index);
+            SceneManager.LoadScene((int) _index);
         }
 
         public void SetPlayer (Player player) {
