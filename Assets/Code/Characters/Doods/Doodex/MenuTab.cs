@@ -16,6 +16,10 @@ namespace Code.Characters.Doods.Doodex
 
         public override void OnInitialize () {
             _mainMenu = GO.transform.Find("Main Menu").GetComponent<Button>();
+            _mainMenu.onClick.AddListener(() => {
+                Game.Ctx.Doods.Doodex.Hide();
+                Game.Sesh.ReturnToMenu();
+            });
             _options = GO.transform.Find("Options").GetComponent<Button>();
         }
 

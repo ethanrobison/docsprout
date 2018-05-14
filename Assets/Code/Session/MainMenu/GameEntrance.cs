@@ -10,11 +10,11 @@ namespace Code.Session.MainMenu
     public class GameEntrance : MonoBehaviour
     {
         private const float FADE_TIME = 1f;
-        private float timer = 0f;
-        Image fadeImage;
+        private float _timer;
+        private Image _fadeImage;
 
         private void Start () {
-            fadeImage = UIUtils.GetCanvas().transform.Find("Fade Panel").gameObject.GetRequiredComponent<Image>();
+            _fadeImage = UIUtils.GetCanvas().transform.Find("Fade Panel").gameObject.GetRequiredComponent<Image>();
         }
 
         private void OnTriggerEnter (Collider other) {
@@ -27,37 +27,39 @@ namespace Code.Session.MainMenu
 
         private void OnTriggerExit (Collider other) {
             var player = other.gameObject.GetComponent<Player>();
-            if (player == null) return;
+            if (player == null) { return; }
+
             StopFade();
         }
 
         private void Update () {
-            if (timer <= 0f) return;
-            timer -= Time.deltaTime;
-            if (timer <= 0f) {
-                Game.Sesh.StartGame((int) SceneIdx.Demo);
+            if (_timer < 0f) { return; }
+
+            _timer -= Time.deltaTime;
+            if (_timer < 0f) {
+                Game.Sesh.StartGame(SceneIndex.Demo);
                 SceneManager.sceneLoaded += OnSceneLoad;
                 return;
             }
 
-            var fadeColor = fadeImage.color;
-            fadeColor.a = 1 - timer / FADE_TIME;
-            fadeImage.color = fadeColor;
+            var fadeColor = _fadeImage.color;
+            fadeColor.a = 1 - _timer / FADE_TIME;
+            _fadeImage.color = fadeColor;
         }
 
-        private void StartFade () { timer = FADE_TIME; }
+        private void StartFade () { _timer = FADE_TIME; }
 
         private void StopFade () {
-            var fadeColor = fadeImage.color;
+            var fadeColor = _fadeImage.color;
             fadeColor.a = 0f;
-            fadeImage.color = fadeColor;
-            timer = 0f;
+            _fadeImage.color = fadeColor;
+            _timer = 0f;
         }
 
         private void OnSceneLoad (Scene scene, LoadSceneMode mode) {
-            var fadeColor = fadeImage.color;
+            var fadeColor = _fadeImage.color;
             fadeColor.a = 0f;
-            fadeImage.color = fadeColor;
+            _fadeImage.color = fadeColor;
             SceneManager.sceneLoaded -= OnSceneLoad;
         }
     }

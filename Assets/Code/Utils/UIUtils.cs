@@ -7,13 +7,15 @@ namespace Code.Utils
     {
         Doodex,
         NeedMeter,
+        SeedSlot,
     }
 
     public static class UIUtils
     {
         private static readonly Dictionary<UIPrefab, string> PrefabsPaths = new Dictionary<UIPrefab, string> {
             { UIPrefab.Doodex, "UI/Doodex" },
-            { UIPrefab.NeedMeter, "UI/Need" }
+            { UIPrefab.NeedMeter, "UI/Need" },
+            { UIPrefab.SeedSlot, "UI/Seed Slot" }
         };
 
         public static Transform GetCanvas () {

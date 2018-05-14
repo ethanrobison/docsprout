@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Code.Session
 {
-    public enum SceneIdx
+    public enum SceneIndex
     {
         Current = -1,
         MainMenu = 0,
@@ -26,32 +26,43 @@ namespace Code.Session
             Input.Initialize();
             Doodopedia.LoadSpecies();
 
-            SetCtx((int) SceneIdx.Current);
+            SetCtx(SceneIndex.Current);
         }
-
-        //        private void Shutdown () {
-        //            Dialogs.ShutDown();
-        //            Prefs.ShutDown();
-        //
-        //            Dialogs = null;
-        //            Prefs = null;
-        //        }
 
 
         // todo this isn't very sophisticated in fact I dislike it
-        public void StartGame (int scene) { SetCtx(scene); }
-
-        public void ReturnToMenu () { SetCtx((int) SceneIdx.MainMenu); }
-
-        private void SetCtx (int scene) {
-            var ctx = new GameContext();
-            Game.SetContext(this, ctx);
-
-            ctx.StartGame(scene);
-
+        public void StartGame (SceneIndex index) {
+            SetCtx(index);
+            Game.Ctx.StartGame((int) index);
             Input.OnGameStart();
             Prefs.OnGameStart();
         }
+
+        private void StopGame () {
+            Input.OnGameStop();
+            Prefs.OnGameStop();
+        }
+
+        public void ReturnToMenu () {
+            SetCtx(SceneIndex.MainMenu);
+            StopGame();
+        }
+
+        private void SetCtx (SceneIndex index) {
+            Game.SetContext(this, index == SceneIndex.MainMenu ? null : new GameContext());
+        }
+
+
+//        public void ReturnToMenu () {
+//            StopGame();
+//            SceneManager.sceneLoaded += RemoveContext;
+//            SceneManager.LoadScene(0);
+//        }
+//
+//        private static void RemoveContext (Scene scene, LoadSceneMode mode) {
+//            Game.Ctx = null;
+//            SceneManager.sceneLoaded -= RemoveContext;
+//        }
     }
 
     public interface ISessionManager
@@ -59,5 +70,6 @@ namespace Code.Session
         void Initialize ();
         void ShutDown ();
         void OnGameStart ();
+        void OnGameStop ();
     }
 }

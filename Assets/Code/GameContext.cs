@@ -41,7 +41,7 @@ namespace Code
             Doods.Initialize();
 
             //All of this feels like a hack, but I don't have any better ideas
-            if (SceneManager.GetActiveScene().buildIndex != (int) SceneIdx.MainMenu) {
+            if (SceneManager.GetActiveScene().buildIndex != (int) SceneIndex.MainMenu) {
                 Doods.DoodList[0].IsSelected = true;
                 Doods.DoodList[0].transform.Find("Dood/Body").gameObject.GetRequiredComponent<DoodColor>().IsSelected =
                     true;

@@ -19,33 +19,28 @@ namespace Code.Session
     public class InputMonitor : MonoBehaviour, ISessionManager
     {
         public float LeftH {
-            get { return Input.GetAxisRaw(_leftH); }
+            get { return _inMenu ? 0f : Input.GetAxisRaw(_leftH); }
         }
 
         public float LeftV {
-            get { return Input.GetAxisRaw(_leftV); }
+            get { return _inMenu ? 0f : Input.GetAxisRaw(_leftV); }
         }
 
         public float RightH {
-            get { return Input.GetAxisRaw(_rightH); }
+            get { return _inMenu ? 0f : Input.GetAxisRaw(_rightH); }
         }
 
         public float RightV {
-            get { return Input.GetAxisRaw(_rightV); }
+            get { return _inMenu ? 0f : Input.GetAxisRaw(_rightV); }
         }
-
-        public PressType Rt { get; private set; }
-
-        public PressType Lt { get; private set; }
 
         private string _leftH;
         private string _leftV;
         private string _rightH;
         private string _rightV;
-        private string _rt = "RT";
-        private string _lt = "LT";
 
-        private Dictionary<ControllerButton, KeyCode> _buttonNames;
+        private bool _inMenu;
+
         private readonly List<ButtonPair> _mappings = new List<ButtonPair>();
 
         public void Initialize () {
@@ -54,66 +49,35 @@ namespace Code.Session
             _leftV = GetAxisName(true, false);
             _rightH = GetAxisName(false, true);
             _rightV = GetAxisName(false, false);
-
-            SetButtonNames();
-
-            string plat = "";
-            switch (Game.Sesh.Input.Platform) {
-                case Platform.OSX:
-                    plat = "Mac";
-                    break;
-                case Platform.Windows:
-                    plat = "Win";
-                    break;
-                case Platform.Linux:
-                    break;
-                case Platform.Invalid:
-                    Logging.Error("Invalid platform; can't choose bindings.");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            _rt += plat;
-            _lt += plat;
         }
 
         public void ShutDown () { }
 
         public void OnGameStart () { _mappings.Clear(); }
+        public void OnGameStop () { _mappings.Clear(); }
 
-        // todo maybe loop unroll me? seems like overkill
         private void Update () {
             for (int i = 0, c = _mappings.Count; i < c; i++) {
                 var pair = _mappings[i];
                 switch (pair.PressType) {
                     case PressType.ButtonDown:
-                        if (Input.GetKeyDown(pair.ButtonName)) {
-                            pair.OnPress();
-                        }
+                        if (Input.GetKeyDown(pair.ButtonName)) { pair.OnPress(); }
 
                         break;
                     case PressType.ButtonUp:
-                        if (Input.GetKeyUp(pair.ButtonName)) {
-                            pair.OnPress();
-                        }
+                        if (Input.GetKeyUp(pair.ButtonName)) { pair.OnPress(); }
 
                         break;
                     case PressType.Hold:
-                        if (Input.GetKey(pair.ButtonName)) {
-                            pair.OnPress();
-                        }
+                        if (Input.GetKey(pair.ButtonName)) { pair.OnPress(); }
 
                         break;
-                    case PressType.None:
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
-                c = _mappings.Count;
+                c = _mappings.Count; // hack to prevent errors on scene loading
             }
-
-            SetTriggers();
         }
 
 
@@ -152,65 +116,12 @@ namespace Code.Session
             return axisname + plat;
         }
 
-        private void SetButtonNames () {
-            if (Game.Sesh.Input.Controller == Controller.None) {
-                return;
-            } // todo how to handle this?
-
-            var xbox = Game.Sesh.Input.Controller == Controller.XBox;
-
-            switch (Game.Sesh.Input.Platform) {
-                case Platform.OSX:
-                    _buttonNames = xbox ? ButtonMappings.OsxXBox : ButtonMappings.Osxds4;
-                    break;
-                case Platform.Windows:
-                    _buttonNames = xbox ? ButtonMappings.WindowsXBox : ButtonMappings.Windowsds4;
-                    break;
-                case Platform.Linux:
-                    break;
-                case Platform.Invalid:
-                    Logging.Error("Invalid platform; can't choose bindings.");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private bool _ltDown, _rtDown;
-
-        // we hide the nastiness here so that we have better APIs elsewhere
-        private void SetTriggers () {
-            var pressedRight = Input.GetAxisRaw(_rt) > 0.1f;
-            if (pressedRight && _rtDown) { Rt = PressType.Hold; }
-            else if (pressedRight && !_rtDown) {
-                Rt = PressType.ButtonDown;
-                _rtDown = true;
-            }
-            else if (_rtDown) {
-                Rt = PressType.ButtonUp;
-                _rtDown = false;
-            }
-            else { Rt = PressType.None; }
-
-            var pressedLeft = Input.GetAxisRaw(_lt) > 0.1f;
-            if (pressedLeft && _ltDown) { Lt = PressType.Hold; }
-            else if (pressedLeft && !_ltDown) {
-                Lt = PressType.ButtonDown;
-                _ltDown = true;
-            }
-            else if (_ltDown) {
-                Lt = PressType.ButtonUp;
-                _ltDown = false;
-            }
-            else { Lt = PressType.None; }
-        }
-
         //
         // API
 
         public void RegisterMapping (ControllerButton button, Action onpress, PressType type = PressType.ButtonDown) {
             KeyCode buttonname;
-            if (!_buttonNames.TryGetValue(button, out buttonname)) {
+            if (!Game.Sesh.Input.ButtonNames.TryGetValue(button, out buttonname)) {
                 Logging.Error("Missing name for button: " + button);
                 return;
             }
@@ -218,6 +129,8 @@ namespace Code.Session
             var pair = new ButtonPair(buttonname, onpress, type);
             _mappings.Add(pair);
         }
+
+        public void SetMenuState (bool state) { _inMenu = state; }
 
         //
         // helper classes
@@ -234,58 +147,6 @@ namespace Code.Session
                 OnPress = action;
                 PressType = type;
             }
-        }
-
-        // I am sorry about all the hard-coding
-        private static class ButtonMappings
-        {
-            public static readonly Dictionary<ControllerButton, KeyCode> WindowsXBox =
-                new Dictionary<ControllerButton, KeyCode> {
-                    {ControllerButton.AButton, KeyCode.JoystickButton0},
-                    {ControllerButton.BButton, KeyCode.JoystickButton1},
-                    {ControllerButton.XButton, KeyCode.JoystickButton2},
-                    {ControllerButton.YButton, KeyCode.JoystickButton3},
-                    {ControllerButton.RightBumper, KeyCode.JoystickButton5},
-                    {ControllerButton.LeftBumper, KeyCode.JoystickButton4},
-                    {ControllerButton.Start, KeyCode.JoystickButton7},
-                    {ControllerButton.Select, KeyCode.JoystickButton6}
-                };
-
-            public static readonly Dictionary<ControllerButton, KeyCode> Windowsds4 =
-                new Dictionary<ControllerButton, KeyCode> {
-                    {ControllerButton.AButton, KeyCode.JoystickButton1},
-                    {ControllerButton.BButton, KeyCode.JoystickButton2},
-                    {ControllerButton.XButton, KeyCode.JoystickButton0},
-                    {ControllerButton.YButton, KeyCode.JoystickButton3},
-                    {ControllerButton.RightBumper, KeyCode.JoystickButton5},
-                    {ControllerButton.LeftBumper, KeyCode.JoystickButton4},
-                    {ControllerButton.Start, KeyCode.JoystickButton9},
-                    {ControllerButton.Select, KeyCode.JoystickButton8}
-                };
-
-            public static readonly Dictionary<ControllerButton, KeyCode> OsxXBox =
-                new Dictionary<ControllerButton, KeyCode> {
-                    {ControllerButton.AButton, KeyCode.JoystickButton16},
-                    {ControllerButton.BButton, KeyCode.JoystickButton17},
-                    {ControllerButton.XButton, KeyCode.JoystickButton18},
-                    {ControllerButton.YButton, KeyCode.JoystickButton19},
-                    {ControllerButton.RightBumper, KeyCode.JoystickButton14},
-                    {ControllerButton.LeftBumper, KeyCode.JoystickButton13},
-                    {ControllerButton.Start, KeyCode.JoystickButton9},
-                    {ControllerButton.Select, KeyCode.JoystickButton10}
-                };
-
-            public static readonly Dictionary<ControllerButton, KeyCode> Osxds4 =
-                new Dictionary<ControllerButton, KeyCode> {
-                    {ControllerButton.AButton, KeyCode.JoystickButton1},
-                    {ControllerButton.BButton, KeyCode.JoystickButton2},
-                    {ControllerButton.XButton, KeyCode.JoystickButton0},
-                    {ControllerButton.YButton, KeyCode.JoystickButton3},
-                    {ControllerButton.RightBumper, KeyCode.JoystickButton5},
-                    {ControllerButton.LeftBumper, KeyCode.JoystickButton4},
-                    {ControllerButton.Start, KeyCode.JoystickButton9},
-                    {ControllerButton.Select, KeyCode.JoystickButton17}
-                };
         }
     }
 }

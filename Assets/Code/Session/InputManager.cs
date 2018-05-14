@@ -1,5 +1,9 @@
-﻿using Code.Utils;
+﻿using System;
+using System.Collections.Generic;
+using Code.Utils;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using Object = UnityEngine.Object;
 
 namespace Code.Session
 {
@@ -46,13 +50,18 @@ namespace Code.Session
     public class InputManager : ISessionManager
     {
         public InputMonitor Monitor { get; private set; }
+        private StandaloneInputModule _module;
 
         public Platform Platform { get; private set; }
         public Controller Controller { get; private set; }
 
+        public Dictionary<ControllerButton, KeyCode> ButtonNames { get; private set; }
+
         public void Initialize () {
             SetupPlatform();
             SetupController();
+            SetButtonNames();
+            SetupInputModule();
 
             Monitor = Game.GO.AddComponent<InputMonitor>();
             Monitor.Initialize();
@@ -64,8 +73,9 @@ namespace Code.Session
         }
 
         public void OnGameStart () { Monitor.OnGameStart(); }
+        public void OnGameStop () { Monitor.OnGameStop(); }
 
-        void SetupPlatform () {
+        private void SetupPlatform () {
             switch (Application.platform) {
                 case RuntimePlatform.OSXEditor:
                 case RuntimePlatform.OSXPlayer:
@@ -106,5 +116,92 @@ namespace Code.Session
             Logging.Warn("No controllers plugged in.");
             Controller = Controller.None;
         }
+
+        private void SetButtonNames () {
+            if (Game.Sesh.Input.Controller == Controller.None) { return; }
+
+            var xbox = Game.Sesh.Input.Controller == Controller.XBox;
+
+            switch (Game.Sesh.Input.Platform) {
+                case Platform.OSX:
+                    ButtonNames = xbox ? ButtonMappings.OsxXBox : ButtonMappings.Osxds4;
+                    break;
+                case Platform.Windows:
+                    ButtonNames = xbox ? ButtonMappings.WindowsXBox : ButtonMappings.Windowsds4;
+                    break;
+                case Platform.Linux: break;
+                case Platform.Invalid:
+                    Logging.Error("Invalid platform; can't choose bindings.");
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void SetupInputModule () {
+            _module = Game.GO.GetRequiredComponentInChildren<StandaloneInputModule>();
+
+            KeyCode buttonname;
+            if (!ButtonNames.TryGetValue(ControllerButton.AButton, out buttonname)) {
+                Logging.Error("Button names not set up?");
+                return;
+            }
+
+            _module.submitButton = buttonname.ToString();
+        }
+    }
+
+    // I am sorry about all the hard-coding
+    public static class ButtonMappings
+    {
+        //public static readonly Dictionary<ControllerButton, string> WindowsXBox = new Dictionary<ControllerButton, string> { };
+        //public static readonly Dictionary<ControllerButton, string> WindowsDS4 = new Dictionary<ControllerButton, string> { };
+        // I am sorry about all the hard-coding
+        public static readonly Dictionary<ControllerButton, KeyCode> WindowsXBox =
+            new Dictionary<ControllerButton, KeyCode> {
+                { ControllerButton.AButton, KeyCode.JoystickButton0 },
+                { ControllerButton.BButton, KeyCode.JoystickButton1 },
+                { ControllerButton.XButton, KeyCode.JoystickButton2 },
+                { ControllerButton.YButton, KeyCode.JoystickButton3 },
+                { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
+                { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
+                { ControllerButton.Start, KeyCode.JoystickButton7 },
+                { ControllerButton.Select, KeyCode.JoystickButton6 }
+            };
+
+        public static readonly Dictionary<ControllerButton, KeyCode> Windowsds4 =
+            new Dictionary<ControllerButton, KeyCode> {
+                { ControllerButton.AButton, KeyCode.JoystickButton1 },
+                { ControllerButton.BButton, KeyCode.JoystickButton2 },
+                { ControllerButton.XButton, KeyCode.JoystickButton0 },
+                { ControllerButton.YButton, KeyCode.JoystickButton3 },
+                { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
+                { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
+                { ControllerButton.Start, KeyCode.JoystickButton9 },
+                { ControllerButton.Select, KeyCode.JoystickButton8 }
+            };
+
+        public static readonly Dictionary<ControllerButton, KeyCode> OsxXBox =
+            new Dictionary<ControllerButton, KeyCode> {
+                { ControllerButton.AButton, KeyCode.JoystickButton16 },
+                { ControllerButton.BButton, KeyCode.JoystickButton17 },
+                { ControllerButton.XButton, KeyCode.JoystickButton18 },
+                { ControllerButton.YButton, KeyCode.JoystickButton19 },
+                { ControllerButton.RightBumper, KeyCode.JoystickButton14 },
+                { ControllerButton.LeftBumper, KeyCode.JoystickButton13 },
+                { ControllerButton.Start, KeyCode.JoystickButton9 },
+                { ControllerButton.Select, KeyCode.JoystickButton10 }
+            };
+
+        public static readonly Dictionary<ControllerButton, KeyCode> Osxds4 =
+            new Dictionary<ControllerButton, KeyCode> {
+                { ControllerButton.AButton, KeyCode.JoystickButton1 },
+                { ControllerButton.BButton, KeyCode.JoystickButton2 },
+                { ControllerButton.XButton, KeyCode.JoystickButton0 },
+                { ControllerButton.YButton, KeyCode.JoystickButton3 },
+                { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
+                { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
+                { ControllerButton.Start, KeyCode.JoystickButton9 },
+                { ControllerButton.Select, KeyCode.JoystickButton17 }
+            };
     }
 }
