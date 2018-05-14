@@ -18,6 +18,8 @@ namespace Code.Characters.Doods.Doodex
             _needs = GO.transform.Find("Left/Needs");
 
             foreach (var need in _dood.Comps.Status.Needs) {
+                if (need.Type == NeedType.Fun) { continue; }
+
                 var meter = UIUtils.MakeUIPrefab(UIPrefab.NeedMeter, _needs);
                 var monitor = meter.AddComponent<NeedMonitor>();
                 monitor.Need = need;
