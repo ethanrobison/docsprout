@@ -21,8 +21,10 @@ namespace Code
 
         public void StartGame (SceneIndex index) {
             _index = index;
-            Initialize();
-            if (_index < SceneIndex.Demo) { return; }
+            if (_index == SceneIndex.Current) {
+                Initialize();
+                return;
+            }
 
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.LoadScene((int) _index);
