@@ -153,9 +153,6 @@ namespace Code.Session
     // I am sorry about all the hard-coding
     public static class ButtonMappings
     {
-        //public static readonly Dictionary<ControllerButton, string> WindowsXBox = new Dictionary<ControllerButton, string> { };
-        //public static readonly Dictionary<ControllerButton, string> WindowsDS4 = new Dictionary<ControllerButton, string> { };
-        // I am sorry about all the hard-coding
         public static readonly Dictionary<ControllerButton, KeyCode> WindowsXBox =
             new Dictionary<ControllerButton, KeyCode> {
                 { ControllerButton.AButton, KeyCode.JoystickButton0 },

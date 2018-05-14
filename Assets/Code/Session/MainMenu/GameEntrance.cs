@@ -10,26 +10,18 @@ namespace Code.Session.MainMenu
     public class GameEntrance : MonoBehaviour
     {
         private const float FADE_TIME = 1f;
-        private float _timer;
+        private float _timer = -1f;
         private Image _fadeImage;
 
-        private void Start () {
-            _fadeImage = UIUtils.GetCanvas().transform.Find("Fade Panel").gameObject.GetRequiredComponent<Image>();
-        }
+        private void Start () { _fadeImage = UIUtils.FindUICompOfType<Image>(UIUtils.GetCanvas(), "Fade Panel"); }
 
         private void OnTriggerEnter (Collider other) {
             var dood = other.gameObject.GetComponent<Dood>();
-            if (dood == null) return;
-            if (dood.IsSelected) {
-                StartFade();
-            }
+            if (dood != null && dood.IsSelected) { StartFade(); }
         }
 
         private void OnTriggerExit (Collider other) {
-            var player = other.gameObject.GetComponent<Player>();
-            if (player == null) { return; }
-
-            StopFade();
+            if (other.gameObject.GetComponent<Player>() != null) { StopFade(); }
         }
 
         private void Update () {

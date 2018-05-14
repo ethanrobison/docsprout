@@ -51,18 +51,6 @@ namespace Code.Session
         private void SetCtx (SceneIndex index) {
             Game.SetContext(this, index == SceneIndex.MainMenu ? null : new GameContext());
         }
-
-
-//        public void ReturnToMenu () {
-//            StopGame();
-//            SceneManager.sceneLoaded += RemoveContext;
-//            SceneManager.LoadScene(0);
-//        }
-//
-//        private static void RemoveContext (Scene scene, LoadSceneMode mode) {
-//            Game.Ctx = null;
-//            SceneManager.sceneLoaded -= RemoveContext;
-//        }
     }
 
     public interface ISessionManager
