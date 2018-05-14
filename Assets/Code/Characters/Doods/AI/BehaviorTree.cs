@@ -39,6 +39,10 @@ namespace Code.Characters.Doods.AI
 //            AddActiveNode(dood, close);
             AddActiveNode(dood, selected);
 
+            var treatsNear = new TreatsNear(dood); 
+            treatsNear.AddToEnd(new GoToTreat(dood));
+            AddActiveNode(dood, treatsNear);
+            
             AddPassiveNeed(dood, NeedType.Water);
             AddPassiveNeed(dood, NeedType.Sun);
 //            AddActiveNeed(dood, NeedType.Fun);

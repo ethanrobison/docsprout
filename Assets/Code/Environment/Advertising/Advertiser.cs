@@ -1,10 +1,15 @@
 ﻿using Code.Characters.Doods.Needs;
+using Code.environment;
 using UnityEngine;
 
 namespace Code.Environment.Advertising
 {
     public class Advertiser : MonoBehaviour
     {
+        [HideInInspector] public bool IsTreat;
+
+        private void Start () { IsTreat = GetComponentInParent<Treat>(); }
+        
         private void OnTriggerEnter (Collider other) {
             var advertisable = other.GetComponentInChildren<IAdvertisable>();
             if (advertisable != null) { advertisable.AdvertiseTo(this); }

@@ -24,6 +24,9 @@ namespace Code.Characters.Doods.Needs
 
         private readonly List<Advertiser> _advertisers = new List<Advertiser>();
         private readonly List<Satisfier> _satisfiers = new List<Satisfier>();
+        
+        [HideInInspector] public int TreatsAdvertising;
+        public List<Transform> TreatLocations = new List<Transform>();
 
         public Need[] Needs { get; private set; }
 
@@ -81,6 +84,10 @@ namespace Code.Characters.Doods.Needs
         public void AdvertiseTo (Advertiser advertiser) {
             _advertisers.Add(advertiser);
             Advertised.Add((ushort) advertiser.Satisfies());
+            if (advertiser.IsTreat) {
+                TreatsAdvertising++;
+                TreatLocations.Add(advertiser.transform);
+            }
         }
 
         public void StopAdvertising (Advertiser advertiser) {
@@ -90,8 +97,13 @@ namespace Code.Characters.Doods.Needs
 
             var c = _advertisers.Count(a => a.Satisfies() == type);
             if (c == 0) { Advertised.Remove((ushort) type); }
-        }
 
+            if (advertiser.IsTreat) {
+                TreatsAdvertising--;
+                TreatLocations.Remove(advertiser.transform);
+            }
+        }
+        
         public void AllowSatisfaction (Satisfier satisfier) {
             _satisfiers.Add(satisfier);
             Satisfiable.Add((ushort) satisfier.Satisfies());
