@@ -6,8 +6,6 @@ namespace Code
 {
     public class Game : MonoBehaviour
     {
-        public bool TestScene;
-
         public static GameContext Ctx;
         public static GameSession Sesh;
         public static GameObject GO;

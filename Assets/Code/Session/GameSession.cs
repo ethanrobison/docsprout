@@ -33,7 +33,7 @@ namespace Code.Session
         // todo this isn't very sophisticated in fact I dislike it
         public void StartGame (SceneIndex index) {
             SetCtx(index);
-            Game.Ctx.StartGame((int) index);
+            Game.Ctx.StartGame(index);
             Input.OnGameStart();
             Prefs.OnGameStart();
         }

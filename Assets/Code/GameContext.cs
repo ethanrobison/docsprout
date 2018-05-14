@@ -16,14 +16,14 @@ namespace Code
         private readonly int _startNumDoods;
 
 
-        public void StartGame (int scene) {
-            if (scene < 0) {
+        public void StartGame (SceneIndex index) {
+            if (index < 0) {
                 Initialize();
                 return;
             }
 
             SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.LoadScene(scene);
+            SceneManager.LoadScene((int) index);
         }
 
         public void SetPlayer (Player player) {
@@ -50,8 +50,6 @@ namespace Code
                 // The menu must not be sad
                 Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.NoNeeds;
             }
-            
-            
         }
 
         private void ShutDown () {
