@@ -18,6 +18,7 @@ namespace Code.Characters.Doods.LifeCycle
         private DoodStage _stage;
 
         private ParticleSystem _particle;
+
         private AudioSource _pop;
         //public ParticleSystem HappyParticles;
 
@@ -83,7 +84,6 @@ namespace Code.Characters.Doods.LifeCycle
             _value = 0f;
             if (_species.GetNextStage(_currentStage) == Maturity.Empty) { return; }
 
-            //_growth.HappyParticles.Play();
             _stepsLeft--;
             if (_stepsLeft > 0) { return; }
 
@@ -92,19 +92,31 @@ namespace Code.Characters.Doods.LifeCycle
 
         private void ResetState () {
             _stepsLeft = _species.GetGrowthStageCount(_currentStage);
+            SetBody();
+            SetPlantMesh();
+            SetFroot();
+        }
 
+        private void SetBody () {
             var body = _go.transform.Find("Dood/Body").gameObject;
             body.GetComponent<MeshFilter>().mesh = _species.GetBody();
+        }
 
+        private void SetPlantMesh () {
             var plant = _go.transform.Find("Dood/Body/Plant").gameObject;
             var info = _species.GetLeaf(_currentStage);
             plant.transform.localPosition = info.Offset;
             plant.GetComponent<MeshFilter>().mesh = info.Mesh;
             plant.GetComponent<Renderer>().material = info.Material;
+        }
 
+        private void SetFroot () {
             var froot = _go.transform.Find("Dood/Body/Plant/Froot");
             froot.GetComponent<Renderer>().enabled = _species.IsHarvestable(_currentStage);
         }
+
+        //
+        // public api
 
         public void GoToNextStage () {
             _currentStage = _species.GetNextStage(_currentStage);
