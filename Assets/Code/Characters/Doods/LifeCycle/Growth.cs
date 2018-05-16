@@ -124,13 +124,14 @@ namespace Code.Characters.Doods.LifeCycle
             _growth.OnGrow(_species, _currentStage);
         }
 
-        public void Harvest () {
-            if (!_species.IsHarvestable(_currentStage)) { return; }
+        public bool Harvest () {
+            if (!_species.IsHarvestable(_currentStage)) { return false; }
 
             _value = 0f;
             _currentStage = _species.GetStageAfterHarvest();
             ResetState();
             _growth.OnGrow(_species, _currentStage);
+            return true;
         }
     }
 }

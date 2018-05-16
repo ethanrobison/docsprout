@@ -18,6 +18,7 @@ namespace Code.Characters.Doods.Needs
         public SmallSet Satisfiable { get; private set; }
 
         private Dood _dood;
+        private Growth _growth;
         private StatusDisplay _display;
 
         private bool _displaying;
@@ -32,6 +33,7 @@ namespace Code.Characters.Doods.Needs
             Satisfiable = new SmallSet();
 
             _dood = gameObject.GetRequiredComponentInParent<Dood>();
+            _growth = gameObject.GetRequiredComponentInParent<Growth>();
             Needs = GetComponents<Need>();
             _display = new StatusDisplay(gameObject);
         }
@@ -74,7 +76,7 @@ namespace Code.Characters.Doods.Needs
 
         public void Interact () { Game.Ctx.Doods.Doodex.Show(DisplayMode.SingleDood, _dood); }
 
-        public void SecondaryInteract () { transform.GetComponentInParent<Growth>().Harvest(); }
+        public void SecondaryInteract () { Game.Ctx.Economy.HarvestGrowth(_growth); }
 
         public void AdvertiseTo (Advertiser advertiser) {
             Advertisers.Add(advertiser);
