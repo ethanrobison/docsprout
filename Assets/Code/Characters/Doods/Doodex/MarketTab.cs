@@ -10,13 +10,18 @@ namespace Code.Characters.Doods.Doodex
     {
         private Transform _contents, _description;
 
-        private readonly List<SeedInfo> _seeds = new List<SeedInfo> { new SeedInfo("Moste Basiq Dood") };
+        private readonly List<SeedInfo> _seeds = new List<SeedInfo> {
+            new SeedInfo("Moste Basiq Dood"),
+            new SeedInfo("Moste Basiq Dood 2"),
+            new SeedInfo("Moste Basiq Dood 3"),
+            new SeedInfo("Moste Basiq Dood 4")
+        };
 
         public MarketTab (Transform tr, Transform tabbar) : base(tr, tabbar) { }
 
         public override void OnInitialize () {
-            _contents = GO.transform.Find("Right/Scroll View/Viewport/Content");
-            _description = GO.transform.Find("Left/Description");
+            _contents = GO.transform.Find("Scroll View/Viewport/Content");
+            _description = GO.transform.Find("Description");
             foreach (var seed in _seeds) { MakeSeedButton(seed); }
         }
 
@@ -26,6 +31,7 @@ namespace Code.Characters.Doods.Doodex
             base.Show();
             var first = _contents.GetComponentInChildren<Button>();
             first.Select();
+            SelectInfo(first.GetComponent<SeedPurchaseContext>());
         }
 
         private void MakeSeedButton (SeedInfo info) {
@@ -40,9 +46,15 @@ namespace Code.Characters.Doods.Doodex
         }
 
 
-        public void SelectInfo (SeedInfo info) {
-            UIUtils.FindUICompOfType<Text>(_description, "Name").text = info.Name;
-            UIUtils.FindUICompOfType<Text>(_description, "Info").text = info.Name;
+        public void SelectInfo (SeedPurchaseContext ctx) {
+            UIUtils.FindUICompOfType<Text>(_description, "Info").text = ctx.Info.Name;
+            MoveDescriptionBox(ctx);
+        }
+
+        private void MoveDescriptionBox (SeedPurchaseContext ctx) {
+            var pos = _description.position;
+            pos.y = ctx.SlotPosition + ctx.SlotHeight / 2f;
+            _description.position = pos;
         }
     }
 
@@ -58,7 +70,15 @@ namespace Code.Characters.Doods.Doodex
         public SeedInfo Info;
         public MarketTab Tab;
 
-        public void OnSelect (BaseEventData eventData) { Tab.SelectInfo(Info); }
+        public float SlotPosition {
+            get { return transform.parent.position.y; }
+        }
+
+        public float SlotHeight {
+            get { return GetComponent<RectTransform>().rect.height; }
+        }
+
+        public void OnSelect (BaseEventData eventData) { Tab.SelectInfo(this); }
 
         public void Buy () { Game.Ctx.Doods.PurchaseSeed(Info); }
     }
