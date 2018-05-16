@@ -76,7 +76,7 @@ namespace Code.Characters.Doods.Needs
 
         public void Interact () { Game.Ctx.Doods.Doodex.Show(DisplayMode.SingleDood, _dood); }
 
-        public void SecondaryInteract () { Game.Ctx.Economy.HarvestGrowth(_growth); }
+        public void SecondaryInteract () { Game.Ctx.Economy.Harvest(_growth); }
 
         public void AdvertiseTo (Advertiser advertiser) {
             Advertisers.Add(advertiser);
