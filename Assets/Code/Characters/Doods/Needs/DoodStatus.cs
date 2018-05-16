@@ -22,11 +22,8 @@ namespace Code.Characters.Doods.Needs
 
         private bool _displaying;
 
-        private readonly List<Advertiser> _advertisers = new List<Advertiser>();
+        public readonly List<Advertiser> Advertisers = new List<Advertiser>();
         private readonly List<Satisfier> _satisfiers = new List<Satisfier>();
-        
-        [HideInInspector] public int TreatsAdvertising;
-        public List<Transform> TreatLocations = new List<Transform>();
 
         public Need[] Needs { get; private set; }
 
@@ -40,14 +37,15 @@ namespace Code.Characters.Doods.Needs
         }
 
         private void Update () {
-            var total = 0f;
-            int numNeeds = 0;
+            float total = 0f, numNeeds = 0.0001f;
             for (int i = 0, c = Needs.Length; i < c; i++) {
-                if (Needs[i].IsEnabled()) numNeeds++;
+                if (!Needs[i].IsEnabled()) { continue; }
+
+                numNeeds++;
                 total += CalculateHappiness(Needs[i]);
             }
 
-            total = Mathf.Clamp(total / (numNeeds + 0.00001f), -2 * MAGNITUDE, 2 * MAGNITUDE);
+            total = Mathf.Clamp(total / numNeeds, -2 * MAGNITUDE, 2 * MAGNITUDE);
 
             Happiness = Mathf.Clamp(Happiness + total, 0f, MAX_HAPPINESS);
             _dood.Comps.Color.Happiness = Happiness / MAX_HAPPINESS;
@@ -66,7 +64,7 @@ namespace Code.Characters.Doods.Needs
         //
         // interfaces
 
-        public Advertiser GetAdvertiserOfType (NeedType type) { return _advertisers.First(a => a.Satisfies() == type); }
+        public Advertiser GetAdvertiserOfType (NeedType type) { return Advertisers.First(a => a.Satisfies() == type); }
         public Satisfier GetSatisfierOfType (NeedType type) { return _satisfiers.First(a => a.Satisfies() == type); }
 
         public Need GetNeedOfType (NeedType type) { return Needs.FirstOrDefault(need => need.Type == type); }
@@ -79,28 +77,19 @@ namespace Code.Characters.Doods.Needs
         public void SecondaryInteract () { transform.GetComponentInParent<Growth>().Harvest(); }
 
         public void AdvertiseTo (Advertiser advertiser) {
-            _advertisers.Add(advertiser);
+            Advertisers.Add(advertiser);
             Advertised.Add((ushort) advertiser.Satisfies());
-            if (advertiser.IsTreat) {
-                TreatsAdvertising++;
-                TreatLocations.Add(advertiser.transform);
-            }
         }
 
         public void StopAdvertising (Advertiser advertiser) {
             var type = advertiser.Satisfies();
-            var success = _advertisers.Remove(advertiser);
+            var success = Advertisers.Remove(advertiser);
             Logging.Assert(success, "Tried to remove advertiser from list but was missing.");
 
-            var c = _advertisers.Count(a => a.Satisfies() == type);
+            var c = Advertisers.Count(a => a.Satisfies() == type);
             if (c == 0) { Advertised.Remove((ushort) type); }
-
-            if (advertiser.IsTreat) {
-                TreatsAdvertising--;
-                TreatLocations.Remove(advertiser.transform);
-            }
         }
-        
+
         public void AllowSatisfaction (Satisfier satisfier) {
             _satisfiers.Add(satisfier);
             Satisfiable.Add((ushort) satisfier.Satisfies());
