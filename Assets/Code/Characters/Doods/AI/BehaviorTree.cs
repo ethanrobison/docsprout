@@ -19,9 +19,7 @@ namespace Code.Characters.Doods.AI
 
             InitializeTree(dood);
 
-//            var close = new PlayerDistance(dood, -1f, 5f);
-//            close.AddToEnd(new Idle(dood));
-//            close.AddToEnd(new LookAtPlayer(dood));
+            
             var selected = new SelectedFilter(dood);
             var selectedSelector = new Selector(dood);
             var selectedClose = new PlayerDistance(dood, -1f, 5f);
@@ -35,28 +33,19 @@ namespace Code.Characters.Doods.AI
 
             var lookAtPlayer = new LookAtPlayer(dood);
 
-
-//            AddActiveNode(dood, close);
             AddActiveNode(dood, selected);
 
             AddPassiveNeed(dood, NeedType.Water);
             AddPassiveNeed(dood, NeedType.Sun);
-//            AddActiveNeed(dood, NeedType.Fun);
             AddPassiveNeed(dood, NeedType.Food);
+            
             
             var treatsNear = new TreatsNear(dood);
             treatsNear.AddToEnd(new GoToTreat(dood));
             AddActiveNode(dood, treatsNear);
+            
 
-            var needAdvertiser = new AdvertiserNear(dood, NeedType.Fun);
-            var needSatisfaction = new NeedSatisfiable(dood, NeedType.Fun);
-            needSatisfaction.AddToEnd(new InteractWithSatisfier(dood, NeedType.Fun));
-            needAdvertiser.AddToEnd(needSatisfaction);
-
-            var goToNeed = new AlwaysSucceed(dood);
-            goToNeed.SetChild(new GoToAdvertiser(dood, NeedType.Fun));
-            needAdvertiser.AddToEnd(goToNeed);
-            AddActiveNode(dood, needAdvertiser);
+            AddBeachball(dood);
 
             AddActiveNode(dood, far);
 
@@ -125,20 +114,17 @@ namespace Code.Characters.Doods.AI
             needNode.AddToEnd(needAdvertiser);
             AddActiveNode(dood, needNode);
         }
-
-        private void AddActiveNeed (Dood dood, NeedType type) {
-            var need = _needs.First(n => n.Type == type);
-            var needNode = new NeedLevel(dood, need);
-            var needAdvertiser = new AdvertiserNear(dood, type);
-            var needSatisfaction = new NeedSatisfiable(dood, type);
-            needSatisfaction.AddToEnd(new InteractWithSatisfier(dood, type));
+        
+        private void AddBeachball(Dood dood) {
+            var needAdvertiser = new AdvertiserNear(dood, NeedType.Fun);
+            var needSatisfaction = new NeedSatisfiable(dood, NeedType.Fun);
+            needSatisfaction.AddToEnd(new InteractWithSatisfier(dood, NeedType.Fun));
             needAdvertiser.AddToEnd(needSatisfaction);
 
             var goToNeed = new AlwaysSucceed(dood);
-            goToNeed.SetChild(new GoToAdvertiser(dood, type));
+            goToNeed.SetChild(new GoToAdvertiser(dood, NeedType.Fun));
             needAdvertiser.AddToEnd(goToNeed);
-            needNode.AddToEnd(needAdvertiser);
-            AddActiveNode(dood, needNode);
+            AddActiveNode(dood, needAdvertiser);
         }
     }
 }
