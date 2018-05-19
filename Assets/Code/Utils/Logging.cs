@@ -8,6 +8,12 @@ namespace Code.Utils
 #endif
         }
 
+        public static void Log (object obj) {
+#if UNITY_EDITOR
+            UnityEngine.Debug.Log(obj.ToString());
+#endif
+        }
+
         public static void Assert (bool condition, string message) {
 #if UNITY_EDITOR
             UnityEngine.Debug.Assert(condition, message);
