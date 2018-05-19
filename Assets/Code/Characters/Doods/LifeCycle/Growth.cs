@@ -11,7 +11,7 @@ namespace Code.Characters.Doods.LifeCycle
         public Action<DoodSpecies, Maturity> OnGrow;
 
         public bool CanHarvest {
-            get { return _stage.CanHarvest(); }
+            get { return _stage.CanHarvest; }
         }
 
         private const float GROWTH_RATE = 0.2f;

@@ -75,7 +75,7 @@ namespace Code.Characters.Doods.Needs
         public void OnDepart () { _dood.Comps.Color.IsInteracted = false; }
 
         public void Interact () {
-            if (_growth.CanHarvest()) { Game.Ctx.Economy.Harvest(_growth); }
+            if (_growth.CanHarvest) { Game.Ctx.Economy.Harvest(_growth); }
             else { Game.Ctx.Doods.Doodex.Show(DisplayMode.SingleDood, _dood); }
         }
 
