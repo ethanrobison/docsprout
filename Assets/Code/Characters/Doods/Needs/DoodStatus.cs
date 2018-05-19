@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Code.Characters.Doods.Doodex;
 using Code.Characters.Doods.LifeCycle;
+using Code.Characters.Player.Doodex;
 using Code.Environment;
 using Code.Environment.Advertising;
 using Code.Utils;

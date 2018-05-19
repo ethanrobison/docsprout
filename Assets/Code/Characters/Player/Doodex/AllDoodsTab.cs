@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Characters.Doods.Doodex
+namespace Code.Characters.Player.Doodex
 {
     public class AllDoodsTab : DoodexTab
     {

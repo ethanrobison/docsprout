@@ -1,10 +1,8 @@
-﻿using Code.Characters.Doods;
-using Code.Environment;
-using Code.Environment.Advertising;
+﻿using Code.Environment.Advertising;
 using Code.Utils;
 using UnityEngine;
 
-namespace Code.environment
+namespace Code.Environment
 {
     public class Beachball : MonoBehaviour, IApproachable
     {

@@ -1,9 +1,10 @@
-﻿using Code.Characters.Doods.Needs;
+﻿using Code.Characters.Doods;
+using Code.Characters.Doods.Needs;
 using Code.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Code.Characters.Doods.Doodex
+namespace Code.Characters.Player.Doodex
 {
     public class DoodTab : DoodexTab
     {

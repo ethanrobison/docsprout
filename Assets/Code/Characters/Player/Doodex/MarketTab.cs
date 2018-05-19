@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Code.Characters.Doods.Doodex
+namespace Code.Characters.Player.Doodex
 {
     public class MarketTab : DoodexTab
     {

@@ -24,7 +24,7 @@ namespace Code.Characters.Player
     {
         private int _frootCount;
 
-        public Action<int> OnFrootChanged = (num) => { Logging.Log(num.ToString()); };
+        public Action<int> OnFrootChanged = num => { Logging.Log(num.ToString()); };
 
         public void Initialize () { }
         public void ShutDown () { }

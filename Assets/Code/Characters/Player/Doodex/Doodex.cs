@@ -1,10 +1,11 @@
 ﻿using System;
+using Code.Characters.Doods;
 using Code.Session;
 using Code.Utils;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Code.Characters.Doods.Doodex
+namespace Code.Characters.Player.Doodex
 {
     public enum DisplayMode
     {

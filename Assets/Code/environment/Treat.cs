@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using Code.Characters.Doods;
 using Code.Environment.Advertising;
-using Code.Characters.Doods;
+using UnityEngine;
 
-namespace Code.environment
+namespace Code.Environment
 {
     public class Treat : MonoBehaviour
     {

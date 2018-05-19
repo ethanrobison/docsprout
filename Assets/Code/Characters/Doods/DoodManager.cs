@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using Code.Characters.Doods.Doodex;
+using Code.Characters.Player.Doodex;
 using UnityEngine;
 
 namespace Code.Characters.Doods
 {
     public class DoodManager : IContextManager
     {
-        public Doodex.Doodex Doodex { get; private set; }
+        public Doodex Doodex { get; private set; }
 
         private static Object _prefab;
 
@@ -18,7 +18,7 @@ namespace Code.Characters.Doods
 
             if (Game.Ctx.InMenu) { return; }
 
-            Doodex = new Doodex.Doodex();
+            Doodex = new Doodex();
         }
 
         public void ShutDown () { }
