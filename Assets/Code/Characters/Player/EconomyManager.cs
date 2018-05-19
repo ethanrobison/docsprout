@@ -24,17 +24,18 @@ namespace Code.Characters.Player
     {
         private int _frootCount;
 
-        public Action<int> OnFrootChanged = num => { Logging.Log(num.ToString()); };
+        public Action<int> OnFrootChanged = n => { };
 
         public void Initialize () { }
         public void ShutDown () { }
 
+        private bool CanSpendFroot (int count) { return _frootCount >= count; }
+
+
         public void ChangeFroot (int delta) {
-            _frootCount++;
+            _frootCount += delta;
             OnFrootChanged.Invoke(_frootCount);
         }
-
-        public bool CanSpendFroot (int count) { return _frootCount >= count; }
 
         public void SpendFroot (int count) {
             if (!CanSpendFroot(count)) { return; }
