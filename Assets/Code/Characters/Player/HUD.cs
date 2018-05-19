@@ -22,7 +22,7 @@ namespace Code.Characters.Player
     public class HUD
     {
         private readonly Text _info;
-        private Inventory _inventory;
+        private readonly Inventory _inventory;
 
         public HUD () {
             var go = UIUtils.MakeUIPrefab(UIPrefab.HUD);
@@ -32,7 +32,7 @@ namespace Code.Characters.Player
             _inventory = new Inventory();
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, OnLeftPress);
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, OnRightPress);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, OnDownPress);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, _inventory.UseItem);
         }
 
         private void OnFrootChanged (int froot) { _info.text = string.Format("{0}", froot); }
@@ -40,8 +40,6 @@ namespace Code.Characters.Player
         private void OnLeftPress () { ChangeActiveItem(-1); }
 
         private void OnRightPress () { ChangeActiveItem(1); }
-
-        private void OnDownPress () { _inventory.UseItem(); }
 
         private void ChangeActiveItem (int delta) {
             Logging.Assert(Mathf.Abs(delta) <= 1, "Invalid delta.");
@@ -52,7 +50,12 @@ namespace Code.Characters.Player
         private class Inventory
         {
             private int _active;
-            private readonly List<ItemInfo> _items = new List<ItemInfo>();
+
+            private readonly List<ItemInfo> _items = new List<ItemInfo> {
+                new ItemInfo { Name = "Donut" },
+                new ItemInfo { Name = "Fertilizer" },
+                new ItemInfo { Name = "Toast" },
+            };
 
             public void ChangeActive (int delta) {
                 _active += delta;
@@ -76,9 +79,9 @@ namespace Code.Characters.Player
 
         private class ItemInfo
         {
-            public int Count { get; private set; }
+            public string Name;
 
-            public string GetInfo () { return ""; }
+            public int Count { get; private set; }
 
             public void Use () { }
 

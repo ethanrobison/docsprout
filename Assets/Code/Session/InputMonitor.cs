@@ -16,6 +16,13 @@ namespace Code.Session
         Hold
     }
 
+    public enum MenuMode
+    {
+        In,
+        Out,
+        Both,
+    }
+
     public class InputMonitor : MonoBehaviour, ISessionManager
     {
         public float LeftH {
@@ -59,6 +66,9 @@ namespace Code.Session
         private void Update () {
             for (int i = 0, c = _mappings.Count; i < c; i++) {
                 var pair = _mappings[i];
+                if (pair.MenuMode == MenuMode.In && !_inMenu
+                    || pair.MenuMode == MenuMode.Out && _inMenu) { continue; }
+
                 switch (pair.PressType) {
                     case PressType.ButtonDown:
                         if (Input.GetKeyDown(pair.ButtonName)) { pair.OnPress(); }
@@ -115,14 +125,18 @@ namespace Code.Session
         //
         // API
 
-        public void RegisterMapping (ControllerButton button, Action onpress, PressType type = PressType.ButtonDown) {
+        public void RegisterMapping (
+            ControllerButton button,
+            Action onpress,
+            PressType type = PressType.ButtonDown,
+            MenuMode menumode = MenuMode.Out) {
             KeyCode buttonname;
             if (!Game.Sesh.Input.ButtonNames.TryGetValue(button, out buttonname)) {
                 Logging.Error("Missing name for button: " + button);
                 return;
             }
 
-            var pair = new ButtonPair(buttonname, onpress, type);
+            var pair = new ButtonPair(buttonname, onpress, type, menumode);
             _mappings.Add(pair);
         }
 
@@ -137,11 +151,13 @@ namespace Code.Session
 
             public readonly Action OnPress;
             public readonly PressType PressType;
+            public readonly MenuMode MenuMode;
 
-            public ButtonPair (KeyCode button, Action action, PressType type) {
+            public ButtonPair (KeyCode button, Action action, PressType type, MenuMode menumode) {
                 ButtonName = button;
                 OnPress = action;
                 PressType = type;
+                MenuMode = menumode;
             }
         }
     }
