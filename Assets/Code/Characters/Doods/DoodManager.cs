@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Code.Characters.Player.Doodex;
 using UnityEngine;
 
 namespace Code.Characters.Doods
 {
     public class DoodManager : IContextManager
     {
-        public Doodex.Doodex Doodex { get; private set; }
+        public Doodex Doodex { get; private set; }
 
         private static Object _prefab;
 
@@ -14,7 +15,10 @@ namespace Code.Characters.Doods
 
         public void Initialize () {
             MakeNDoods(1, new Vector3(-10f, 0f, 20f));
-            Doodex = new Doodex.Doodex();
+
+            if (Game.Ctx.InMenu) { return; }
+
+            Doodex = new Doodex();
         }
 
         public void ShutDown () { }
@@ -40,6 +44,12 @@ namespace Code.Characters.Doods
             foreach (var dood in DoodList) {
                 dood.OnDeselect();
             }
+        }
+
+        public void PurchaseSeed (SeedInfo info) {
+            var tr = Game.Ctx.Player.transform;
+            var pos = tr.position + tr.forward * 3f + Vector3.up * 3f;
+            MakeDood(pos, "Base Dood");
         }
     }
 }

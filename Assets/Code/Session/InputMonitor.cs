@@ -34,8 +34,8 @@ namespace Code.Session
             get { return _inMenu ? 0f : Input.GetAxisRaw(_rightV); }
         }
 
-        private string _leftH;
-        private string _leftV;
+        public string _leftH { get; private set; }
+        public string _leftV { get; private set; }
         private string _rightH;
         private string _rightV;
 
@@ -91,12 +91,9 @@ namespace Code.Session
 
             axisname += horizontal ? "H" : "V";
 
-            if (Game.Sesh.Input.Controller == Controller.None) {
-                return axisname;
-            }
+            if (Game.Sesh.Input.Controller == Controller.None) { return axisname; }
 
-            string plat = "";
-
+            var plat = "";
             switch (Game.Sesh.Input.Platform) {
                 case Platform.OSX:
                     plat = "Mac";
@@ -104,8 +101,7 @@ namespace Code.Session
                 case Platform.Windows:
                     plat = "Win";
                     break;
-                case Platform.Linux:
-                    break;
+                case Platform.Linux: break;
                 case Platform.Invalid:
                     Logging.Error("Invalid platform; can't choose bindings.");
                     break;

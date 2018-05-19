@@ -19,13 +19,11 @@ namespace Code.Characters.Doods.LifeCycle
 
         private ParticleSystem _particle;
         private AudioSource _pop;
-        //public ParticleSystem HappyParticles;
 
 
         private void Start () {
             _particle = transform.Find("Particle System").GetComponent<ParticleSystem>();
             _status = transform.Find("Status").gameObject.GetRequiredComponent<DoodStatus>();
-            //HappyParticles = transform.Find("HappyParticles").GetComponent<ParticleSystem>();
 
             var plant = transform.Find("Dood/Body/Plant").gameObject;
             _pop = plant.GetRequiredComponent<AudioSource>();
@@ -48,7 +46,7 @@ namespace Code.Characters.Doods.LifeCycle
             _pop.Play();
         }
 
-        public void Harvest () { _stage.Harvest(); }
+        public bool Harvest () { return _stage.Harvest(); }
     }
 
     public class DoodStage
@@ -83,7 +81,6 @@ namespace Code.Characters.Doods.LifeCycle
             _value = 0f;
             if (_species.GetNextStage(_currentStage) == Maturity.Empty) { return; }
 
-            //_growth.HappyParticles.Play();
             _stepsLeft--;
             if (_stepsLeft > 0) { return; }
 
@@ -92,19 +89,31 @@ namespace Code.Characters.Doods.LifeCycle
 
         private void ResetState () {
             _stepsLeft = _species.GetGrowthStageCount(_currentStage);
+            SetBody();
+            SetPlantMesh();
+            SetFroot();
+        }
 
+        private void SetBody () {
             var body = _go.transform.Find("Dood/Body").gameObject;
             body.GetComponent<MeshFilter>().mesh = _species.GetBody();
+        }
 
+        private void SetPlantMesh () {
             var plant = _go.transform.Find("Dood/Body/Plant").gameObject;
             var info = _species.GetLeaf(_currentStage);
             plant.transform.localPosition = info.Offset;
             plant.GetComponent<MeshFilter>().mesh = info.Mesh;
             plant.GetComponent<Renderer>().material = info.Material;
+        }
 
+        private void SetFroot () {
             var froot = _go.transform.Find("Dood/Body/Plant/Froot");
             froot.GetComponent<Renderer>().enabled = _species.IsHarvestable(_currentStage);
         }
+
+        //
+        // public api
 
         public void GoToNextStage () {
             _currentStage = _species.GetNextStage(_currentStage);
@@ -112,13 +121,14 @@ namespace Code.Characters.Doods.LifeCycle
             _growth.OnGrow(_species, _currentStage);
         }
 
-        public void Harvest () {
-            if (!_species.IsHarvestable(_currentStage)) { return; }
+        public bool Harvest () {
+            if (!_species.IsHarvestable(_currentStage)) { return false; }
 
             _value = 0f;
             _currentStage = _species.GetStageAfterHarvest();
             ResetState();
             _growth.OnGrow(_species, _currentStage);
+            return true;
         }
     }
 }

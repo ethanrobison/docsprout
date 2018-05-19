@@ -12,13 +12,23 @@ namespace Code
     {
         public DoodManager Doods { get; private set; }
         public Player Player { get; private set; }
+        public EconomyManager Economy { get; private set; }
+
+        public bool InMenu {
+            get { return _index == SceneIndex.MainMenu || _index == SceneIndex.Current; }
+        }
+
+        private SceneIndex _index;
 
         public void StartGame (SceneIndex index) {
-            Initialize();
-            if (index < SceneIndex.Demo) { return; }
+            _index = index;
+            if (_index == SceneIndex.Current) {
+                Initialize();
+                return;
+            }
 
             SceneManager.sceneLoaded += OnSceneLoaded;
-            SceneManager.LoadScene((int) index);
+            SceneManager.LoadScene((int) _index);
         }
 
         public void SetPlayer (Player player) {
@@ -45,14 +55,18 @@ namespace Code
                 // The menu must not be sad
                 Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.NoNeeds;
             }
+
+            Economy = new EconomyManager();
+            Economy.Initialize();
         }
 
         private void ShutDown () {
+            Economy.ShutDown();
+            Economy = null;
+
             Doods.ShutDown();
             Doods = null;
         }
-
-        // todo exit a game and return to the main menu
     }
 
     public interface IContextManager

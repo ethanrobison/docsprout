@@ -61,10 +61,11 @@ namespace Code.Session
             SetupPlatform();
             SetupController();
             SetButtonNames();
-            SetupInputModule();
 
             Monitor = Game.GO.AddComponent<InputMonitor>();
             Monitor.Initialize();
+
+            SetupInputModule();
         }
 
         public void ShutDown () {
@@ -146,6 +147,8 @@ namespace Code.Session
                 return;
             }
 
+            _module.horizontalAxis = Monitor._leftH;
+            _module.verticalAxis = Monitor._leftV;
             _module.submitButton = buttonname.ToString();
         }
     }
@@ -198,7 +201,7 @@ namespace Code.Session
                 { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
                 { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
                 { ControllerButton.Start, KeyCode.JoystickButton9 },
-                { ControllerButton.Select, KeyCode.JoystickButton17 }
+                { ControllerButton.Select, KeyCode.JoystickButton8 }
             };
     }
 }

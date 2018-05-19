@@ -1,26 +1,23 @@
-﻿using UnityEngine;
+﻿using Code.Characters.Doods;
 using Code.Environment.Advertising;
-using Code.Characters.Doods;
+using UnityEngine;
 
-namespace Code.environment
+namespace Code.Environment
 {
-	public class Treat : MonoBehaviour
-	{
-		private float _lifetime = 100f;
-		private float _decayRate = 5f;
-		private Satisfier _satisfier;
+    public class Treat : MonoBehaviour
+    {
+        private const float DECAY_RATE = 5f;
+        private float _lifetime = 100f;
+        private Satisfier _satisfier;
 
-		void Start () {
-			_satisfier = GetComponentInChildren<Satisfier>();
-			_satisfier.OnInteract += Snacking;
-		}
+        private void Start () {
+            _satisfier = GetComponentInChildren<Satisfier>();
+            _satisfier.OnInteract += Snacking;
+        }
 
-		private void Snacking (Dood dood) {
-			_lifetime -= _decayRate * Time.deltaTime;
-			if (_lifetime <= 0f) {
-				//_satisfier.OnInteract -= Snacking;
-				Object.Destroy(gameObject);
-			}
-		}
-	}
+        private void Snacking (Dood dood) {
+            _lifetime -= DECAY_RATE * Time.deltaTime;
+            if (_lifetime <= 0f) { Destroy(gameObject); }
+        }
+    }
 }

@@ -26,7 +26,7 @@ namespace Code.Session
             Input.Initialize();
             Doodopedia.LoadSpecies();
 
-            StartGame(SceneIndex.MainMenu);
+            StartGame(SceneIndex.Current);
         }
 
 
@@ -45,7 +45,7 @@ namespace Code.Session
             Game.Ctx.StartGame(index);
         }
 
-        public void ReturnToMenu () { ResetContext(); }
+        public void ReturnToMenu () { StartGame(SceneIndex.MainMenu); }
 
         private void ResetContext () { Game.SetContext(this, new GameContext()); }
     }

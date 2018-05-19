@@ -1,9 +1,10 @@
-﻿using Code.Characters.Doods.Needs;
+﻿using Code.Characters.Doods;
+using Code.Characters.Doods.Needs;
 using Code.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Code.Characters.Doods.Doodex
+namespace Code.Characters.Player.Doodex
 {
     public class DoodTab : DoodexTab
     {
@@ -18,6 +19,8 @@ namespace Code.Characters.Doods.Doodex
             _needs = GO.transform.Find("Left/Needs");
 
             foreach (var need in _dood.Comps.Status.Needs) {
+                if (need.Type == NeedType.Fun) { continue; }
+
                 var meter = UIUtils.MakeUIPrefab(UIPrefab.NeedMeter, _needs);
                 var monitor = meter.AddComponent<NeedMonitor>();
                 monitor.Need = need;
