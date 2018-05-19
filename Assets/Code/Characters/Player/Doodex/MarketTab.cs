@@ -41,8 +41,6 @@ namespace Code.Characters.Player.Doodex
             var ctx = button.AddComponent<SeedPurchaseContext>();
             ctx.Info = info;
             ctx.Tab = this;
-
-            button.GetComponent<Button>().onClick.AddListener(ctx.Buy);
         }
 
 
@@ -65,7 +63,19 @@ namespace Code.Characters.Player.Doodex
         public SeedInfo (string name) { Name = name; }
     }
 
-    public class SeedPurchaseContext : MonoBehaviour, ISelectHandler
+    public abstract class PurchaseContext : MonoBehaviour, ISelectHandler
+    {
+        public abstract void OnSelect (BaseEventData eventData);
+        public abstract string GetInfo ();
+        protected abstract void Buy ();
+
+        private void Start () {
+            var button = GetComponent<Button>();
+            button.onClick.AddListener(Buy);
+        }
+    }
+
+    public class SeedPurchaseContext : PurchaseContext
     {
         public SeedInfo Info;
         public MarketTab Tab;
@@ -78,8 +88,15 @@ namespace Code.Characters.Player.Doodex
             get { return GetComponent<RectTransform>().rect.height; }
         }
 
-        public void OnSelect (BaseEventData eventData) { Tab.SelectInfo(this); }
+        public override void OnSelect (BaseEventData eventData) { Tab.SelectInfo(this); }
+        protected override void Buy () { Game.Ctx.Doods.PurchaseSeed(Info); }
+        public override string GetInfo () { return Info.Name; }
+    }
 
-        public void Buy () { Game.Ctx.Doods.PurchaseSeed(Info); }
+    public class ItemPurchaseContext : PurchaseContext
+    {
+        public override void OnSelect (BaseEventData eventData) { }
+        protected override void Buy () { }
+        public override string GetInfo () { return ""; }
     }
 }

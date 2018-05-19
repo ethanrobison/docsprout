@@ -8,12 +8,9 @@ namespace Code.Environment
     {
         private Gate _gate;
 
-        // Use this for initialization
-        void Start () { _gate = GetComponentInParent<Gate>(); }
+        private void Start () { _gate = GetComponentInParent<Gate>(); }
 
         public void Interact () { _gate.Interact(); }
-
-        public void SecondaryInteract () { }
 
         public void OnApproach () { _gate.OnApproach(); }
 

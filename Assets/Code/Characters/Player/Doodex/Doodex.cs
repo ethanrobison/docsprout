@@ -30,10 +30,13 @@ namespace Code.Characters.Player.Doodex
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.Start, () => {
                 if (_active) { Hide(); }
                 else { Show(); }
-            });
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Hide);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => SwitchTab(1));
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => SwitchTab(-1));
+            }, menumode: MenuMode.Both);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Hide,
+                menumode: MenuMode.In);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => SwitchTab(1),
+                menumode: MenuMode.In);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => SwitchTab(-1),
+                menumode: MenuMode.In);
         }
 
         private void Show () { Show(_mode); }

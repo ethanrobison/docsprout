@@ -10,6 +10,10 @@ namespace Code.Characters.Doods.LifeCycle
     {
         public Action<DoodSpecies, Maturity> OnGrow;
 
+        public bool CanHarvest {
+            get { return _stage.CanHarvest; }
+        }
+
         private const float GROWTH_RATE = 0.2f;
 
         public Species Species;
@@ -36,15 +40,14 @@ namespace Code.Characters.Doods.LifeCycle
             _stage.ChangeGrowth(delta);
         }
 
-
-        public void StartTransition () { StartCoroutine(ChangePlant()); }
-
         private IEnumerator ChangePlant () {
             _particle.Play();
             yield return new WaitForSeconds(1f);
             _stage.GoToNextStage();
             _pop.Play();
         }
+
+        public void StartTransition () { StartCoroutine(ChangePlant()); }
 
         public bool Harvest () { return _stage.Harvest(); }
     }
@@ -119,6 +122,10 @@ namespace Code.Characters.Doods.LifeCycle
             _currentStage = _species.GetNextStage(_currentStage);
             ResetState();
             _growth.OnGrow(_species, _currentStage);
+        }
+
+        public bool CanHarvest {
+            get { return _species.IsHarvestable(_currentStage); }
         }
 
         public bool Harvest () {

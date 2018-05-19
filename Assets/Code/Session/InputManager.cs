@@ -32,12 +32,6 @@ namespace Code.Session
         XButton,
         YButton,
 
-        // D-Pad
-        //Up,
-        //Down,
-        //Left,
-        //Right,
-
         // bumpers
         RightBumper,
         LeftBumper,
@@ -201,7 +195,7 @@ namespace Code.Session
                 { ControllerButton.RightBumper, KeyCode.JoystickButton5 },
                 { ControllerButton.LeftBumper, KeyCode.JoystickButton4 },
                 { ControllerButton.Start, KeyCode.JoystickButton9 },
-                { ControllerButton.Select, KeyCode.JoystickButton8 }
+                { ControllerButton.Select, KeyCode.JoystickButton8 },
             };
     }
 }

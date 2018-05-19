@@ -5,6 +5,5 @@
         void OnApproach ();
         void OnDepart ();
         void Interact ();
-        void SecondaryInteract ();
     }
 }
