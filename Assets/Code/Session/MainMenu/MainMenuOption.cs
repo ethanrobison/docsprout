@@ -71,7 +71,6 @@ namespace Code.Session.MainMenu
         }
 
         public void Interact () { _state.PerformAction(); }
-        public void SecondaryInteract () { }
 
         //
         // menu state

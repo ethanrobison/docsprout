@@ -13,8 +13,6 @@ namespace Code.Environment
 
         public void Interact () { _gate.Interact(); }
 
-        public void SecondaryInteract () { }
-
         public void OnApproach () { _gate.OnApproach(); }
 
         public void OnDepart () { _gate.OnDepart(); }
