@@ -12,6 +12,8 @@ namespace Code
     {
         public DoodManager Doods { get; private set; }
         public Player Player { get; private set; }
+        public EconomyManager Economy { get; private set; }
+        public HUDManager HUD { get; private set; }
 
         public bool InMenu {
             get { return _index == SceneIndex.MainMenu || _index == SceneIndex.Current; }
@@ -54,14 +56,24 @@ namespace Code
                 // The menu must not be sad
                 Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.NoNeeds;
             }
+
+            Economy = new EconomyManager();
+            Economy.Initialize();
+
+            HUD = new HUDManager();
+            HUD.Initialize();
         }
 
         private void ShutDown () {
+            HUD.ShutDown();
+            HUD = null;
+
+            Economy.ShutDown();
+            Economy = null;
+
             Doods.ShutDown();
             Doods = null;
         }
-
-        // todo exit a game and return to the main menu
     }
 
     public interface IContextManager

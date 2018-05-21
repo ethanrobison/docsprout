@@ -15,7 +15,7 @@ namespace Code.Characters.Player.Interaction
 
         private void Start () {
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.AButton, Interact);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, SecondaryInteract);
+//            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, SecondaryInteract);
         }
 
         private void OnTriggerEnter (Collider other) {
@@ -40,10 +40,6 @@ namespace Code.Characters.Player.Interaction
 
         private void Interact () {
             if (_target != null) { _target.Interact(); }
-        }
-
-        private void SecondaryInteract () {
-            if (_target != null) { _target.SecondaryInteract(); }
         }
     }
 }

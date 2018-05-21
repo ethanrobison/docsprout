@@ -19,7 +19,7 @@ namespace Code.Characters.Doods.Needs
             {NeedType.Water, new NeedValues(45f, 100f, 7f, 1f)},
             {NeedType.Sun, new NeedValues(40f, 100f, 5f, .6f)},
             {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
-            {NeedType.Food, new NeedValues(40f, 100f, 5f, 1f)} //.4
+            {NeedType.Food, new NeedValues(40f, 100f, 5f, 1f)}
         };
 
         public NeedType Type;
@@ -71,8 +71,7 @@ namespace Code.Characters.Doods.Needs
     public class NeedValues
     {
         private const float MAX = 100f;
-        public float Bottom, Top;
-        public float SatisfactionRate, DecayRate;
+        public readonly float Bottom, Top, SatisfactionRate, DecayRate;
         public float Value { get; private set; }
         private bool _enabled = true;
 
@@ -105,9 +104,7 @@ namespace Code.Characters.Doods.Needs
         public bool Enabled {
             get { return _enabled; }
             set {
-                if (!_enabled && value) {
-                    Value = 50f;
-                }
+                if (!_enabled && value) { Value = 50f; }
 
                 _enabled = value;
             }

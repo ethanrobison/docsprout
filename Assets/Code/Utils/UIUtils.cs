@@ -8,6 +8,7 @@ namespace Code.Utils
         Doodex,
         NeedMeter,
         SeedSlot,
+        HUD,
     }
 
     public static class UIUtils
@@ -15,7 +16,8 @@ namespace Code.Utils
         private static readonly Dictionary<UIPrefab, string> PrefabsPaths = new Dictionary<UIPrefab, string> {
             { UIPrefab.Doodex, "UI/Doodex" },
             { UIPrefab.NeedMeter, "UI/Need" },
-            { UIPrefab.SeedSlot, "UI/Seed Slot" }
+            { UIPrefab.SeedSlot, "UI/Seed Slot" },
+            { UIPrefab.HUD, "UI/HUD" }
         };
 
         public static Transform GetCanvas () {
@@ -51,6 +53,13 @@ namespace Code.Utils
             var comp = child.gameObject.GetComponent<T>();
             Logging.Assert(comp != null, "Child missing component of type: " + typeof(T));
             return comp;
+        }
+
+        /// <summary>
+        /// Given a gameobject and the name of a child, get its component of type T.
+        /// </summary>
+        public static T FindUICompOfType<T> (GameObject go, string name) where T : MonoBehaviour {
+            return FindUICompOfType<T>(go.transform, name);
         }
     }
 }

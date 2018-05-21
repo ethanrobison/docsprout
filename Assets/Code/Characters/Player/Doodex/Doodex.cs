@@ -1,10 +1,11 @@
 ﻿using System;
+using Code.Characters.Doods;
 using Code.Session;
 using Code.Utils;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Code.Characters.Doods.Doodex
+namespace Code.Characters.Player.Doodex
 {
     public enum DisplayMode
     {
@@ -29,10 +30,13 @@ namespace Code.Characters.Doods.Doodex
             Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.Start, () => {
                 if (_active) { Hide(); }
                 else { Show(); }
-            });
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Hide);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => SwitchTab(1));
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => SwitchTab(-1));
+            }, menumode: MenuMode.Both);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.BButton, Hide,
+                menumode: MenuMode.In);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, () => SwitchTab(1),
+                menumode: MenuMode.In);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, () => SwitchTab(-1),
+                menumode: MenuMode.In);
         }
 
         private void Show () { Show(_mode); }

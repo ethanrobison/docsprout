@@ -5,15 +5,16 @@ namespace Code.Environment
 {
     public class Gate : MonoBehaviour
     {
-        public AudioClip OpenSound;
-        public AudioClip CloseSound;
-        private AudioSource _audioSource;
         private const float OPEN_ANGLE = 160f;
         private const float CLOSE_ANGLE = 0f;
         private const float DURATION = 1f;
-        private bool _isOpen = false;
-        private Transform _leftDoor;
-        private Transform _rightDoor;
+
+        public AudioClip OpenSound;
+        public AudioClip CloseSound;
+
+        private AudioSource _audioSource;
+        private bool _isOpen;
+        private Transform _leftDoor, _rightDoor;
         private InteractionHighlight _highlight;
 
         private void Start () {

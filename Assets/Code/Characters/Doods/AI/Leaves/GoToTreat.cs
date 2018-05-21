@@ -14,10 +14,15 @@ namespace Code.Characters.Doods.AI
         }
 
         protected override Status Update () {
-            var goal = Dood.Comps.Status.TreatLocations[0];
+            var goal = TryGetGoal();
             if (goal == null) { return Status.Failure; }
 
-            return Dood.MoveTowards(goal.position, 3f) ? Status.Success : Status.Running;
+            return Dood.MoveTowards(goal.position) ? Status.Success : Status.Running;
+        }
+
+        private Transform TryGetGoal () {
+            var treat = Dood.Comps.Status.Advertisers.Find(a => a.IsTreat);
+            return treat != null ? treat.transform : null;
         }
     }
 }

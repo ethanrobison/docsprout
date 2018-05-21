@@ -1,4 +1,5 @@
-﻿using Code.Characters.Doods.Needs;
+﻿using System.Linq;
+using Code.Characters.Doods.Needs;
 using Code.Environment.Advertising;
 
 namespace Code.Characters.Doods.AI
@@ -50,12 +51,13 @@ namespace Code.Characters.Doods.AI
             return Status.Success;
         }
     }
-    
-    
+
+
     public class TreatsNear : FilterSelector
     {
-        public TreatsNear (Dood dood) : base(dood) {}
+        public TreatsNear (Dood dood) : base(dood) { }
 
-        protected override bool Precondition () { return Dood.Comps.Status.TreatsAdvertising > 0; }
+        // todo this is not performant, but alas
+        protected override bool Precondition () { return Dood.Comps.Status.Advertisers.Any(a => a.IsTreat); }
     }
 }
