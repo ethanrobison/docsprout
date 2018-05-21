@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Code.Session;
 using Code.Utils;
@@ -21,18 +22,29 @@ namespace Code.Characters.Player
 
     public class HUD
     {
+        private readonly GameObject _go;
+        private RectTransform _activeIcon;
         private readonly Text _info;
         private readonly Inventory _inventory;
 
         public HUD () {
-            var go = UIUtils.MakeUIPrefab(UIPrefab.HUD);
-            _info = UIUtils.FindUICompOfType<Text>(go, "Info/Text");
+            _go = UIUtils.MakeUIPrefab(UIPrefab.HUD);
+            _info = UIUtils.FindUICompOfType<Text>(_go, "Info/Text");
             Game.Ctx.Economy.Stats.OnFrootChanged += OnFrootChanged;
 
             _inventory = new Inventory();
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.LeftBumper, OnLeftPress);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.RightBumper, OnRightPress);
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, _inventory.UseItem);
+
+            MapActionToButton(_go, "Buttons/Left", ControllerButton.LeftBumper, OnLeftPress);
+            MapActionToButton(_go, "Buttons/Right", ControllerButton.RightBumper, OnRightPress);
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, UseItem);
+
+            SetActiveIcon(0);
+        }
+
+        private static void MapActionToButton (GameObject go, string name, ControllerButton button, Action onpress) {
+            var btn = UIUtils.FindUICompOfType<Button>(go, name);
+            btn.onClick.AddListener(() => onpress());
+            Game.Sesh.Input.Monitor.RegisterMapping(button, () => btn.OnSubmit(null));
         }
 
         private void OnFrootChanged (int froot) { _info.text = string.Format("{0}", froot); }
@@ -43,7 +55,26 @@ namespace Code.Characters.Player
 
         private void ChangeActiveItem (int delta) {
             Logging.Assert(Mathf.Abs(delta) <= 1, "Invalid delta.");
-            _inventory.ChangeActive(delta);
+            var active = _inventory.ChangeActive(delta);
+            SetActiveIcon(active);
+        }
+
+        // todo fix magic constants
+        private void SetActiveIcon (int active) {
+            var icons = _go.transform.Find("Buttons/Icons");
+            if (_activeIcon != null) {
+                _activeIcon.localScale = Vector3.one;
+                _activeIcon.GetComponent<Button>().interactable = false;
+            }
+
+            _activeIcon = icons.GetChild(active).GetComponent<RectTransform>();
+            _activeIcon.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            _activeIcon.GetComponent<Button>().interactable = true;
+        }
+
+        private void UseItem () {
+            _inventory.UseItem();
+            _activeIcon.GetComponent<Button>().OnSubmit(null);
         }
 
 
@@ -57,12 +88,12 @@ namespace Code.Characters.Player
                 new ItemInfo { Name = "Toast" },
             };
 
-            public void ChangeActive (int delta) {
+            public int ChangeActive (int delta) {
                 _active += delta;
                 if (_active < 0) { _active = _items.Count - 1; }
-                else if (_active > _items.Count) { _active = 0; }
+                else if (_active >= _items.Count) { _active = 0; }
 
-                Logging.Log(_active);
+                return _active;
             }
 
             public void UseItem () {
