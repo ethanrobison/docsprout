@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.Characters.Doods.LifeCycle;
 using Code.Characters.Player.Doodex;
 using UnityEngine;
 
@@ -27,16 +28,19 @@ namespace Code.Characters.Doods
             const float diff = 1.2f;
             for (var i = 0; i < count; i++) {
                 var pos = startpos + new Vector3((i % 5) * diff, 8f, (-i / 5) * diff);
-                MakeDood(pos, "Base Dood");
+                MakeDood(pos);
             }
         }
 
-        private void MakeDood (Vector3 pos, string name) {
-            var prefab = Resources.Load("Doods/" + name);
+        private Dood MakeDood (Vector3 pos, Species species = Species.Debug) {
+            var prefab = Resources.Load("Doods/Base Dood");
             var go = (GameObject) Object.Instantiate(prefab, pos, Quaternion.identity);
             var dood = go.GetComponent<Dood>();
+            dood.GetComponent<Growth>().SetSpecies(species);
 
             DoodList.Add(dood);
+            
+            return dood;
         }
 
 
@@ -46,10 +50,10 @@ namespace Code.Characters.Doods
             }
         }
 
-        public void PurchaseSeed (SeedInfo info) {
+        public void PurchaseSeed (SeedInfo info, Species species = Species.Debug) {
             var tr = Game.Ctx.Player.transform;
             var pos = tr.position + tr.forward * 3f + Vector3.up * 3f;
-            MakeDood(pos, "Base Dood");
+            MakeDood(pos);
         }
     }
 }
