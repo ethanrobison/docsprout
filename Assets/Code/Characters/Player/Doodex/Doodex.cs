@@ -11,9 +11,8 @@ namespace Code.Characters.Player.Doodex
     {
         Market = 0,
         SingleDood = 1,
-        AllDoods = 2,
-        Menu = 3,
-        Max = 4,
+        Menu = 2,
+        Max = 3,
     }
 
     public class Doodex
@@ -22,7 +21,7 @@ namespace Code.Characters.Player.Doodex
         private bool _active;
         private Dood _activeDood;
 
-        private DoodexTab _doodTab, _marketTab, _allDoodsTab, _menuTab;
+        private DoodexTab _doodTab, _marketTab, _menuTab;
         private DoodexTab _activeTab;
         private DisplayMode _mode = DisplayMode.Market;
 
@@ -50,7 +49,6 @@ namespace Code.Characters.Player.Doodex
             _activeDood = dood;
             OnShow();
 
-
             _active = true;
             _activeTab = GetAppropriateTab();
             _activeTab.Show();
@@ -74,21 +72,19 @@ namespace Code.Characters.Player.Doodex
             var tabs = _go.transform.Find("Tabs");
             var tabbar = _go.transform.Find("Tab Bar");
 
+            tabbar.Find("Dood").gameObject.SetActive(_activeDood != null);
             _doodTab = new DoodTab(tabs.Find("Dood"), tabbar.Find("Dood"), _activeDood);
             _marketTab = new MarketTab(tabs.Find("Market"), tabbar.Find("Market"));
-            _allDoodsTab = new AllDoodsTab(tabs.Find("All Doods"), tabbar.Find("All Doods"));
             _menuTab = new MenuTab(tabs.Find("Menu"), tabbar.Find("Menu"));
 
             _doodTab.OnInitialize();
             _marketTab.OnInitialize();
-            _allDoodsTab.OnInitialize();
             _menuTab.OnInitialize();
         }
 
         private void OnHide () {
             _doodTab.OnShutdown();
             _marketTab.OnShutdown();
-            _allDoodsTab.OnShutdown();
             _menuTab.OnShutdown();
         }
 
@@ -96,6 +92,8 @@ namespace Code.Characters.Player.Doodex
             if (!_active) { return; }
 
             _mode += dir;
+            if (_mode == DisplayMode.SingleDood && _activeDood == null) { _mode += dir; }
+
             if (_mode < 0) { _mode = DisplayMode.Max - 1; }
 
             if (_mode >= DisplayMode.Max) { _mode = 0; }
@@ -109,7 +107,6 @@ namespace Code.Characters.Player.Doodex
             switch (_mode) {
                 case DisplayMode.Market: return _marketTab;
                 case DisplayMode.SingleDood: return _doodTab;
-                case DisplayMode.AllDoods: return _allDoodsTab;
                 case DisplayMode.Menu: return _menuTab;
                 default: throw new ArgumentOutOfRangeException();
             }

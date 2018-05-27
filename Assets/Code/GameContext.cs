@@ -55,7 +55,7 @@ namespace Code
             }
             else {
                 // The menu must not be sad
-                Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.NoNeeds;
+                Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.MainMenu;
             }
 
             Economy = new EconomyManager();

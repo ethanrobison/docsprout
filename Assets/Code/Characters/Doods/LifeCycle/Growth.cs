@@ -31,13 +31,9 @@ namespace Code.Characters.Doods.LifeCycle
 
             var plant = transform.Find("Dood/Body/Plant").gameObject;
             _pop = plant.GetRequiredComponent<AudioSource>();
+        }
 
-            SetSpecies(Species);
-        }
-        
-        public void SetSpecies (Species species) {
-            _stage = new DoodStage(this, species);
-        }
+        public void SetSpecies (Species species) { _stage = new DoodStage(this, species); }
 
         private void Update () {
             var delta = (_status.Happiness - 50f) * GROWTH_RATE * Time.deltaTime;
@@ -115,16 +111,16 @@ namespace Code.Characters.Doods.LifeCycle
         }
 
         private GameObject _froot;
+
         private void SetFroot () {
             var plant = _go.transform.Find("Dood/Body/Plant");
             if (_species.IsHarvestable(_currentStage)) {
                 var froot = Resources.Load(Doodopedia.FrootPaths[_species.Species]);
-                _froot = (GameObject)UnityEngine.Object.Instantiate(froot, plant);
+                _froot = (GameObject) UnityEngine.Object.Instantiate(froot, plant);
             }
             else if (_froot != null) {
                 UnityEngine.Object.Destroy(_froot);
             }
-            
         }
 
         //
