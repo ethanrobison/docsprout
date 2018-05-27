@@ -9,6 +9,7 @@ namespace Code.Characters.Player
 
         private void Start () {
             _treat = Resources.Load("Environment/Donut");
+            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.XButton, GiveTreat);
         }
 
         public void GiveTreat () {

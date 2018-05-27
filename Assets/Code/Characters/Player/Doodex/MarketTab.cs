@@ -94,6 +94,7 @@ namespace Code.Characters.Player.Doodex
         }
 
         public override void OnSelect (BaseEventData eventData) { Tab.SelectInfo(this); }
+
         protected override void Buy () { Game.Ctx.Doods.PurchaseSeed(Info); }
     }
 
