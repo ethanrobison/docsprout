@@ -32,7 +32,11 @@ namespace Code.Characters.Doods.LifeCycle
             var plant = transform.Find("Dood/Body/Plant").gameObject;
             _pop = plant.GetRequiredComponent<AudioSource>();
 
-            _stage = new DoodStage(this, Species);
+            SetSpecies(Species);
+        }
+        
+        public void SetSpecies (Species species) {
+            _stage = new DoodStage(this, species);
         }
 
         private void Update () {
