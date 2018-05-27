@@ -5,6 +5,7 @@ using Code.Session;
 using Code.Utils;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace Code.Characters.Player
 {
@@ -17,7 +18,10 @@ namespace Code.Characters.Player
             Game.Ctx.Economy.Stats.SpendFroot(0);
         }
 
-        public void ShutDown () { }
+        public void ShutDown () {
+            HUD.Shutdown();
+            HUD = null;
+        }
     }
 
     public class HUD
@@ -40,6 +44,8 @@ namespace Code.Characters.Player
 
             SetActiveIcon(0);
         }
+
+        public void Shutdown () { Object.Destroy(_go); }
 
         private static void MapActionToButton (GameObject go, string name, ControllerButton button, Action onpress) {
             var btn = UIUtils.FindUICompOfType<Button>(go, name);
@@ -96,8 +102,9 @@ namespace Code.Characters.Player
                 return _active;
             }
 
+            // todo this is absolutely not correct
             public void UseItem () {
-                Logging.Log(_active);
+                Game.Ctx.Player.GetComponent<TreatGiver>().GiveTreat();
                 _items[_active].Use();
             }
 

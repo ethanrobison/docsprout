@@ -20,6 +20,7 @@ namespace Code
         }
 
         private SceneIndex _index;
+        private bool _initialized;
 
         public void StartGame (SceneIndex index) {
             _index = index;
@@ -62,9 +63,13 @@ namespace Code
 
             HUD = new HUDManager();
             HUD.Initialize();
+
+            _initialized = true;
         }
 
-        private void ShutDown () {
+        public void ShutDown () {
+            if (!_initialized) { return; }
+
             HUD.ShutDown();
             HUD = null;
 
@@ -73,6 +78,7 @@ namespace Code
 
             Doods.ShutDown();
             Doods = null;
+            _initialized = false;
         }
     }
 

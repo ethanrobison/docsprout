@@ -9,10 +9,9 @@ namespace Code.Characters.Player
 
         private void Start () {
             _treat = Resources.Load("Environment/Donut");
-            Game.Sesh.Input.Monitor.RegisterMapping(ControllerButton.Select, GiveTreat);
         }
 
-        private void GiveTreat () {
+        public void GiveTreat () {
             var treatPos = transform.position + transform.forward * 2f + transform.up;
             var treatRot = Quaternion.Euler(-60f, 0f, 0f);
             Instantiate(_treat, treatPos, treatRot);
