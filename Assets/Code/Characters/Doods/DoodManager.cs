@@ -28,32 +28,28 @@ namespace Code.Characters.Doods
             const float diff = 1.2f;
             for (var i = 0; i < count; i++) {
                 var pos = startpos + new Vector3((i % 5) * diff, 8f, (-i / 5) * diff);
-                MakeDood(pos);
+                MakeDood(pos, Species.MainMenu);
             }
         }
 
-        private Dood MakeDood (Vector3 pos, Species species = Species.Debug) {
+        private Dood MakeDood (Vector3 pos, Species species) {
             var prefab = Resources.Load("Doods/Base Dood");
             var go = (GameObject) Object.Instantiate(prefab, pos, Quaternion.identity);
             var dood = go.GetComponent<Dood>();
             dood.GetComponent<Growth>().SetSpecies(species);
 
             DoodList.Add(dood);
-            
             return dood;
         }
 
-
         public void DeselectAll () {
-            foreach (var dood in DoodList) {
-                dood.OnDeselect();
-            }
+            foreach (var dood in DoodList) { dood.OnDeselect(); }
         }
 
-        public void PurchaseSeed (SeedInfo info, Species species = Species.Debug) {
+        public void PurchaseSeed (SeedInfo info) {
             var tr = Game.Ctx.Player.transform;
             var pos = tr.position + tr.forward * 3f + Vector3.up * 3f;
-            MakeDood(pos);
+            MakeDood(pos, info.Species);
         }
     }
 }

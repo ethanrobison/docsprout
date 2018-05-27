@@ -13,13 +13,14 @@ namespace Code
         public DoodManager Doods { get; private set; }
         public Player Player { get; private set; }
         public EconomyManager Economy { get; private set; }
-        public HUDManager HUD { get; private set; }
+//        public HUDManager HUD { get; private set; }
 
         public bool InMenu {
             get { return _index == SceneIndex.MainMenu || _index == SceneIndex.Current; }
         }
 
         private SceneIndex _index;
+        private bool _initialized;
 
         public void StartGame (SceneIndex index) {
             _index = index;
@@ -54,25 +55,30 @@ namespace Code
             }
             else {
                 // The menu must not be sad
-                Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.NoNeeds;
+                Doods.DoodList[0].gameObject.GetRequiredComponent<Growth>().Species = Species.MainMenu;
             }
 
             Economy = new EconomyManager();
             Economy.Initialize();
 
-            HUD = new HUDManager();
-            HUD.Initialize();
+//            HUD = new HUDManager();
+//            HUD.Initialize();
+
+            _initialized = true;
         }
 
-        private void ShutDown () {
-            HUD.ShutDown();
-            HUD = null;
+        public void ShutDown () {
+            if (!_initialized) { return; }
+
+//            HUD.ShutDown();
+//            HUD = null;
 
             Economy.ShutDown();
             Economy = null;
 
             Doods.ShutDown();
             Doods = null;
+            _initialized = false;
         }
     }
 

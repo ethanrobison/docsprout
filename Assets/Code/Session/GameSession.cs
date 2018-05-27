@@ -47,7 +47,11 @@ namespace Code.Session
 
         public void ReturnToMenu () { StartGame(SceneIndex.MainMenu); }
 
-        private void ResetContext () { Game.SetContext(this, new GameContext()); }
+        private void ResetContext () {
+            if (Game.Ctx != null) { Game.Ctx.ShutDown(); }
+
+            Game.SetContext(this, new GameContext());
+        }
     }
 
     public interface ISessionManager

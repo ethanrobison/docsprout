@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.Characters.Doods.LifeCycle;
 using Code.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,18 +11,15 @@ namespace Code.Characters.Player.Doodex
     {
         private Transform _contents, _description;
 
-        private readonly List<SeedInfo> _seeds = new List<SeedInfo> {
-            new SeedInfo("Moste Basiq Dood"),
-            new SeedInfo("Moste Basiq Dood 2"),
-            new SeedInfo("Moste Basiq Dood 3"),
-            new SeedInfo("Moste Basiq Dood 4")
-        };
+        private readonly List<SeedInfo> _seeds = new List<SeedInfo>();
 
         public MarketTab (Transform tr, Transform tabbar) : base(tr, tabbar) { }
 
         public override void OnInitialize () {
             _contents = GO.transform.Find("Scroll View/Viewport/Content");
             _description = GO.transform.Find("Description");
+
+            SetupSeedInfo();
             foreach (var seed in _seeds) { MakeSeedButton(seed); }
         }
 
@@ -32,6 +30,14 @@ namespace Code.Characters.Player.Doodex
             var first = _contents.GetComponentInChildren<Button>();
             first.Select();
             SelectInfo(first.GetComponent<SeedPurchaseContext>());
+        }
+
+
+        //
+        // non-overridden crap
+
+        private void SetupSeedInfo () {
+            for (var s = Species.Vine; s <= Species.Cactus; s++) { _seeds.Add(new SeedInfo(s)); }
         }
 
         private void MakeSeedButton (SeedInfo info) {
@@ -45,13 +51,13 @@ namespace Code.Characters.Player.Doodex
 
 
         public void SelectInfo (SeedPurchaseContext ctx) {
-            UIUtils.FindUICompOfType<Text>(_description, "Info").text = ctx.Info.Name;
+            UIUtils.FindUICompOfType<Text>(_description, "Info").text = string.Format("Buy a {0} seed!", ctx.Info.Name);
             MoveDescriptionBox(ctx);
         }
 
         private void MoveDescriptionBox (SeedPurchaseContext ctx) {
             var pos = _description.position;
-            pos.y = ctx.SlotPosition + ctx.SlotHeight / 2f;
+            pos.y = ctx.SlotPosition;
             _description.position = pos;
         }
     }
@@ -59,14 +65,17 @@ namespace Code.Characters.Player.Doodex
     public class SeedInfo
     {
         public readonly string Name;
+        public readonly Species Species;
 
-        public SeedInfo (string name) { Name = name; }
+        public SeedInfo (Species species) {
+            Species = species;
+            Name = Species.ToString();
+        }
     }
 
     public abstract class PurchaseContext : MonoBehaviour, ISelectHandler
     {
         public abstract void OnSelect (BaseEventData eventData);
-        public abstract string GetInfo ();
         protected abstract void Buy ();
 
         private void Start () {
@@ -84,19 +93,14 @@ namespace Code.Characters.Player.Doodex
             get { return transform.parent.position.y; }
         }
 
-        public float SlotHeight {
-            get { return GetComponent<RectTransform>().rect.height; }
-        }
-
         public override void OnSelect (BaseEventData eventData) { Tab.SelectInfo(this); }
+
         protected override void Buy () { Game.Ctx.Doods.PurchaseSeed(Info); }
-        public override string GetInfo () { return Info.Name; }
     }
 
     public class ItemPurchaseContext : PurchaseContext
     {
         public override void OnSelect (BaseEventData eventData) { }
         protected override void Buy () { }
-        public override string GetInfo () { return ""; }
     }
 }
