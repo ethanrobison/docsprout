@@ -109,6 +109,7 @@ namespace Code.Characters.Doods.LifeCycle
         private void SetPlantMesh () {
             var plant = _go.transform.Find("Dood/Body/Plant").gameObject;
             var info = _species.GetLeaf(_currentStage);
+            plant.transform.localScale = new Vector3(info.Scale, info.Scale, info.Scale);
             plant.transform.localPosition = info.Offset;
             plant.GetComponent<MeshFilter>().mesh = info.Mesh;
             plant.GetComponent<Renderer>().material = info.Material;

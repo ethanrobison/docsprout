@@ -2,7 +2,9 @@
 using System.Linq;
 using Code.Characters.Doods.Needs;
 using Code.Utils;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions.Comparers;
 
 namespace Code.Characters.Doods.LifeCycle
 {
@@ -53,7 +55,8 @@ namespace Code.Characters.Doods.LifeCycle
             return new MeshInfo {
                 Mesh = LoadMeshAtPath(leafInfo.Model),
                 Offset = LeafOffsets[bodyType],
-                Material = LoadMaterialAtPath(leafInfo.Material)
+                Material = LoadMaterialAtPath(leafInfo.Material),
+                Scale = leafInfo.Scale
             };
         }
 
@@ -108,14 +111,14 @@ namespace Code.Characters.Doods.LifeCycle
         };
 
         private static readonly Dictionary<LeafType, LeafInfo> LeafPaths = new Dictionary<LeafType, LeafInfo> {
-            {LeafType.Seed, new LeafInfo {Model = PLANT_BASE + "Seed", Material = MATERIAL_BASE + "Seed"}},
-            {LeafType.Seedling, new LeafInfo {Model = PLANT_BASE + "sprout1", Material = MATERIAL_BASE + "Sprout"}},
-            {LeafType.Sprout, new LeafInfo {Model = PLANT_BASE + "sprout2", Material = MATERIAL_BASE + "Sprout"}},
-            {LeafType.Bush, new LeafInfo {Model = PLANT_BASE + "bush", Material = MATERIAL_BASE + "peachTree"}},
-            {LeafType.Tree, new LeafInfo {Model = PLANT_BASE + "tree", Material = MATERIAL_BASE + "peachTree"}},
-            {LeafType.Cactus1, new LeafInfo {Model = PLANT_BASE + "Cactus1", Material = MATERIAL_BASE + "Sprout"}},
-            {LeafType.Cactus2, new LeafInfo {Model = PLANT_BASE + "Cactus2", Material = MATERIAL_BASE + "Sprout"}},
-            {LeafType.Cactus3, new LeafInfo {Model = PLANT_BASE + "Cactus3", Material = MATERIAL_BASE + "Sprout"}}
+            {LeafType.Seed, new LeafInfo (PLANT_BASE + "Seed", MATERIAL_BASE + "Seed")},
+            {LeafType.Seedling, new LeafInfo (PLANT_BASE + "sprout1", MATERIAL_BASE + "Sprout")},
+            {LeafType.Sprout, new LeafInfo (PLANT_BASE + "sprout2", MATERIAL_BASE + "Sprout")},
+            {LeafType.Bush, new LeafInfo (PLANT_BASE + "bush", MATERIAL_BASE + "peachTree", 1.4f)},
+            {LeafType.Tree, new LeafInfo (PLANT_BASE + "tree", MATERIAL_BASE + "peachTree", 0.8f)},
+            {LeafType.Cactus1, new LeafInfo (PLANT_BASE + "Cactus1", MATERIAL_BASE + "Sprout", 0.8f)},
+            {LeafType.Cactus2, new LeafInfo (PLANT_BASE + "Cactus2", MATERIAL_BASE + "Sprout", 0.8f)},
+            {LeafType.Cactus3, new LeafInfo (PLANT_BASE + "Cactus3", MATERIAL_BASE + "Sprout", 0.8f)}
         };
 
         private static readonly Dictionary<Species, DoodSpecies> SpeciesInstances = new Dictionary<Species, DoodSpecies>();
@@ -306,7 +309,15 @@ namespace Code.Characters.Doods.LifeCycle
         {
             public string Model;
             public string Material;
+            public float Scale;
+
+            public LeafInfo (string model, string material, float scale = 1f) {
+                Model = model;
+                Material = material;
+                Scale = scale;
+            }
         }
+        
     }
 
     public struct MeshInfo
@@ -314,5 +325,6 @@ namespace Code.Characters.Doods.LifeCycle
         public Mesh Mesh;
         public Material Material;
         public Vector3 Offset;
+        public float Scale;
     }
 }
