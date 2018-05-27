@@ -110,9 +110,17 @@ namespace Code.Characters.Doods.LifeCycle
             plant.GetComponent<Renderer>().material = info.Material;
         }
 
+        private GameObject _froot;
         private void SetFroot () {
-            var froot = _go.transform.Find("Dood/Body/Plant/Froot");
-            froot.GetComponent<Renderer>().enabled = _species.IsHarvestable(_currentStage);
+            var plant = _go.transform.Find("Dood/Body/Plant");
+            if (_species.IsHarvestable(_currentStage)) {
+                var froot = Resources.Load(Doodopedia.FrootPaths[_species.Species]);
+                _froot = (GameObject)UnityEngine.Object.Instantiate(froot, plant);
+            }
+            else if (_froot != null) {
+                UnityEngine.Object.Destroy(_froot);
+            }
+            
         }
 
         //

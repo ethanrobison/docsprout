@@ -16,10 +16,10 @@ namespace Code.Characters.Doods.Needs
     public class Need : MonoBehaviour
     {
         private static readonly Dictionary<NeedType, NeedValues> NeedValues = new Dictionary<NeedType, NeedValues> {
-            { NeedType.Water, new NeedValues(45f, 100f, 10f, 1f) },
-            { NeedType.Sun, new NeedValues(40f, 100f, 7f, .6f) },
-            { NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f) },
-            { NeedType.Food, new NeedValues(40f, 100f, 5f, .4f) }
+            {NeedType.Water, new NeedValues(45f, 100f, 7f, 1f)},
+            {NeedType.Sun, new NeedValues(40f, 100f, 5f, .6f)},
+            {NeedType.Fun, new NeedValues(30f, 100f, 20f, 5f)},
+            {NeedType.Food, new NeedValues(40f, 100f, 5f, 1f)}
         };
 
         public NeedType Type;

@@ -21,12 +21,20 @@ namespace Code.Characters.Doods.LifeCycle
         Seedling = 1,
         Sprout = 2,
         Bud = 3,
+        Bush = 4,
+        Tree = 5,
+        Cactus1 = 6,
+        Cactus2 = 7, 
+        Cactus3 = 8
     }
 
     public enum Species
     {
         Debug,
-        NoNeeds
+        NoNeeds,
+        Bush,
+        Tree,
+        Cactus
     }
 
     public static class Doodopedia
@@ -69,12 +77,22 @@ namespace Code.Characters.Doods.LifeCycle
             return mat;
         }
 
+        public static readonly Dictionary<Species, string> FrootPaths = new Dictionary<Species, string> {
+            {Species.Debug, "Doods/Froot/SproutFroot"},
+            {Species.Bush, "Doods/Froot/BushFroot"},
+            {Species.Tree, "Doods/Froot/TreeFroot"},
+            {Species.Cactus, "Doods/Froot/CactusFroot"}
+        };
+
         //
         // Nasty hard-coded dictionaries. Sorry about this.
 
         private static readonly Dictionary<BodyType, string> BodyPaths = new Dictionary<BodyType, string> {
+            {BodyType.Capsule, "Models/Doods/CapsuleScaled"},
             {BodyType.Cone, "Models/Doods/cone2"},
-            {BodyType.Capsule, "Models/Doods/CapsuleScaled"}
+            {BodyType.Cube, "Models/Doods/cube2"},
+            {BodyType.Cylinder, "Models/Doods/cylinder2"}, 
+            {BodyType.Sphere, "Models/Doods/sphere2"}
         };
 
 
@@ -83,16 +101,24 @@ namespace Code.Characters.Doods.LifeCycle
 
         private static readonly Dictionary<BodyType, Vector3> LeafOffsets = new Dictionary<BodyType, Vector3> {
             {BodyType.Capsule, new Vector3(0, 0, 1.8f)},
-            {BodyType.Cone, new Vector3(0, 0, 0.9f)}
+            {BodyType.Cone, new Vector3(0, 0, 0.9f)},
+            {BodyType.Cube, new Vector3(0, 0, 1f)},
+            {BodyType.Cylinder, new Vector3(0, 0, 0.9f)},
+            {BodyType.Sphere, new Vector3(0, 0, 0.8f)}
         };
 
         private static readonly Dictionary<LeafType, LeafInfo> LeafPaths = new Dictionary<LeafType, LeafInfo> {
             {LeafType.Seed, new LeafInfo {Model = PLANT_BASE + "Seed", Material = MATERIAL_BASE + "Seed"}},
             {LeafType.Seedling, new LeafInfo {Model = PLANT_BASE + "sprout1", Material = MATERIAL_BASE + "Sprout"}},
-            {LeafType.Sprout, new LeafInfo {Model = PLANT_BASE + "sprout2", Material = MATERIAL_BASE + "Sprout"}}
+            {LeafType.Sprout, new LeafInfo {Model = PLANT_BASE + "sprout2", Material = MATERIAL_BASE + "Sprout"}},
+            {LeafType.Bush, new LeafInfo {Model = PLANT_BASE + "bush", Material = MATERIAL_BASE + "peachTree"}},
+            {LeafType.Tree, new LeafInfo {Model = PLANT_BASE + "tree", Material = MATERIAL_BASE + "peachTree"}},
+            {LeafType.Cactus1, new LeafInfo {Model = PLANT_BASE + "Cactus1", Material = MATERIAL_BASE + "Sprout"}},
+            {LeafType.Cactus2, new LeafInfo {Model = PLANT_BASE + "Cactus2", Material = MATERIAL_BASE + "Sprout"}},
+            {LeafType.Cactus3, new LeafInfo {Model = PLANT_BASE + "Cactus3", Material = MATERIAL_BASE + "Sprout"}}
         };
 
-        private static Dictionary<Species, DoodSpecies> SpeciesInstances = new Dictionary<Species, DoodSpecies>();
+        private static readonly Dictionary<Species, DoodSpecies> SpeciesInstances = new Dictionary<Species, DoodSpecies>();
 
         public static void LoadSpecies () {
             var cycles = new SpeciesLifeCycles {LifeCycles = new List<MaturityLifeCyclePair>()};
@@ -145,6 +171,135 @@ namespace Code.Characters.Doods.LifeCycle
 
             SpeciesInstances.Add(Species.NoNeeds,
                 new DoodSpecies(Species.NoNeeds, BodyType.Capsule, Maturity.Seed, noNeedCycles));
+            
+            //// bush
+            
+            cycles = new SpeciesLifeCycles {LifeCycles = new List<MaturityLifeCyclePair>()};
+
+            needs = new LifeCycleNeeds {
+                Needs = new List<NeedType> {NeedType.Water}
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seed,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Seedling, 1, LeafType.Seed), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Water,
+                NeedType.Sun
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seedling,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Sprout, 4, LeafType.Seedling), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Water,
+                NeedType.Sun,
+                NeedType.Food
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Sprout,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Fullgrown, 6, LeafType.Bush), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Water,
+                NeedType.Sun,
+                NeedType.Food
+            };
+
+            newCycle =
+                new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 0, LeafType.Sprout), needs) {
+                    Values = {Harvestable = true}
+                };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Fullgrown, newCycle));
+
+            SpeciesInstances.Add(Species.Bush,
+                new DoodSpecies(Species.Bush, BodyType.Cone, Maturity.Sprout, cycles));
+            
+            //// tree
+            
+            cycles = new SpeciesLifeCycles {LifeCycles = new List<MaturityLifeCyclePair>()};
+
+            needs = new LifeCycleNeeds {
+                Needs = new List<NeedType> {NeedType.Water}
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seed,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Seedling, 1, LeafType.Seed), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Water,
+                NeedType.Sun
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seedling,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Sprout, 5, LeafType.Seedling), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Water,
+                NeedType.Sun,
+                NeedType.Food
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Sprout,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Fullgrown, 7, LeafType.Tree), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Water,
+                NeedType.Sun,
+                NeedType.Food
+            };
+
+            newCycle =
+                new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 0, LeafType.Sprout), needs) {
+                    Values = {Harvestable = true}
+                };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Fullgrown, newCycle));
+
+            SpeciesInstances.Add(Species.Tree,
+                new DoodSpecies(Species.Tree, BodyType.Cube, Maturity.Sprout, cycles));
+            
+            //// cactus
+            
+            cycles = new SpeciesLifeCycles {LifeCycles = new List<MaturityLifeCyclePair>()};
+
+            needs = new LifeCycleNeeds {
+                Needs = new List<NeedType> {NeedType.Sun}
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seed,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Seedling, 1, LeafType.Cactus1), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Sun
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Seedling,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Sprout, 3, LeafType.Cactus2), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Sun,
+                NeedType.Food
+            };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Sprout,
+                new LifeCycleStage(new LifeCycleValues(Maturity.Fullgrown, 5, LeafType.Cactus3), needs)));
+
+            needs.Needs = new List<NeedType> {
+                NeedType.Sun,
+                NeedType.Food
+            };
+
+            newCycle =
+                new LifeCycleStage(new LifeCycleValues(Maturity.Empty, 0, LeafType.Sprout), needs) {
+                    Values = {Harvestable = true}
+                };
+
+            cycles.LifeCycles.Add(new MaturityLifeCyclePair(Maturity.Fullgrown, newCycle));
+
+            SpeciesInstances.Add(Species.Cactus,
+                new DoodSpecies(Species.Cactus, BodyType.Cylinder, Maturity.Sprout, cycles));
         }
 
         private struct LeafInfo
