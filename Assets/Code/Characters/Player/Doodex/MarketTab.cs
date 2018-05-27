@@ -51,13 +51,13 @@ namespace Code.Characters.Player.Doodex
 
 
         public void SelectInfo (SeedPurchaseContext ctx) {
-            UIUtils.FindUICompOfType<Text>(_description, "Info").text = ctx.Info.Name;
+            UIUtils.FindUICompOfType<Text>(_description, "Info").text = string.Format("Buy a {0} seed!", ctx.Info.Name);
             MoveDescriptionBox(ctx);
         }
 
         private void MoveDescriptionBox (SeedPurchaseContext ctx) {
             var pos = _description.position;
-            pos.y = ctx.SlotPosition + ctx.SlotHeight / 2f;
+            pos.y = ctx.SlotPosition;
             _description.position = pos;
         }
     }
@@ -91,10 +91,6 @@ namespace Code.Characters.Player.Doodex
 
         public float SlotPosition {
             get { return transform.parent.position.y; }
-        }
-
-        public float SlotHeight {
-            get { return GetComponent<RectTransform>().rect.height; }
         }
 
         public override void OnSelect (BaseEventData eventData) { Tab.SelectInfo(this); }
